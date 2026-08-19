@@ -10,6 +10,7 @@
 - `.gitconfig`
 - `.config/ghostty/` — Ghostty 終端機設定（含 dracula 主題）
 - `.config/fcitx5/` — fcitx5 輸入法設定（不含自動產生的 cached_layouts 快取）
+- `.local/share/fcitx5/themes/` — fcitx5 自訂主題（目前使用 mellow-graphite-dark）
 - `.config/environment.d/90-fcitx5.conf` — fcitx5 的 IM 環境變數（GTK/QT/XMODIFIERS）
 
 ## 在新機器上還原
