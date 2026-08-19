@@ -9,7 +9,6 @@
 - `.bashrc` / `.bash-preexec.sh` / `.profile`
 - `.gitconfig`
 - `.config/ghostty/` — Ghostty 終端機設定（含 dracula 主題）
-- `.config/fcitx5/config` — fcitx5 全域設定與按鍵
 - `.config/fcitx5/profile` — 啟用的輸入法清單
 - `.config/fcitx5/conf/classicui.conf` — 主題選擇（目前為 mellow-graphite-dark）
 - `.config/environment.d/90-fcitx5.conf` — fcitx5 的 IM 環境變數（GTK/QT/XMODIFIERS）
