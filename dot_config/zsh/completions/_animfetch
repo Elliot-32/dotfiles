@@ -1,0 +1,41 @@
+#compdef animfetch
+
+_animfetch_animations() {
+  local -a animations
+  local line name
+
+  while read -r line; do
+    if [[ $line == \** ]]; then
+      line=${line#\*}
+    fi
+    read -r name _ <<< "$line"
+    [[ -n $name ]] && animations+=("$name")
+  done <<< "$(command animfetch --list 2>/dev/null)"
+
+  _describe 'animation' animations
+}
+
+_animfetch() {
+  _arguments -s \
+    '(-p --play -1 --once --pin --unpin)'{-p,--play}'[Animate in place for a few seconds]' \
+    '(-1 --once -p --play --pin --unpin)'{-1,--once}'[Print one static frame and exit]' \
+    '(-a --animation)'{-a,--animation}'[Use an animation for this run]:animation:_animfetch_animations' \
+    '(-l --list)'{-l,--list}'[List available animations]' \
+    '--set[Make an animation the default]:animation:_animfetch_animations' \
+    '--pin[Pin the fetch above the shell]' \
+    '--unpin[Undo pinning]' \
+    '--fps[Frames per second]:number' \
+    '--style[Rendering style]:(half quad ramp)' \
+    '-W[Maximum art width]:columns' \
+    '--width[Maximum art width]:columns' \
+    '-H[Maximum art height]:rows' \
+    '--height[Maximum art height]:rows' \
+    '-s[How long --play animates]:seconds' \
+    '--seconds[How long --play animates]:seconds' \
+    '--palette[Use the generated desktop palette]' \
+    '--no-color[Disable colour output]' \
+    '(-h --help)'{-h,--help}'[Show help]' \
+    '(-V --version)'{-V,--version}'[Show version]'
+}
+
+_animfetch "$@"

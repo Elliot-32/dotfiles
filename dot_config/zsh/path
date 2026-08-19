@@ -1,0 +1,6 @@
+# PATH directories, one per line
+$HOME/.cargo/bin
+$HOME/go/bin
+$HOME/.local/bin
+/home/linuxbrew/.linuxbrew/opt/rustup/bin
+$HOME/bin
