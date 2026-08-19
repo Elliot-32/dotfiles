@@ -8,6 +8,8 @@
 - `.config/zsh/` — zsh 主要設定（config、path、function、completions）
 - `.bashrc` / `.bash-preexec.sh` / `.profile`
 - `.gitconfig`
+- `.config/ghostty/` — Ghostty 終端機設定（含 dracula 主題）
+- `.config/fcitx5/` — fcitx5 輸入法設定（不含自動產生的 cached_layouts 快取）
 
 ## 在新機器上還原
 
