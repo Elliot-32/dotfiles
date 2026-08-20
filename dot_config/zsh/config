@@ -123,3 +123,12 @@ bindkey -M emacs '^[[A' history-beginning-search-backward-end
 bindkey -M emacs '^[[B' history-beginning-search-forward-end
 bindkey -M emacs '^P' history-beginning-search-backward-end
 bindkey -M emacs '^N' history-beginning-search-forward-end
+
+# Directory navigation
+setopt auto_pushd
+setopt pushd_ignore_dups
+
+bindkey -M emacs '\eh' 'cd ..'
+bindkey -M emacs '\ej' 'pushd +1'
+bindkey -M emacs '\ek' 'pushd -1'
+bindkey -M emacs '\el' 'zi'
