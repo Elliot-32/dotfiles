@@ -127,6 +127,7 @@ bindkey -M emacs '^N' history-beginning-search-forward-end
 # Directory navigation
 setopt auto_pushd
 setopt pushd_ignore_dups
+DIRSTACKSIZE=20
 
 alt-cd-up() {
   cd .. || return
