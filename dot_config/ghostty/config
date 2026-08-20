@@ -16,3 +16,7 @@ shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo,path
 theme = Catppuccin Macchiato
 #theme = Dracula
 
+# Custom keybindings
+keybind = shift+enter=text:\n
+keybind = ctrl+shift+z=text:\x1b[122;6u
+

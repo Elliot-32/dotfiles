@@ -71,6 +71,23 @@ bindkey '^[[3;5~' kill-word                        # Ctrl+Delete
 bindkey '^[[1;5D' backward-word                    # Ctrl+Left
 bindkey '^[[1;5C' forward-word                     # Ctrl+Right
 
+# Ctrl+V pastes clipboard via widget (terminal passes ^V through to zsh)
+paste-clipboard() {
+  local clip
+  clip=$(wl-paste --no-newline 2>/dev/null) || clip=$(xclip -o -selection clipboard 2>/dev/null) || return 1
+  LBUFFER+=$clip
+}
+zle -N paste-clipboard
+bindkey '^V' paste-clipboard
+
+# Shift+Enter inserts a newline (Ghostty sends \n, i.e. ^J)
+insert-newline() { LBUFFER+=$'\n' }
+zle -N insert-newline
+bindkey '^J' insert-newline
+
+# Ctrl+Shift+Z → redo (Ghostty sends it as CSI u)
+bindkey '\e[122;6u' redo
+
 autoload -Uz history-search-end
 
 zle -N history-beginning-search-backward-end history-search-end
