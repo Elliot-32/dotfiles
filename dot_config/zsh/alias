@@ -1,0 +1,5 @@
+# Plain-text aliases, one per line: name=command
+oc=opencode
+isd=isd-tui
+ls=eza --icons
+path=print -l $path | fzf

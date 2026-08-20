@@ -1,0 +1,4 @@
+# Plain-text env vars, one per line: KEY=VALUE
+VISUAL=nvim
+EDITOR=nvim
+SUDO_EDITOR=nvim
