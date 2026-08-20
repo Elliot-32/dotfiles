@@ -128,7 +128,30 @@ bindkey -M emacs '^N' history-beginning-search-forward-end
 setopt auto_pushd
 setopt pushd_ignore_dups
 
-bindkey -M emacs '\eh' 'cd ..'
-bindkey -M emacs '\ej' 'pushd +1'
-bindkey -M emacs '\ek' 'pushd -1'
-bindkey -M emacs '\el' 'zi'
+alt-cd-up() {
+  cd .. || return
+  zle reset-prompt
+}
+zle -N alt-cd-up
+bindkey -M emacs '\eh' alt-cd-up
+
+alt-pushd-next() {
+  pushd +1 > /dev/null || return
+  zle reset-prompt
+}
+zle -N alt-pushd-next
+bindkey -M emacs '\ej' alt-pushd-next
+
+alt-pushd-prev() {
+  pushd -1 > /dev/null || return
+  zle reset-prompt
+}
+zle -N alt-pushd-prev
+bindkey -M emacs '\ek' alt-pushd-prev
+
+alt-zoxide-query() {
+  zi || return
+  zle reset-prompt
+}
+zle -N alt-zoxide-query
+bindkey -M emacs '\el' alt-zoxide-query
