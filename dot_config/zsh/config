@@ -123,3 +123,6 @@ bindkey -M emacs '^[[A' history-beginning-search-backward-end
 bindkey -M emacs '^[[B' history-beginning-search-forward-end
 bindkey -M emacs '^P' history-beginning-search-backward-end
 bindkey -M emacs '^N' history-beginning-search-forward-end
+
+[[ -f "$HOME/.config/zsh/directory-navigation.zsh" ]] &&
+  source "$HOME/.config/zsh/directory-navigation.zsh"
