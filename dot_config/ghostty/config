@@ -19,4 +19,6 @@ theme = Catppuccin Macchiato
 # Custom keybindings
 keybind = shift+enter=text:\n
 keybind = ctrl+shift+z=text:\x1b[122;6u
-
+# Send standard Alt-letter sequences so fzf can handle Alt-j/k directly.
+keybind = alt+j=esc:j
+keybind = alt+k=esc:k
