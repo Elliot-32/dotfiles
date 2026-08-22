@@ -3,3 +3,4 @@ oc=opencode
 isd=isd-tui
 ls=eza --icons
 path=print -l $path | fzf
+rm=gomi
