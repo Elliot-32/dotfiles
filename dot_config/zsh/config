@@ -27,17 +27,6 @@ HISTSIZE=50000
 SAVEHIST=10000
 setopt hist_ignore_dups hist_ignore_space hist_verify share_history append_history
 
-# Completion function directories
-fpath=(~/.config/zsh/completions $fpath)
-[[ -d ~/.local/share/sheldon/repos/github.com/zsh-users/zsh-completions/src ]] &&
-  fpath+=(~/.local/share/sheldon/repos/github.com/zsh-users/zsh-completions/src)
-
-# Completion system (must run before compdef, fzf-tab, zoxide, atuin)
-autoload -Uz compinit && compinit
-
-# Completions for personal functions
-compdef _directories md
-
 # Environment
 export GPG_TTY=$TTY
 
@@ -74,20 +63,12 @@ if [[ -f "$_alias_file" ]]; then
 fi
 unset _alias_file
 
-#zoxide
-eval "$(zoxide init zsh --cmd j)"
-
-#atuin
-. "$HOME/.atuin/bin/env"
-#eval "$(atuin pty-proxy init zsh)"
-eval "$(atuin init zsh)"
-
-# Use emacs keymap (must precede plugin loading so plugin key binds land in
-# the right keymap; otherwise main defaults to viins because EDITOR is vim-like)
-bindkey -e
-
-#sheldon
+# Sheldon manages completion fpath, compinit, shell integrations, and plugins
+# in dependency order.
 eval "$(sheldon source)"
+
+# Completions for personal functions (compinit has run above)
+compdef _directories md
 
 # Key bindings
 bindkey '^Z' undo
