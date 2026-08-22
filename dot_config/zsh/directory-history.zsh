@@ -29,7 +29,7 @@ directory-history-select() {
 
 	zle -I
 	selected=$(printf '%s\n' "${_directory_history[@]}" | fzf \
-		--height=50% --reverse --border --prompt='directory-history> ' \
+		--height=50% --reverse --border --prompt='history> ' \
 		--tac --select-1 --exit-0)
 	fzf_status=$?
 	(( fzf_status == 0 )) || return 0

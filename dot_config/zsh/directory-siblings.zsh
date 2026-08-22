@@ -1,30 +1,34 @@
-# Select a sibling directory in the current directory's parent.
+# Switch between sibling directories in the current directory's parent.
 
-_directory_sibling_select() {
-	local parent selected fzf_status
+_directory_sibling_move() {
+	local delta=$1 parent current target
 	local -a siblings
+	local -i current_index target_index
 
 	parent=${PWD:h}
+	current=${PWD:A}
 	siblings=("$parent"/*(/N))
+	current_index=0
 
-	if (( ! ${#siblings} )); then
-		zle -M "No sibling directories"
+	for (( current_index = 1; current_index <= ${#siblings}; current_index++ )); do
+		[[ ${siblings[current_index]:A} == "$current" ]] && break
+	done
+
+	if (( current_index > ${#siblings} )); then
+		zle -M "Current directory is not in its parent"
 		return 0
 	fi
 
-	zle -I
-	selected=$(printf '%s\n' "${siblings[@]}" | fzf \
-		--height=50% --reverse --border --prompt='sibling> ' \
-		--bind='alt-j:down,alt-k:up' \
-		--select-1 --exit-0)
-	fzf_status=$?
-	_directory_refresh_prompt
-	(( fzf_status == 0 )) || return 0
-	[[ -n $selected ]] || return 0
+	target_index=$((current_index + delta))
+	if (( target_index < 1 || target_index > ${#siblings} )); then
+		zle -M "No more sibling directories"
+		return 0
+	fi
 
-	builtin cd -- "$selected" || zle -M "Cannot enter sibling directory"
+	target=${siblings[target_index]}
+	builtin cd -- "$target" || zle -M "Cannot enter sibling directory"
 	_directory_refresh_prompt
 }
 
-directory-sibling-next() { _directory_sibling_select }
-directory-sibling-previous() { _directory_sibling_select }
+directory-sibling-next() { _directory_sibling_move 1 }
+directory-sibling-previous() { _directory_sibling_move -1 }
