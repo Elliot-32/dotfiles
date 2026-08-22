@@ -75,7 +75,7 @@ fi
 unset _alias_file
 
 #zoxide
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --cmd j)"
 
 #atuin
 . "$HOME/.atuin/bin/env"
