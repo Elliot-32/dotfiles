@@ -1,0 +1,7 @@
+[Unit]
+Description=Prune gomi trash older than 30 days
+
+[Service]
+Type=oneshot
+ExecSearchPath=/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:/usr/bin
+ExecStart=gomi --force --prune=30d
