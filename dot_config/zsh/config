@@ -63,6 +63,9 @@ if [[ -f "$_alias_file" ]]; then
 fi
 unset _alias_file
 
+# Tab accepts the current fzf-tab result and immediately completes the next segment.
+zstyle ':fzf-tab:*' continuous-trigger 'tab'
+
 # Sheldon manages completion fpath, compinit, shell integrations, and plugins
 # in dependency order.
 eval "$(sheldon source)"
