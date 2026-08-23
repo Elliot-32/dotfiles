@@ -63,8 +63,9 @@ if [[ -f "$_alias_file" ]]; then
 fi
 unset _alias_file
 
-# Tab accepts the current fzf-tab result and immediately completes the next segment.
-zstyle ':fzf-tab:*' continuous-trigger 'tab'
+# fzf-tab: / continues into the next path segment; Ctrl+O selects without exiting.
+zstyle ':fzf-tab:*' continuous-trigger '/'
+zstyle ':fzf-tab:*' fzf-bindings 'ctrl-o:toggle'
 
 # Sheldon manages completion fpath, compinit, shell integrations, and plugins
 # in dependency order.
