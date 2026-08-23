@@ -67,6 +67,15 @@ unset _alias_file
 # in dependency order.
 eval "$(sheldon source)"
 
+# fzf-tab preview: directories with eza, files with fzf's official previewer.
+zstyle ':fzf-tab:complete:*:*' fzf-preview '
+  if [[ -d "$realpath" ]]; then
+    eza --all --oneline --group-directories-first --color=always -- "$realpath"
+  elif [[ -f "$realpath" ]]; then
+    fzf-preview.sh "$realpath"
+  fi
+'
+
 # Completions for personal functions (compinit has run above)
 compdef _directories md
 
