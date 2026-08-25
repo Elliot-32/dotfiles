@@ -14,7 +14,6 @@ clipboard-read = allow
 mouse-hide-while-typing = true
 shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo,path
 theme = Catppuccin Macchiato
-#theme = Dracula
 
 # Custom keybindings
 keybind = shift+enter=text:\n
