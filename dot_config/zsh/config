@@ -1,19 +1,5 @@
-# Load personal PATH and functions
-[[ -f "$HOME/.config/zsh/path.zsh" ]] && source "$HOME/.config/zsh/path.zsh"
+# Load personal functions
 [[ -f "$HOME/.config/zsh/function.zsh" ]] && source "$HOME/.config/zsh/function.zsh"
-
-# Load plain-text env vars (one per line: KEY=VALUE)
-_env_file="$HOME/.config/zsh/env"
-if [[ -f "$_env_file" ]]; then
-	while IFS= read -r line || [[ -n "$line" ]]; do
-		[[ -z "$line" || "$line" == \#* ]] && continue
-		_key="${line%%=*}"
-		_val="${line#*=}"
-		[[ -z "$_key" || "$_key" == "$line" ]] && continue
-		export "$_key"="$_val"
-	done < "$_env_file"
-fi
-unset _env_file
 
 #brew (before compinit so its completion dir is on fpath)
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
@@ -49,19 +35,6 @@ for _rgrc_cmd in ${(k)aliases}; do
   unalias $_rgrc_cmd
 done
 unset _rgrc_cmd
-
-# Load plain-text aliases (must come after rgrc so rgrc aliases win)
-_alias_file="$HOME/.config/zsh/alias"
-if [[ -f "$_alias_file" ]]; then
-	while IFS= read -r line || [[ -n "$line" ]]; do
-		[[ -z "$line" || "$line" == \#* ]] && continue
-		_name="${line%%=*}"
-		_cmd="${line#*=}"
-		[[ -z "$_name" || -z "$_cmd" || "$_name" == "$line" ]] && continue
-		alias "$_name"="$_cmd"
-	done < "$_alias_file"
-fi
-unset _alias_file
 
 # Sheldon manages completion fpath, compinit, shell integrations, and plugins
 # in dependency order.
