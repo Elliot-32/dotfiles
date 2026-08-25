@@ -66,10 +66,6 @@ github = "wfxr/forgit"
 github = "Elliot-32/dir-meow"
 proto = "ssh"
 
-[plugins.alias-manager]
-github = "Elliot-32/alias-manager"
-proto = "ssh"
-
 # Keep syntax highlighting last among plugins.
 [plugins.zsh-syntax-highlighting]
 github = "zsh-users/zsh-syntax-highlighting"
