@@ -80,7 +80,7 @@ zshrc = "activate"
 fish = "activate"
 
 [bootstrap.user]
-login_shell = "/bin/zsh"
+login_shell = "/usr/bin/zsh"
 
 [bootstrap.linux.systemd.units.gomi-prune]
 description = "Prune gomi trash older than 30 days"
