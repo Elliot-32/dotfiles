@@ -1,6 +1,3 @@
-# Activate mise before anything that needs mise-managed tools.
-eval "$("$HOME/.local/bin/mise" activate zsh)"
-
 # Atuin PTY proxy must be initialized before Powerlevel10k instant prompt.
 eval "$(atuin pty-proxy init zsh)"
 
