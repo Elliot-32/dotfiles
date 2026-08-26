@@ -13,7 +13,7 @@
 - `dotfiles/.gitconfig`
 - `dotfiles/.profile`
 
-`~/.config/mise/config.toml` 會由 mise symlink 到 `~/.dotfiles/mise.toml`，因此同一份設定同時是 bootstrap config 與全域 mise config。
+`dotfiles.root` 指向 `~/.dotfiles/dotfiles`。`~/.config/mise/config.toml` 會由 mise symlink 到 `~/.dotfiles/mise.toml`，因此同一份設定同時是 bootstrap config 與全域 mise config。
 
 ## 新機器還原
 
@@ -49,11 +49,19 @@ mise bootstrap dotfiles edit ~/.zshrc
 mise bootstrap dotfiles apply --yes
 ```
 
-新增或修改全域工具時，直接寫入 repo 的 `mise.toml`：
+納管新的 dotfile：
 
 ```bash
-mise use --path ~/.dotfiles/mise.toml <tool>
+mise bootstrap dotfiles add ~/.config/example/config
 ```
+
+新增或修改全域工具時：
+
+```bash
+mise use -g <tool>
+```
+
+全域 mise config 是 repo 內 `mise.toml` 的 symlink，因此 `mise use -g` 會直接更新 repo 裡的設定。
 
 套用所有變更：
 
