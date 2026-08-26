@@ -176,8 +176,8 @@
   #   - quiet:   Enable instant prompt and don't print warnings when detecting console output
   #              during zsh initialization. Choose this if you've read and understood
   #              https://github.com/romkatv/powerlevel10k#instant-prompt.
-  #   - verbose: Enable instant prompt and print a warning when detecting console output
-  #              during zsh initialization. Choose this if you've never tried instant prompt, haven't
+  #   - verbose: Enable instant prompt and print a warning when detecting console output during
+  #              zsh initialization. Choose this if you've never tried instant prompt, haven't
   #              seen the warning, or if you are unsure what this all means.
   typeset -g POWERLEVEL9K_INSTANT_PROMPT=verbose
 
