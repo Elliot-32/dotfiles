@@ -1,0 +1,62 @@
+[settings]
+auto_update = true
+
+[env]
+_.path = [
+  "{{ env.HOME }}/.local/bin",
+  "{{ env.HOME }}/go/bin",
+  "{{ env.HOME }}/.cargo/bin",
+]
+EDITOR = "nvim"
+VISUAL = "nvim"
+SUDO_EDITOR = "nvim"
+
+[shell_alias]
+ls = "eza --icons"
+oc = "opencode"
+rm = "gomi"
+path = "j $(print -l $path | fzf)"
+
+[tools]
+atuin = "latest"
+bat = "latest"
+btop = "latest"
+bun = "latest"
+cargo-binstall = "latest"
+chezmoi = "latest"
+cowsay = "latest"
+dasel = "latest"
+doggo = "latest"
+duf = "latest"
+eza = "latest"
+fastfetch = "latest"
+fd = "latest"
+fzf = "latest"
+gh = "latest"
+glow = "latest"
+go = "latest"
+gup = "latest"
+herdr = "latest"
+lazyjournal = "latest"
+lazyssh = "latest"
+neovim = "latest"
+node = "latest"
+nub = "latest"
+opencode = "latest"
+pulumi = "latest"
+qdns = "latest"
+ripgrep = "latest"
+sheldon = "latest"
+starship = "latest"
+tlrc = "latest"
+uv = "latest"
+witr = "latest"
+yazi = "latest"
+zoxide = "latest"
+"cargo:rustscan" = "latest"
+"github:lazywalker/rgrc" = "latest"
+"go:github.com/babarot/gomi" = "latest"
+"go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
+"pipx:isd-tui" = "latest"
+"pipx:sqlmap" = "latest"
+"pipx:trash-cli" = "latest"

@@ -1,3 +1,0 @@
-# Plain-text functions, one per line: name() { command }
-y() { local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd; command yazi "$@" --cwd-file="$tmp"; IFS= read -r -d '' cwd < "$tmp"; [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"; command rm -f -- "$tmp"; }
-md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
