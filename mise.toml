@@ -1,0 +1,103 @@
+min_version = "2026.8.3"
+
+[settings]
+auto_update = true
+dotfiles.default_mode = "symlink"
+
+[env]
+_.path = [
+  "{{ env.HOME }}/.local/bin",
+  "{{ env.HOME }}/go/bin",
+  "{{ env.HOME }}/.cargo/bin",
+]
+EDITOR = "nvim"
+VISUAL = "nvim"
+SUDO_EDITOR = "nvim"
+
+[shell_alias]
+ls = "eza --icons"
+oc = "opencode"
+rm = "gomi"
+path = "j $(print -l $path | fzf)"
+
+[tools]
+atuin = "latest"
+bat = "latest"
+btop = "latest"
+bun = "latest"
+cargo-binstall = "latest"
+cowsay = "latest"
+dasel = "latest"
+doggo = "latest"
+duf = "latest"
+eza = "latest"
+fastfetch = "latest"
+fd = "latest"
+fzf = "latest"
+gh = "latest"
+glow = "latest"
+go = "latest"
+gup = "latest"
+herdr = "latest"
+lazyjournal = "latest"
+lazyssh = "latest"
+neovim = "latest"
+node = "latest"
+nub = "latest"
+opencode = "latest"
+pulumi = "latest"
+qdns = "latest"
+ripgrep = "latest"
+sheldon = "latest"
+starship = "latest"
+tlrc = "latest"
+uv = "latest"
+witr = "latest"
+yazi = "latest"
+zoxide = "latest"
+"cargo:rustscan" = "latest"
+"github:lazywalker/rgrc" = "latest"
+"go:github.com/babarot/gomi" = "latest"
+"go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
+"pipx:isd-tui" = "latest"
+"pipx:sqlmap" = "latest"
+"pipx:trash-cli" = "latest"
+
+[dotfiles]
+"~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
+"~/.zshrc" = "~/.dotfiles/dotfiles/.zshrc"
+"~/.p10k.zsh" = "~/.dotfiles/dotfiles/.p10k.zsh"
+"~/.profile" = "~/.dotfiles/dotfiles/.profile"
+"~/.gitconfig" = "~/.dotfiles/dotfiles/.gitconfig"
+"~/.config/ghostty/config" = "~/.dotfiles/dotfiles/.config/ghostty/config"
+"~/.config/fcitx5/profile" = "~/.dotfiles/dotfiles/.config/fcitx5/profile"
+"~/.config/environment.d/90-fcitx5.conf" = "~/.dotfiles/dotfiles/.config/environment.d/90-fcitx5.conf"
+"~/.config/sheldon/plugins.toml" = "~/.dotfiles/dotfiles/.config/sheldon/plugins.toml"
+
+[bootstrap.linux.systemd.units.gomi-prune]
+description = "Prune gomi trash older than 30 days"
+type = "oneshot"
+exec_start = "~/.local/bin/mise exec -- gomi --force --prune=30d"
+wanted_by = []
+start = false
+
+[bootstrap.linux.systemd.units.gomi-prune-timer]
+description = "Hourly gomi trash pruning"
+on_calendar = "hourly"
+persistent = true
+unit = "gomi-prune"
+
+[tasks.bootstrap]
+description = "Finish dotfiles bootstrap"
+run = """
+set -eu
+
+# Remove the legacy chezmoi-managed units after migration.
+if [ -e "$HOME/.config/systemd/user/gomi-prune.service" ] || [ -e "$HOME/.config/systemd/user/gomi-prune.timer" ]; then
+  systemctl --user disable --now gomi-prune.timer >/dev/null 2>&1 || true
+  rm -f "$HOME/.config/systemd/user/gomi-prune.service" "$HOME/.config/systemd/user/gomi-prune.timer"
+  systemctl --user daemon-reload
+fi
+
+sheldon --non-interactive lock
+"""
