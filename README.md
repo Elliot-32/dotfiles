@@ -1,48 +1,72 @@
 # dotfiles
 
-以 [chezmoi](https://www.chezmoi.io/) 管理的個人 dotfiles。
+以 [mise](https://mise.jdx.dev/) 的 `mise bootstrap` 管理個人環境與 dotfiles。
 
 ## 管理內容
 
-- `.zshrc` / `.p10k.zsh` — zsh + Powerlevel10k 提示主題
-- `.config/zsh/` — zsh 主要設定（config、path、function、completions）
-- `.bashrc` / `.bash-preexec.sh` / `.profile`
-- `.gitconfig`
-- `.config/ghostty/` — Ghostty 終端機設定（含 dracula 主題）
-- `.config/fcitx5/profile` — 啟用的輸入法清單
-- `.config/environment.d/90-fcitx5.conf` — fcitx5 的 IM 環境變數（GTK/QT/XMODIFIERS）
+- `mise.toml` — tools、環境變數、shell aliases、dotfiles、systemd user units
+- `dotfiles/.zshrc` / `.p10k.zsh` — zsh + Powerlevel10k
+- `dotfiles/.config/sheldon/plugins.toml` — zsh plugins
+- `dotfiles/.config/ghostty/config` — Ghostty
+- `dotfiles/.config/fcitx5/profile` — fcitx5
+- `dotfiles/.config/environment.d/90-fcitx5.conf` — fcitx5 IM 環境變數
+- `dotfiles/.gitconfig`
+- `dotfiles/.profile`
 
-## 在新機器上還原
+`~/.config/mise/config.toml` 會由 mise symlink 到 `~/.dotfiles/mise.toml`，因此同一份設定同時是 bootstrap config 與全域 mise config。
 
-已安裝 chezmoi 的話：
+## 新機器還原
 
-```bash
-chezmoi init --apply Elliot-32
-```
-
-尚未安裝 chezmoi 的話，一行裝好並直接套用：
+先安裝 mise：
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply Elliot-32
+curl https://mise.run | sh
 ```
 
-> 注意：此 repo 為 private，新機器需先完成 GitHub 認證
-> （`gh auth login` 或設定 SSH key）才能 clone。
+此 repo 為 private，先準備好可存取 GitHub 的 SSH key，接著：
+
+```bash
+git clone git@github.com:Elliot-32/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+~/.local/bin/mise trust
+~/.local/bin/mise bootstrap --yes --force-dotfiles
+```
+
+`--force-dotfiles` 會取代既有的同名 dotfiles；第一次從 chezmoi 遷移或新系統已有預設 rc 檔時需要使用。
 
 ## 日常使用
 
+檢查目前狀態：
+
 ```bash
-chezmoi add ~/.tmux.conf   # 納管新檔案
-chezmoi re-add             # 把家目錄的變更同步回 source
-chezmoi edit ~/.zshrc      # 直接編輯 source 版本
-chezmoi diff               # 檢視家目錄與 source 的差異
-chezmoi apply              # 套用 source 到家目錄
-chezmoi update             # 從 GitHub 拉取並套用（多台機器同步用）
+mise bootstrap status
 ```
 
-## 推送變更
+修改 dotfile：
 
 ```bash
-chezmoi cd
+mise bootstrap dotfiles edit ~/.zshrc
+mise bootstrap dotfiles apply --yes
+```
+
+新增或修改全域工具時，直接寫入 repo 的 `mise.toml`：
+
+```bash
+mise use --path ~/.dotfiles/mise.toml <tool>
+```
+
+套用所有變更：
+
+```bash
+cd ~/.dotfiles
+mise bootstrap --yes
+```
+
+同步 Git：
+
+```bash
+cd ~/.dotfiles
+git pull
+mise bootstrap --yes
 git add -A && git commit && git push
 ```
