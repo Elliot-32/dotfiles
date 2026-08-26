@@ -74,6 +74,14 @@ zoxide = "latest"
 "~/.config/environment.d/90-fcitx5.conf" = {}
 "~/.config/sheldon/plugins.toml" = {}
 
+[bootstrap.mise_shell_activate]
+zprofile = "shims"
+zshrc = "activate"
+fish = "activate"
+
+[bootstrap.user]
+login_shell = "/bin/zsh"
+
 [bootstrap.linux.systemd.units.gomi-prune]
 description = "Prune gomi trash older than 30 days"
 type = "oneshot"
