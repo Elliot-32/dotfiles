@@ -5,15 +5,15 @@
 ## 管理內容
 
 - `mise.toml` — tools、環境變數、shell aliases、dotfiles、systemd user units
-- `dotfiles/.zshrc` / `.p10k.zsh` — zsh + Powerlevel10k
-- `dotfiles/.config/sheldon/plugins.toml` — zsh plugins
-- `dotfiles/.config/ghostty/config` — Ghostty
-- `dotfiles/.config/fcitx5/profile` — fcitx5
-- `dotfiles/.config/environment.d/90-fcitx5.conf` — fcitx5 IM 環境變數
-- `dotfiles/.gitconfig`
-- `dotfiles/.profile`
+- `.zshrc` / `.p10k.zsh` — zsh + Powerlevel10k
+- `.config/sheldon/plugins.toml` — zsh plugins
+- `.config/ghostty/config` — Ghostty
+- `.config/fcitx5/profile` — fcitx5
+- `.config/environment.d/90-fcitx5.conf` — fcitx5 IM 環境變數
+- `.gitconfig`
+- `.profile`
 
-`dotfiles.root` 指向 `~/.dotfiles/dotfiles`。`~/.config/mise/config.toml` 會由 mise symlink 到 `~/.dotfiles/mise.toml`，因此同一份設定同時是 bootstrap config 與全域 mise config。
+repo 本身就是 mise 預設的 `dotfiles.root`（`~/.dotfiles`），因此大部分 `[dotfiles]` 項目不需要另外指定 source。`~/.config/mise/config.toml` 會由 mise symlink 到 `~/.dotfiles/mise.toml`，同一份設定同時作為 bootstrap config 與全域 mise config。
 
 ## 新機器還原
 
