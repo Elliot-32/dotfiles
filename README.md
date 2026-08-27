@@ -2,7 +2,7 @@
 
 ## 安裝
 
-安裝 mise：
+安裝 [mise](https://mise.jdx.dev/)：
 ```bash
 curl https://mise.run | sh
 ```
