@@ -1,4 +1,13 @@
+[bootstrap.hooks.pre-packages]
+run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh"'
+
 [bootstrap.packages]
+"apt:fcitx5" = "latest"
+"apt:fcitx5-chewing" = "latest"
+"apt:fcitx5-frontend-all" = "latest"
+"apt:ghostty" = "latest"
+"apt:software-properties-common" = "latest"
+"apt:wl-clipboard" = "latest"
 "flatpak-user:com.bitwarden.desktop" = "latest"
 "flatpak-user:com.borgbase.Vorta" = "latest"
 "flatpak-user:com.dec05eba.gpu_screen_recorder" = "latest"
@@ -32,3 +41,8 @@
 "flatpak-user:org.onlyoffice.desktopeditors" = "latest"
 "flatpak-user:org.signal.Signal" = "latest"
 "flatpak-user:org.telegram.desktop" = "latest"
+
+[dotfiles]
+"~/.config/ghostty/config" = {}
+"~/.config/fcitx5/profile" = {}
+"~/.config/environment.d/90-fcitx5.conf" = {}
