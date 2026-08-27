@@ -11,7 +11,8 @@ curl https://mise.run | sh
 ```bash
 git clone https://github.com/Elliot-32/dotfiles.git ~/.dotfiles
 ~/.local/bin/mise trust ~/.dotfiles/mise.toml
-~/.local/bin/mise -C ~/.dotfiles bootstrap --yes --force-dotfiles
+cd ~/.dotfiles
+~/.local/bin/mise bootstrap --yes --force-dotfiles
 ```
 
 ## 日常使用
