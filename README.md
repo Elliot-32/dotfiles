@@ -1,40 +1,18 @@
 # dotfiles
 
-以 [mise](https://mise.jdx.dev/) 的 `mise bootstrap` 管理個人環境與 dotfiles。
+## 安裝
 
-## 管理內容
-
-- `mise.toml` — tools、環境變數、shell aliases、dotfiles、systemd user units
-- `.zprofile` / `.zshrc` / `.p10k.zsh` — mise activation、zsh、Powerlevel10k
-- `.config/sheldon/plugins.toml` — zsh plugins
-- `.config/ghostty/config` — Ghostty
-- `.config/fcitx5/profile` — fcitx5
-- `.config/environment.d/90-fcitx5.conf` — fcitx5 IM 環境變數
-- `.gitconfig`
-- `.profile`
-
-repo 本身就是 mise 預設的 `dotfiles.root`（`~/.dotfiles`），因此大部分 `[dotfiles]` 項目不需要另外指定 source。`~/.config/mise/config.toml` 會由 mise symlink 到 `~/.dotfiles/mise.toml`，同一份設定同時作為 bootstrap config 與全域 mise config。
-
-zsh 啟動檔也是完整管理的 dotfiles，因此 mise activation 直接寫在 `.zprofile` 與 `.zshrc` 內；`[bootstrap.mise_shell_activate]` 僅用來管理未納入 dotfiles 的 fish 設定。
-
-## 新機器還原
-
-先安裝 mise：
-
+安裝 mise：
 ```bash
 curl https://mise.run | sh
 ```
 
-此 repo 為 private，先準備好可存取 GitHub 的 SSH key，接著：
-
+安裝 dotfiles：
 ```bash
-git clone git@github.com:Elliot-32/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-~/.local/bin/mise trust
-~/.local/bin/mise bootstrap --yes --force-dotfiles
+git clone https://github.com/Elliot-32/dotfiles.git ~/.dotfiles
+~/.local/bin/mise trust ~/.dotfiles/mise.toml
+~/.local/bin/mise -C ~/.dotfiles bootstrap --yes --force-dotfiles
 ```
-
-`--force-dotfiles` 會取代既有的同名 dotfiles；第一次從 chezmoi 遷移或新系統已有預設 rc 檔時需要使用。
 
 ## 日常使用
 
@@ -42,13 +20,6 @@ cd ~/.dotfiles
 
 ```bash
 mise bootstrap status
-```
-
-修改 dotfile：
-
-```bash
-mise bootstrap dotfiles edit ~/.zshrc
-mise bootstrap dotfiles apply --yes
 ```
 
 納管新的 dotfile：
@@ -62,21 +33,17 @@ mise bootstrap dotfiles add ~/.config/example/config
 ```bash
 mise use -g <tool>
 ```
+或直接編輯 `~/.config/mise/config.toml`
 
-全域 mise config 是 repo 內 `mise.toml` 的 symlink，因此 `mise use -g` 會直接更新 repo 裡的設定。
+所有納管的 dotfiles 預設都以 symlink 方式部署，因此直接修改家目錄中的檔案，就會同步修改 repo 內對應的檔案。
 
 套用所有變更：
 
 ```bash
-cd ~/.dotfiles
-mise bootstrap --yes
+mise bootstrap --yes --force-dotfiles
 ```
 
-同步 Git：
-
+或者只套用 dotfiles 不執行 bootstrap
 ```bash
-cd ~/.dotfiles
-git pull
-mise bootstrap --yes
-git add -A && git commit && git push
+mise bootstrap dotfiles apply --force --yes
 ```
