@@ -45,11 +45,9 @@ neovim = "latest"
 node = "latest"
 nub = "latest"
 opencode = "latest"
-pulumi = "latest"
 qdns = "latest"
 ripgrep = "latest"
 sheldon = "latest"
-starship = "latest"
 tlrc = "latest"
 uv = "latest"
 witr = "latest"
@@ -60,15 +58,66 @@ zoxide = "latest"
 "go:github.com/babarot/gomi" = "latest"
 "go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
 "pipx:isd-tui" = "latest"
-"pipx:sqlmap" = "latest"
-"pipx:trash-cli" = "latest"
+
+[bootstrap.hooks.pre-packages]
+run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh"'
+
+[bootstrap.packages]
+"apt:fcitx5" = "latest"
+"apt:fcitx5-chewing" = "latest"
+"apt:fcitx5-frontend-all" = "latest"
+"apt:ghostty" = "latest"
+"apt:openssh-client" = "latest"
+"apt:software-properties-common" = "latest"
+"apt:wl-clipboard" = "latest"
+"apt:zsh" = "latest"
+"flatpak-user:best.ellie.StartupConfiguration" = "latest"
+"flatpak-user:com.bitwarden.desktop" = "latest"
+"flatpak-user:com.borgbase.Vorta" = "latest"
+"flatpak-user:com.dec05eba.gpu_screen_recorder" = "latest"
+"flatpak-user:com.github.Matoking.protontricks" = "latest"
+"flatpak-user:com.github.marhkb.Pods" = "latest"
+"flatpak-user:com.github.tchx84.Flatseal" = "latest"
+"flatpak-user:com.google.Chrome" = "latest"
+"flatpak-user:com.heroicgameslauncher.hgl" = "latest"
+"flatpak-user:com.jwestall.Forecast" = "latest"
+"flatpak-user:com.obsproject.Studio" = "latest"
+"flatpak-user:com.ranfdev.DistroShelf" = "latest"
+"flatpak-user:com.rustdesk.RustDesk" = "latest"
+"flatpak-user:com.usebottles.bottles" = "latest"
+"flatpak-user:com.vysp3r.ProtonPlus" = "latest"
+"flatpak-user:dev.edfloreshz.CosmicTweaks" = "latest"
+"flatpak-user:dev.mariinkys.Cedilla" = "latest"
+"flatpak-user:dev.vencord.Vesktop" = "latest"
+"flatpak-user:dev.zed.Zed" = "latest"
+"flatpak-user:fr.sgued.bodev" = "latest"
+"flatpak-user:io.ente.auth" = "latest"
+"flatpak-user:io.github.avomar.dev-toolbox" = "latest"
+"flatpak-user:io.github.cosmic_utils.Examine" = "latest"
+"flatpak-user:io.github.cosmic_utils.camera" = "latest"
+"flatpak-user:io.github.flattool.Warehouse" = "latest"
+"flatpak-user:io.github.ilya_zlobintsev.LACT" = "latest"
+"flatpak-user:io.github.wiiznokes.fan-control" = "latest"
+"flatpak-user:io.github.zarestia_dev.rclone-manager" = "latest"
+"flatpak-user:io.missioncenter.MissionCenter" = "latest"
+"flatpak-user:io.podman_desktop.PodmanDesktop" = "latest"
+"flatpak-user:it.mijorus.gearlever" = "latest"
+"flatpak-user:md.obsidian.Obsidian" = "latest"
+"flatpak-user:net.nokyan.Resources" = "latest"
+"flatpak-user:net.retrodeck.retrodeck" = "latest"
+"flatpak-user:org.audacityteam.Audacity" = "latest"
+"flatpak-user:org.cosmic_utils.enroll" = "latest"
+"flatpak-user:org.gnome.Calculator" = "latest"
+"flatpak-user:org.localsend.localsend_app" = "latest"
+"flatpak-user:org.nickvision.tubeconverter" = "latest"
+"flatpak-user:org.onlyoffice.desktopeditors" = "latest"
+"flatpak-user:org.signal.Signal" = "latest"
+"flatpak-user:org.telegram.desktop" = "latest"
 
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
-"~/.zprofile" = {}
 "~/.zshrc" = {}
 "~/.p10k.zsh" = {}
-"~/.profile" = {}
 "~/.gitconfig" = {}
 "~/.config/ghostty/config" = {}
 "~/.config/fcitx5/profile" = {}
@@ -76,7 +125,8 @@ zoxide = "latest"
 "~/.config/sheldon/plugins.toml" = {}
 
 [bootstrap.mise_shell_activate]
-fish = "activate"
+zprofile = "shims"
+bash = true
 
 [bootstrap.user]
 login_shell = "/usr/bin/zsh"
@@ -96,15 +146,4 @@ unit = "gomi-prune"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
-run = """
-set -eu
-
-# Remove the legacy chezmoi-managed units after migration.
-if [ -e "$HOME/.config/systemd/user/gomi-prune.service" ] || [ -e "$HOME/.config/systemd/user/gomi-prune.timer" ]; then
-  systemctl --user disable --now gomi-prune.timer >/dev/null 2>&1 || true
-  rm -f "$HOME/.config/systemd/user/gomi-prune.service" "$HOME/.config/systemd/user/gomi-prune.timer"
-  systemctl --user daemon-reload
-fi
-
-sheldon --non-interactive lock
-"""
+run = "sheldon --non-interactive lock"
