@@ -40,7 +40,13 @@ mise bootstrap dotfiles add ~/.config/example/config
 mise bootstrap dotfiles unapply ~/.config/example/config
 ```
 
-接著從 `~/.config/mise/config.toml` 的 `[dotfiles]` 移除對應項目。`unapply` 只會解除部署，不會刪除 repo 內的 source。
+接著從 `~/.config/mise/config.toml` 的 `[dotfiles]` 移除對應項目，並刪除 repo 內對應的 source，例如：
+
+```bash
+rm ~/.dotfiles/.config/example/config
+```
+
+`unapply` 只會解除部署，不會修改 `[dotfiles]` 或刪除 repo 內的 source。
 
 新增或修改全域工具時：
 
