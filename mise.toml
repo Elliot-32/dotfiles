@@ -59,17 +59,8 @@ zoxide = "latest"
 "go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
 "pipx:isd-tui" = "latest"
 
-[bootstrap.hooks.pre-packages]
-run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh"'
-
 [bootstrap.packages]
-"apt:fcitx5" = "latest"
-"apt:fcitx5-chewing" = "latest"
-"apt:fcitx5-frontend-all" = "latest"
-"apt:ghostty" = "latest"
 "apt:openssh-client" = "latest"
-"apt:software-properties-common" = "latest"
-"apt:wl-clipboard" = "latest"
 "apt:zsh" = "latest"
 
 [dotfiles]
@@ -79,9 +70,6 @@ run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh"'
 "~/.zshrc" = {}
 "~/.p10k.zsh" = {}
 "~/.gitconfig" = {}
-"~/.config/ghostty/config" = {}
-"~/.config/fcitx5/profile" = {}
-"~/.config/environment.d/90-fcitx5.conf" = {}
 "~/.config/sheldon/plugins.toml" = {}
 
 [bootstrap.mise_shell_activate]
