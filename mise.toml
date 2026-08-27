@@ -65,6 +65,7 @@ zoxide = "latest"
 
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
+"~/.zprofile" = {}
 "~/.zshrc" = {}
 "~/.p10k.zsh" = {}
 "~/.profile" = {}
@@ -75,8 +76,6 @@ zoxide = "latest"
 "~/.config/sheldon/plugins.toml" = {}
 
 [bootstrap.mise_shell_activate]
-zprofile = "shims"
-zshrc = "activate"
 fish = "activate"
 
 [bootstrap.user]

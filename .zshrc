@@ -1,5 +1,6 @@
 # Atuin PTY proxy must be initialized before Powerlevel10k instant prompt.
-eval "$(atuin pty-proxy init zsh)"
+PATH="$HOME/.local/share/mise/installs/atuin/latest/.mise-bins:$PATH" \
+  eval "$("$HOME/.local/share/mise/installs/atuin/latest/.mise-bins/atuin" pty-proxy init zsh)"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -8,7 +9,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Personal functions
+eval "$("$HOME/.local/bin/mise" activate zsh)"
+
+# yazi
 y() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
   command yazi "$@" --cwd-file="$tmp"
@@ -40,8 +43,8 @@ autoload -Uz zmv
 setopt glob_dots     # no special treatment for file names with a leading dot
 setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
-# Generate rgrc aliases.
-eval "$(rgrc --aliases)"
+# Generate rgrc aliases without overriding aliases declared in mise.toml.
+eval "$(rgrc --aliases --except ls)"
 
 # Convert rgrc aliases to wrapper functions: functions are not expanded for
 # completion lookup, so systemctl/podman/... keep their own completions.

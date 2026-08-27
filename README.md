@@ -5,7 +5,7 @@
 ## 管理內容
 
 - `mise.toml` — tools、環境變數、shell aliases、dotfiles、systemd user units
-- `.zshrc` / `.p10k.zsh` — zsh + Powerlevel10k
+- `.zprofile` / `.zshrc` / `.p10k.zsh` — mise activation、zsh、Powerlevel10k
 - `.config/sheldon/plugins.toml` — zsh plugins
 - `.config/ghostty/config` — Ghostty
 - `.config/fcitx5/profile` — fcitx5
@@ -14,6 +14,8 @@
 - `.profile`
 
 repo 本身就是 mise 預設的 `dotfiles.root`（`~/.dotfiles`），因此大部分 `[dotfiles]` 項目不需要另外指定 source。`~/.config/mise/config.toml` 會由 mise symlink 到 `~/.dotfiles/mise.toml`，同一份設定同時作為 bootstrap config 與全域 mise config。
+
+zsh 啟動檔也是完整管理的 dotfiles，因此 mise activation 直接寫在 `.zprofile` 與 `.zshrc` 內；`[bootstrap.mise_shell_activate]` 僅用來管理未納入 dotfiles 的 fish 設定。
 
 ## 新機器還原
 
