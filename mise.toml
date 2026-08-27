@@ -15,7 +15,7 @@ VISUAL = "nvim"
 SUDO_EDITOR = "nvim"
 
 [shell_alias]
-ls = "eza --icons"
+ls = "eza --icons=auto"
 oc = "opencode"
 rm = "gomi"
 path = "j $(print -l $path | fzf)"

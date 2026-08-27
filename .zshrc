@@ -41,7 +41,6 @@ autoload -Uz zmv
 
 # Shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
-setopt no_auto_menu  # require an extra TAB press to open the completion menu
 
 # Generate rgrc aliases without overriding aliases declared in mise.toml.
 eval "$(rgrc --aliases --except ls)"
@@ -54,6 +53,16 @@ for _rgrc_cmd in ${(k)aliases}; do
   unalias $_rgrc_cmd
 done
 unset _rgrc_cmd
+
+# Configure completion and fzf-tab before Sheldon runs compinit and loads the
+# plugin.
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
+zstyle ':fzf-tab:complete:j:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
+zstyle ':fzf-tab:*' switch-group '<' '>'
 
 # Sheldon manages completion fpath, compinit, shell integrations, and plugins
 # in dependency order.
