@@ -1,0 +1,3 @@
+{% if "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
+env = ["desktop"]
+{% endif %}
