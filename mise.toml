@@ -71,7 +71,6 @@ zoxide = "latest"
 "~/.config/mise/miserc.toml" = "~/.dotfiles/.miserc.toml"
 "~/.zshrc" = {}
 "~/.p10k.zsh" = {}
-"~/.gitconfig" = {}
 "~/.config/sheldon/plugins.toml" = {}
 "~/.local/share/mise-completions-sync/registry.toml" = {}
 
@@ -111,6 +110,7 @@ unit = "update"
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
 run = [
+  "sh ./scripts/configure-git.sh",
   "mise completion zsh --install",
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",

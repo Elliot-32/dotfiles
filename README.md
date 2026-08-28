@@ -15,6 +15,11 @@ cd ~/.dotfiles
 ~/.local/bin/mise bootstrap --yes --force-dotfiles
 ```
 
+第一次安裝時，bootstrap 會執行 `gh auth login` 與 `gh auth setup-git`，
+並詢問 Git user name 與 email。這些設定由 Git 與 GitHub CLI 寫入本機，
+不會納入 dotfiles。非互動環境可預先設定 `GIT_USER_NAME` 與
+`GIT_USER_EMAIL`。
+
 ## 日常使用
 
 檢查目前狀態：
