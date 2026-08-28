@@ -56,6 +56,12 @@ mise use -g <tool>
 ```
 或直接編輯 `~/.config/mise/config.toml`
 
+更新 mise 管理的工具、Sheldon plugins 與 shell completions：
+
+```bash
+mise run update
+```
+
 所有納管的 dotfiles 預設都以 symlink 方式部署，因此直接修改家目錄中的檔案，就會同步修改 repo 內對應的檔案。
 
 套用所有變更：
@@ -64,7 +70,8 @@ mise use -g <tool>
 mise bootstrap --yes --force-dotfiles
 ```
 
-或者只套用 dotfiles 不執行 bootstrap
+或者只套用 dotfiles 不執行 bootstrap：
+
 ```bash
 mise bootstrap dotfiles apply --force --yes
 ```
