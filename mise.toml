@@ -99,7 +99,7 @@ unit = "gomi-prune"
 [bootstrap.linux.systemd.units.mise-update]
 description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
 type = "oneshot"
-exec_start = "~/.local/bin/mise -C ~/.dotfiles run update"
+exec_start = "%h/.local/bin/mise -C %h/.dotfiles run update"
 wanted_by = []
 start = false
 
