@@ -100,5 +100,13 @@ unit = "gomi-prune"
 description = "Finish dotfiles bootstrap"
 run = "sheldon --non-interactive lock"
 
+[tasks.update]
+description = "Update tools, Sheldon plugins, and completions"
+run = [
+  "mise upgrade",
+  "sheldon --non-interactive lock --update",
+  "misecompsync --shell zsh",
+]
+
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
