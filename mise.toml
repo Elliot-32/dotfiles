@@ -74,6 +74,7 @@ zoxide = "latest"
 "~/.p10k.zsh" = {}
 "~/.gitconfig" = {}
 "~/.config/sheldon/plugins.toml" = {}
+"~/.local/share/mise-completions-sync/registry.toml" = {}
 
 [bootstrap.mise_shell_activate]
 zprofile = "shims"
@@ -97,7 +98,10 @@ unit = "gomi-prune"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
-run = "sheldon --non-interactive lock"
+run = [
+  "sheldon --non-interactive lock",
+  "misecompsync --shell zsh",
+]
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
