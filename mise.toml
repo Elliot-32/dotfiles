@@ -13,7 +13,6 @@ _.path = [
 EDITOR = "nvim"
 VISUAL = "nvim"
 SUDO_EDITOR = "nvim"
-MISE_COMPLETIONS_SYNC_ZSH_DIR = "{{ env.HOME }}/.config/zsh/completions"
 
 [shell_alias]
 ls = "eza --icons=auto"
@@ -111,13 +110,18 @@ unit = "update"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
-run = "sheldon --non-interactive lock"
+run = [
+  "mise completion zsh --install",
+  "misecompsync --shell zsh",
+  "sheldon --non-interactive lock",
+]
 
 [tasks.update]
 description = "Update tools, Sheldon plugins, and completions"
 run = [
   "mise upgrade",
   "mise bootstrap packages upgrade --manager flatpak-user --yes",
+  "mise completion zsh --install",
   "sheldon --non-interactive lock --update",
   "misecompsync --shell zsh",
 ]

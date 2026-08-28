@@ -15,8 +15,12 @@ shell = "zsh"
 [plugins]
 
 # Completion directories must be on fpath before compinit.
-[plugins.local-completions]
-local = "~/.config/zsh/completions"
+[plugins.mise-completion]
+local = "~/.local/share/zsh/site-functions"
+apply = ["fpath"]
+
+[plugins.mise-synced-completions]
+local = "~/.local/share/mise-completions/zsh"
 apply = ["fpath"]
 
 [plugins.zsh-completions]
