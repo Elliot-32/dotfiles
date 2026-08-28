@@ -104,6 +104,7 @@ run = "sheldon --non-interactive lock"
 description = "Update tools, Sheldon plugins, and completions"
 run = [
   "mise upgrade",
+  "mise bootstrap packages upgrade --manager flatpak-user --yes",
   "sheldon --non-interactive lock --update",
   "misecompsync --shell zsh",
 ]
