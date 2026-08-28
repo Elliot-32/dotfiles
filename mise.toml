@@ -74,6 +74,7 @@ zoxide = "latest"
 "~/.p10k.zsh" = {}
 "~/.gitconfig" = {}
 "~/.config/sheldon/plugins.toml" = {}
+"~/.local/share/mise-completions-sync/registry.toml" = {}
 
 [bootstrap.mise_shell_activate]
 zprofile = "shims"

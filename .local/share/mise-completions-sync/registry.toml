@@ -1,0 +1,8 @@
+schema_version = 1
+
+[tools]
+dasel = "standard"
+gup = "standard"
+herdr = "standard"
+sheldon = { zsh = "sheldon completions --shell zsh" }
+witr = "standard"
