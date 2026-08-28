@@ -13,6 +13,7 @@ _.path = [
 EDITOR = "nvim"
 VISUAL = "nvim"
 SUDO_EDITOR = "nvim"
+MISE_COMPLETIONS_SYNC_ZSH_DIR = "{{ env.HOME }}/.config/zsh/completions"
 
 [shell_alias]
 ls = "eza --icons=auto"
@@ -58,6 +59,7 @@ zoxide = "latest"
 "go:github.com/babarot/gomi" = "latest"
 "go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
 "pipx:isd-tui" = "latest"
+"github:alltuner/mise-completions-sync" = "latest"
 
 [bootstrap.packages]
 "apt:openssh-client" = "latest"
@@ -95,3 +97,6 @@ unit = "gomi-prune"
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
 run = "sheldon --non-interactive lock"
+
+[hooks]
+postinstall = "misecompsync --new-only --shell zsh"
