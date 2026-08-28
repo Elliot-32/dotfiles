@@ -96,18 +96,18 @@ on_calendar = "hourly"
 persistent = true
 unit = "gomi-prune"
 
-[bootstrap.linux.systemd.units.mise-update]
+[bootstrap.linux.systemd.units.update]
 description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
 type = "oneshot"
 exec_start = "%h/.local/bin/mise -C %h/.dotfiles run update"
 wanted_by = []
 start = false
 
-[bootstrap.linux.systemd.units.mise-update-timer]
+[bootstrap.linux.systemd.units.update-timer]
 description = "Daily mise update"
 on_calendar = "daily"
 persistent = true
-unit = "mise-update"
+unit = "update"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
