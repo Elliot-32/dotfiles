@@ -1,0 +1,5 @@
+schema_version = 1
+
+[tools]
+dasel = "standard"
+sheldon = { zsh = "sheldon completions --shell zsh" }
