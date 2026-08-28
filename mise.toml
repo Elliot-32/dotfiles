@@ -96,6 +96,19 @@ on_calendar = "hourly"
 persistent = true
 unit = "gomi-prune"
 
+[bootstrap.linux.systemd.units.mise-update]
+description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
+type = "oneshot"
+exec_start = "~/.local/bin/mise -C ~/.dotfiles run update"
+wanted_by = []
+start = false
+
+[bootstrap.linux.systemd.units.mise-update-timer]
+description = "Daily mise update"
+on_calendar = "daily"
+persistent = true
+unit = "mise-update"
+
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
 run = "sheldon --non-interactive lock"
