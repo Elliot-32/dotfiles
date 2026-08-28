@@ -48,9 +48,19 @@ github = "Aloxaf/fzf-tab"
 [plugins.zsh-ssh]
 github = "sunlei/zsh-ssh"
 
-[plugins.zsh-autosuggestions]
-github = "zsh-users/zsh-autosuggestions"
-use = ["{{ name }}.zsh"]
+[plugins.deja]
+inline = '''
+# Keep Tab for fzf-tab and use Ctrl+Tab for deja alternatives.
+export DEJA_CYCLE_KEY='^[[9;5u'
+# Preserve the Emacs Ctrl+X prefix.
+export DEJA_TOGGLE_KEY=
+
+if [[ -r "$HOME/.local/share/deja/init.zsh" ]]; then
+  source "$HOME/.local/share/deja/init.zsh"
+else
+  eval "$(deja init zsh)"
+fi
+'''
 
 [plugins.powerlevel10k]
 github = "romkatv/powerlevel10k"
