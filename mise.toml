@@ -4,6 +4,9 @@ min_version = "2026.8.3"
 auto_update = true
 dotfiles.default_mode = "symlink"
 
+[settings.github]
+oauth_client_id = "" # Fill with the GitHub App client ID (Iv1....)
+
 [env]
 _.path = [
   "{{ env.HOME }}/.local/bin",
@@ -60,6 +63,9 @@ zoxide = "latest"
 "go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
+
+[bootstrap.hooks.pre-packages]
+run = 'test -z "$(mise settings get github.oauth_client_id)" || mise token github --oauth >/dev/null'
 
 [bootstrap.packages]
 "apt:openssh-client" = "latest"
