@@ -12,7 +12,7 @@ curl https://mise.run | sh
 git clone https://github.com/Elliot-32/dotfiles.git ~/.dotfiles
 ~/.local/bin/mise trust ~/.dotfiles/mise.toml
 cd ~/.dotfiles
-~/.local/bin/mise bootstrap --yes --force-dotfiles
+~/.local/bin/mise bootstrap --yes --force-dotfiles && exec zsh -l
 ```
 
 第一次安裝時，bootstrap 會執行 `gh auth login` 與 `gh auth setup-git`，
