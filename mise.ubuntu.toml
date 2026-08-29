@@ -1,0 +1,6 @@
+[bootstrap.hooks.pre-packages]
+run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh" ubuntu'
+
+[bootstrap.packages]
+"apt:flatpak" = "latest"
+"apt:ghostty" = "latest"
