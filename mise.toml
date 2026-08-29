@@ -22,6 +22,7 @@ ls = "eza --icons=auto"
 oc = "opencode"
 rm = "gomi"
 path = "j $(print -l $path | fzf)"
+n = "nvim"
 
 [tools]
 atuin = "latest"
