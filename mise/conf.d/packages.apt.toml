@@ -1,0 +1,8 @@
+[bootstrap.packages]
+"apt:openssh-client" = "latest"
+"apt:zsh" = "latest"
+"apt:flatpak" = "latest"
+
+[tasks."update:packages"]
+hide = true
+run = "mise bootstrap packages upgrade --manager apt --yes"
