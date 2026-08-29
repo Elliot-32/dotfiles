@@ -1,0 +1,5 @@
+[bootstrap.hooks.pre-packages]
+run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh" fedora'
+
+[bootstrap.packages]
+"dnf:flatpak" = "latest"
