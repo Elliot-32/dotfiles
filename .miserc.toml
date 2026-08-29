@@ -1,3 +1,23 @@
-{% if "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
+{% set desktop = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
+
+{% if "/etc/fedora-release" is file %}
+{% if desktop %}
+env = ["fedora", "desktop"]
+{% else %}
+env = ["fedora"]
+{% endif %}
+{% elif "/etc/arch-release" is file %}
+{% if desktop %}
+env = ["arch", "desktop"]
+{% else %}
+env = ["arch"]
+{% endif %}
+{% elif "/etc/lsb-release" is file %}
+{% if desktop %}
+env = ["ubuntu", "desktop"]
+{% else %}
+env = ["ubuntu"]
+{% endif %}
+{% elif desktop %}
 env = ["desktop"]
 {% endif %}
