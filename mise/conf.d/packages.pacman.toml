@@ -2,7 +2,3 @@
 "pacman:openssh" = "latest"
 "pacman:zsh" = "latest"
 "pacman:flatpak" = "latest"
-
-[tasks."update:packages"]
-hide = true
-run = "mise bootstrap packages upgrade --manager pacman --yes"
