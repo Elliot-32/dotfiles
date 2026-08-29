@@ -4,6 +4,9 @@ min_version = "2026.8.3"
 auto_update = true
 dotfiles.default_mode = "symlink"
 
+[settings.github]
+oauth_client_id = "Iv23liB7jge4ggqL1mB3"
+
 [env]
 _.path = [
   "{{ env.HOME }}/.local/bin",
@@ -61,6 +64,9 @@ zoxide = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
 
+[bootstrap.hooks.pre-packages]
+run = 'test -z "$(mise settings get github.oauth_client_id)" || mise token github --oauth >/dev/null'
+
 [bootstrap.packages]
 "apt:openssh-client" = "latest"
 "apt:zsh" = "latest"
@@ -110,7 +116,6 @@ unit = "update"
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
 run = [
-  "sh ./scripts/configure-git.sh",
   "mise completion zsh --install",
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
