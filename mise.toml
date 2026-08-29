@@ -110,7 +110,7 @@ persistent = true
 unit = "gomi-prune"
 
 [bootstrap.linux.systemd.units.update]
-description = "Update system packages, mise tools, Flatpak apps, Sheldon plugins, and completions"
+description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
 type = "oneshot"
 exec_start = "%h/.local/bin/mise -C %h/.dotfiles run update"
 wanted_by = []
@@ -134,15 +134,9 @@ run = [
 run = "mise exec -- sh ./scripts/login-github.sh"
 
 [tasks.update]
-description = "Update system packages, tools, Sheldon plugins, and completions"
+description = "Update tools, Sheldon plugins, and completions"
 run = '''
 mise upgrade
-
-case ",${MISE_ENV:-}," in
-  *,apt,*|*,dnf,*|*,pacman,*)
-    mise run update:packages
-    ;;
-esac
 
 case ",${MISE_ENV:-}," in
   *,desktop,*)
