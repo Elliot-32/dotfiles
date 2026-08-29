@@ -49,3 +49,7 @@ run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh"'
 "~/.config/environment.d/90-fcitx5.conf" = {}
 "~/.config/xdg-terminals.list" = {}
 "~/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop" = "/usr/share/applications/com.mitchellh.ghostty.desktop"
+
+[tasks."update:desktop"]
+hide = true
+run = "mise bootstrap packages upgrade --manager flatpak-user --yes"

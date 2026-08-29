@@ -120,11 +120,15 @@ run = [
 description = "Update tools, Sheldon plugins, and completions"
 run = [
   "mise upgrade",
-  "mise bootstrap packages upgrade --manager flatpak-user --yes",
+  { task = "update:desktop" },
   "mise completion zsh --install",
   "sheldon --non-interactive lock --update",
   "misecompsync --shell zsh",
 ]
+
+[tasks."update:desktop"]
+hide = true
+run = ":"
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
