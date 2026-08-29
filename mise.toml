@@ -5,7 +5,7 @@ auto_update = true
 dotfiles.default_mode = "symlink"
 
 [settings.github]
-oauth_client_id = "Iv23liB7jge4ggqL1mB3"
+use_git_credentials = true
 
 [env]
 _.path = [
@@ -66,9 +66,6 @@ zoxide = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
 
-[bootstrap.hooks.pre-packages]
-run = 'test -z "$(mise settings get github.oauth_client_id)" || mise token github --oauth >/dev/null'
-
 [bootstrap.packages]
 "apt:openssh-client" = "latest"
 "apt:zsh" = "latest"
@@ -77,6 +74,13 @@ run = 'test -z "$(mise settings get github.oauth_client_id)" || mise token githu
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
 "~/.config/mise/config.desktop.toml" = "~/.dotfiles/mise.desktop.toml"
 "~/.config/mise/miserc.toml" = "~/.dotfiles/.miserc.toml"
+"~/.gitconfig/defaults" = { block = '''
+[push]
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+''' }
 "~/.zshrc" = {}
 "~/.p10k.zsh" = {}
 "~/.config/sheldon/plugins.toml" = {}
@@ -122,6 +126,9 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
 ]
+
+[bootstrap.hooks.final]
+run = "mise exec -- sh ./scripts/login-github.sh"
 
 [tasks.update]
 description = "Update tools, Sheldon plugins, and completions"
