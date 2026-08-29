@@ -74,6 +74,9 @@ zoxide = "latest"
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
 "~/.config/mise/config.desktop.toml" = "~/.dotfiles/mise.desktop.toml"
+"~/.config/mise/config.ubuntu.toml" = "~/.dotfiles/mise.ubuntu.toml"
+"~/.config/mise/config.fedora.toml" = "~/.dotfiles/mise.fedora.toml"
+"~/.config/mise/config.arch.toml" = "~/.dotfiles/mise.arch.toml"
 "~/.config/mise/miserc.toml" = "~/.dotfiles/.miserc.toml"
 "~/.gitconfig/defaults" = { block = '''
 [push]
