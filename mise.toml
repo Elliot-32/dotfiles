@@ -67,16 +67,15 @@ zoxide = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
 
-[bootstrap.packages]
-"apt:openssh-client" = "latest"
-"apt:zsh" = "latest"
-
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
-"~/.config/mise/config.desktop.toml" = "~/.dotfiles/mise.desktop.toml"
-"~/.config/mise/config.ubuntu.toml" = "~/.dotfiles/mise.ubuntu.toml"
-"~/.config/mise/config.fedora.toml" = "~/.dotfiles/mise.fedora.toml"
-"~/.config/mise/config.arch.toml" = "~/.dotfiles/mise.arch.toml"
+"~/.config/mise/conf.d/distro.ubuntu.toml" = "~/.dotfiles/mise/conf.d/distro.ubuntu.toml"
+"~/.config/mise/conf.d/distro.fedora.toml" = "~/.dotfiles/mise/conf.d/distro.fedora.toml"
+"~/.config/mise/conf.d/distro.arch.toml" = "~/.dotfiles/mise/conf.d/distro.arch.toml"
+"~/.config/mise/conf.d/packages.apt.toml" = "~/.dotfiles/mise/conf.d/packages.apt.toml"
+"~/.config/mise/conf.d/packages.dnf.toml" = "~/.dotfiles/mise/conf.d/packages.dnf.toml"
+"~/.config/mise/conf.d/packages.pacman.toml" = "~/.dotfiles/mise/conf.d/packages.pacman.toml"
+"~/.config/mise/conf.d/role.desktop.toml" = "~/.dotfiles/mise/conf.d/role.desktop.toml"
 "~/.config/mise/miserc.toml" = "~/.dotfiles/.miserc.toml"
 "~/.gitconfig/defaults" = { block = '''
 [push]
@@ -111,7 +110,7 @@ persistent = true
 unit = "gomi-prune"
 
 [bootstrap.linux.systemd.units.update]
-description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
+description = "Update system packages, mise tools, Flatpak apps, Sheldon plugins, and completions"
 type = "oneshot"
 exec_start = "%h/.local/bin/mise -C %h/.dotfiles run update"
 wanted_by = []
@@ -135,18 +134,21 @@ run = [
 run = "mise exec -- sh ./scripts/login-github.sh"
 
 [tasks.update]
-description = "Update tools, Sheldon plugins, and completions"
+description = "Update system packages, tools, Sheldon plugins, and completions"
 run = [
   "mise upgrade",
+{% if mise_env is defined %}
+{% if "apt" in mise_env or "dnf" in mise_env or "pacman" in mise_env %}
+  { task = "update:packages" },
+{% endif %}
+{% if "desktop" in mise_env %}
   { task = "update:desktop" },
+{% endif %}
+{% endif %}
   "mise completion zsh --install",
   "sheldon --non-interactive lock --update",
   "misecompsync --shell zsh",
 ]
-
-[tasks."update:desktop"]
-hide = true
-run = ":"
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
