@@ -5,7 +5,7 @@ auto_update = true
 dotfiles.default_mode = "symlink"
 
 [settings.github]
-oauth_client_id = "" # Fill with the GitHub App client ID (Iv1....)
+oauth_client_id = "Iv23liB7jge4ggqL1mB3"
 
 [env]
 _.path = [
