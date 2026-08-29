@@ -23,6 +23,7 @@ oc = "opencode"
 rm = "gomi"
 path = "j $(print -l $path | fzf)"
 n = "nvim"
+sl = "systemctl"
 
 [tools]
 atuin = "latest"
