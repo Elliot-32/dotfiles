@@ -30,6 +30,10 @@ flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flath
 
 [ "$distro" = "ubuntu" ] || exit 0
 
+if [ ! -d /usr/share/wayland-sessions ] && [ ! -d /usr/share/xsessions ]; then
+  exit 0
+fi
+
 if [ -r /etc/os-release ]; then
   . /etc/os-release
 fi
