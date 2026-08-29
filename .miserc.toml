@@ -1,22 +1,24 @@
+env_conf_d = true
+
 {% set desktop = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
 
 {% if "/etc/fedora-release" is file %}
 {% if desktop %}
-env = ["fedora", "desktop"]
+env = ["fedora", "dnf", "desktop"]
 {% else %}
-env = ["fedora"]
+env = ["fedora", "dnf"]
 {% endif %}
 {% elif "/etc/arch-release" is file %}
 {% if desktop %}
-env = ["arch", "desktop"]
+env = ["arch", "pacman", "desktop"]
 {% else %}
-env = ["arch"]
+env = ["arch", "pacman"]
 {% endif %}
 {% elif "/etc/lsb-release" is file %}
 {% if desktop %}
-env = ["ubuntu", "desktop"]
+env = ["ubuntu", "apt", "desktop"]
 {% else %}
-env = ["ubuntu"]
+env = ["ubuntu", "apt"]
 {% endif %}
 {% elif desktop %}
 env = ["desktop"]
