@@ -1,0 +1,8 @@
+[bootstrap.packages]
+"dnf:openssh-clients" = "latest"
+"dnf:zsh" = "latest"
+"dnf:flatpak" = "latest"
+
+[tasks."update:packages"]
+hide = true
+run = "mise bootstrap packages upgrade --manager dnf --yes"
