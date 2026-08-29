@@ -33,10 +33,14 @@ fi
 gh auth setup-git --hostname "$github_host"
 
 git_user_name=$(gh api user --jq '.name // .login')
-git_user_email=$(
-  gh api user/emails \
-    --jq 'map(select(.primary and .verified)) | first | .email // empty'
-)
+git_user_email=$(gh api user --jq '.email // empty')
+
+if [ -z "$git_user_email" ]; then
+  git_user_email=$(
+    gh api user/emails \
+      --jq 'map(select(.primary and .verified)) | first | .email // empty'
+  )
+fi
 
 if [ -z "$git_user_email" ]; then
   echo "GitHub did not return a primary verified email" >&2
