@@ -135,20 +135,25 @@ run = "mise exec -- sh ./scripts/login-github.sh"
 
 [tasks.update]
 description = "Update system packages, tools, Sheldon plugins, and completions"
-run = [
-  "mise upgrade",
-{% if mise_env is defined %}
-{% if "apt" in mise_env or "dnf" in mise_env or "pacman" in mise_env %}
-  { task = "update:packages" },
-{% endif %}
-{% if "desktop" in mise_env %}
-  { task = "update:desktop" },
-{% endif %}
-{% endif %}
-  "mise completion zsh --install",
-  "sheldon --non-interactive lock --update",
-  "misecompsync --shell zsh",
-]
+run = '''
+mise upgrade
+
+case ",${MISE_ENV:-}," in
+  *,apt,*|*,dnf,*|*,pacman,*)
+    mise run update:packages
+    ;;
+esac
+
+case ",${MISE_ENV:-}," in
+  *,desktop,*)
+    mise run update:desktop
+    ;;
+esac
+
+mise completion zsh --install
+sheldon --non-interactive lock --update
+misecompsync --shell zsh
+'''
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
