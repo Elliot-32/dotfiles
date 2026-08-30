@@ -1,3 +1,8 @@
 [bootstrap.packages]
 "pacman:openssh" = "latest"
 "pacman:zsh" = "latest"
+"pacman:fcitx5" = "latest"
+"pacman:fcitx5-chewing" = "latest"
+"pacman:fcitx5-gtk" = "latest"
+"pacman:fcitx5-qt" = "latest"
+"pacman:wl-clipboard" = "latest"
