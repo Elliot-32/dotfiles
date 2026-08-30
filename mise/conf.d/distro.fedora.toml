@@ -1,2 +1,16 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh" fedora'
+run = '''
+if [ ! -d /usr/share/wayland-sessions ] && [ ! -d /usr/share/xsessions ]; then
+  exit 0
+fi
+
+if ! dnf copr --help >/dev/null 2>&1; then
+  if command -v dnf5 >/dev/null 2>&1; then
+    sudo dnf install --assumeyes dnf5-plugins
+  else
+    sudo dnf install --assumeyes dnf-plugins-core
+  fi
+fi
+
+sudo dnf copr enable --assumeyes scottames/ghostty
+'''

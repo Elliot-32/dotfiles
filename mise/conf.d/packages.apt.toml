@@ -1,10 +1,6 @@
-[bootstrap.hooks.pre-packages]
-run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh" apt'
-
 [bootstrap.packages]
 "apt:openssh-client" = "latest"
 "apt:zsh" = "latest"
-"apt:flatpak" = "latest"
 "apt:unattended-upgrades" = "latest"
 
 [bootstrap.files."/etc/apt/apt.conf.d/20auto-upgrades"]
