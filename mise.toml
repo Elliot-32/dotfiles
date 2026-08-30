@@ -2,6 +2,7 @@ min_version = "2026.8.13"
 
 [settings]
 auto_update = true
+lockfile = true
 dotfiles.default_mode = "symlink"
 
 [settings.github]
