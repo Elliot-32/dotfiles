@@ -121,16 +121,17 @@ on_calendar = "daily"
 persistent = true
 unit = "update"
 
+[task_config]
+dir = "{{ env.HOME }}/.dotfiles"
+
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
 run = [
   "mise completion zsh --install",
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
+  "mise exec -- sh ./scripts/login-github.sh",
 ]
-
-[bootstrap.hooks.final]
-run = "mise exec -- sh ./scripts/login-github.sh"
 
 [tasks.update]
 description = "Update tools, Sheldon plugins, and completions"
