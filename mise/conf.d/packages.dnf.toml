@@ -1,3 +1,6 @@
+[bootstrap.hooks.pre-packages]
+run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh" dnf'
+
 [bootstrap.packages]
 "dnf:openssh-clients" = "latest"
 "dnf:zsh" = "latest"
