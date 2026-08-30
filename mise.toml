@@ -135,19 +135,17 @@ run = [
 
 [tasks.update]
 description = "Update tools, Sheldon plugins, and completions"
-run = '''
-mise upgrade
+run = [
+  "mise upgrade",
+  { task = "update:flatpak" },
+  "mise completion zsh --install",
+  "sheldon --non-interactive lock --update",
+  "misecompsync --shell zsh",
+]
 
-case ",${MISE_ENV:-}," in
-  *,flatpak,*)
-    mise run update:flatpak
-    ;;
-esac
-
-mise completion zsh --install
-sheldon --non-interactive lock --update
-misecompsync --shell zsh
-'''
+[tasks."update:flatpak"]
+hide = true
+run = ":"
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
