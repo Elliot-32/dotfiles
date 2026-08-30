@@ -41,10 +41,6 @@ inline = 'eval "$(zoxide init zsh --cmd j)"'
 [plugins.atuin]
 inline = 'eval "$(atuin init zsh)"'
 
-# Use emacs keymap before plugins register their key bindings.
-[plugins.emacs-keymap]
-inline = 'bindkey -e'
-
 # fzf-tab must load after compinit and before widget-wrapping plugins.
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
