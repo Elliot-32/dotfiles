@@ -1,9 +1,5 @@
 [bootstrap.hooks.pre-packages]
 run = '''
-if [ ! -d /usr/share/wayland-sessions ] && [ ! -d /usr/share/xsessions ]; then
-  exit 0
-fi
-
 if ! dnf copr --help >/dev/null 2>&1; then
   if command -v dnf5 >/dev/null 2>&1; then
     sudo dnf install --assumeyes dnf5-plugins
@@ -14,3 +10,11 @@ fi
 
 sudo dnf copr enable --assumeyes scottames/ghostty
 '''
+
+[bootstrap.packages]
+"dnf:ghostty" = "latest"
+
+[dotfiles]
+"~/.config/ghostty/config" = {}
+"~/.config/xdg-terminals.list" = {}
+"~/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop" = "/usr/share/applications/com.mitchellh.ghostty.desktop"

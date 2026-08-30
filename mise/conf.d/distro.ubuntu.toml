@@ -1,9 +1,5 @@
 [bootstrap.hooks.pre-packages]
 run = '''
-if [ ! -d /usr/share/wayland-sessions ] && [ ! -d /usr/share/xsessions ]; then
-  exit 0
-fi
-
 if [ -r /etc/os-release ]; then
   . /etc/os-release
 fi
@@ -22,3 +18,11 @@ case "$ubuntu_codename" in
     ;;
 esac
 '''
+
+[bootstrap.packages]
+"apt:ghostty" = "latest"
+
+[dotfiles]
+"~/.config/ghostty/config" = {}
+"~/.config/xdg-terminals.list" = {}
+"~/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop" = "/usr/share/applications/com.mitchellh.ghostty.desktop"

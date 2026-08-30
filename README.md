@@ -10,8 +10,8 @@ curl https://mise.run | sh
 安裝 dotfiles：
 ```bash
 git clone https://github.com/Elliot-32/dotfiles.git ~/.dotfiles
-~/.local/bin/mise trust ~/.dotfiles/mise.toml
 cd ~/.dotfiles
+~/.local/bin/mise trust --all
 ~/.local/bin/mise bootstrap --yes --force-dotfiles && exec zsh -l
 ```
 
@@ -19,6 +19,12 @@ cd ~/.dotfiles
 並詢問 Git user name 與 email。這些設定由 Git 與 GitHub CLI 寫入本機，
 不會納入 dotfiles。非互動環境可預先設定 `GIT_USER_NAME` 與
 `GIT_USER_EMAIL`。
+
+需要 mise 2026.8.13 以上版本。`.miserc.toml` 只依發行版標記檔選擇
+`apt`、`dnf` 或 `pacman` 設定，不會因為系統上碰巧裝有其他套件管理器
+就載入它。Ubuntu 系列需同時有 `/etc/lsb-release` 與 Ubuntu archive
+keyring（包含 Pop!_OS）；偵測到圖形桌面 session 目錄時，才會另外載入
+根目錄的 `mise.flatpak.toml`。
 
 ## 日常使用
 

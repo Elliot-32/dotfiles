@@ -1,44 +1,42 @@
 env_conf_d = true
 
-{% set desktop = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
-{% set ubuntu = "/etc/lsb-release" is file %}
+{% set flatpak = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
+{% set arch = "/etc/arch-release" is file %}
 {% set fedora = "/etc/fedora-release" is file %}
-{% set apt = "/usr/bin/apt-get" is file %}
-{% set dnf = "/usr/bin/dnf" is file or "/usr/bin/dnf5" is file %}
-{% set pacman = "/usr/bin/pacman" is file %}
+{% set rhel = "/etc/redhat-release" is file %}
+{% set ubuntu = "/etc/lsb-release" is file and "/usr/share/keyrings/ubuntu-archive-keyring.gpg" is file %}
+{% set debian = "/etc/debian_version" is file %}
 
-{% if apt %}
-{% if ubuntu and desktop %}
-env = ["ubuntu", "apt", "desktop"]
-{% elif ubuntu %}
-env = ["ubuntu", "apt"]
-{% elif desktop %}
-env = ["apt", "desktop"]
+{% if arch %}
+{% if flatpak %}
+env = ["arch", "pacman", "flatpak"]
 {% else %}
-env = ["apt"]
+env = ["arch", "pacman"]
 {% endif %}
-{% elif dnf %}
-{% if fedora and desktop %}
-env = ["fedora", "dnf", "desktop"]
 {% elif fedora %}
+{% if flatpak %}
+env = ["fedora", "dnf", "flatpak"]
+{% else %}
 env = ["fedora", "dnf"]
-{% elif desktop %}
-env = ["dnf", "desktop"]
-{% else %}
-env = ["dnf"]
 {% endif %}
-{% elif pacman %}
-{% if desktop %}
-env = ["pacman", "desktop"]
+{% elif rhel %}
+{% if flatpak %}
+env = ["rhel", "dnf", "flatpak"]
 {% else %}
-env = ["pacman"]
+env = ["rhel", "dnf"]
 {% endif %}
 {% elif ubuntu %}
-{% if desktop %}
-env = ["ubuntu", "desktop"]
+{% if flatpak %}
+env = ["ubuntu", "apt", "flatpak"]
 {% else %}
-env = ["ubuntu"]
+env = ["ubuntu", "apt"]
 {% endif %}
-{% elif desktop %}
-env = ["desktop"]
+{% elif debian %}
+{% if flatpak %}
+env = ["debian", "apt", "flatpak"]
+{% else %}
+env = ["debian", "apt"]
+{% endif %}
+{% elif flatpak %}
+env = ["flatpak"]
 {% endif %}

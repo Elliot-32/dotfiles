@@ -1,3 +1,13 @@
+[bootstrap.packages]
+"apt:openssh-client" = "latest"
+"apt:zsh" = "latest"
+"apt:unattended-upgrades" = "latest"
+"apt:fcitx5" = "latest"
+"apt:fcitx5-chewing" = "latest"
+"apt:fcitx5-frontend-all" = "latest"
+"apt:wl-clipboard" = "latest"
+"apt:xdg-terminal-exec" = "latest"
+
 [bootstrap.files."/etc/apt/apt.conf.d/20auto-upgrades"]
 content = '''
 APT::Periodic::Enable "1";
@@ -15,3 +25,7 @@ state = "running"
 [bootstrap.services."apt-daily-upgrade.timer"]
 enabled = true
 state = "running"
+
+[dotfiles]
+"~/.config/fcitx5/profile" = {}
+"~/.config/environment.d/90-fcitx5.conf" = {}

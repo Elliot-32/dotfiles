@@ -1,41 +1,32 @@
 [bootstrap.hooks.pre-packages]
 run = '''
 if ! command -v flatpak >/dev/null 2>&1; then
-  if command -v apt-get >/dev/null 2>&1; then
-    sudo apt-get update
-    sudo apt-get install --yes flatpak
-  elif command -v dnf >/dev/null 2>&1; then
-    sudo dnf install --assumeyes flatpak
-  elif command -v dnf5 >/dev/null 2>&1; then
-    sudo dnf5 install --assumeyes flatpak
-  elif command -v pacman >/dev/null 2>&1; then
-    sudo pacman -S --needed --noconfirm flatpak
-  else
-    echo "No supported package manager found to install Flatpak" >&2
-    exit 1
-  fi
+  case ",${MISE_ENV:-}," in
+    *,apt,*)
+      sudo apt-get update
+      sudo apt-get install --yes flatpak
+      ;;
+    *,dnf,*)
+      if command -v dnf5 >/dev/null 2>&1; then
+        sudo dnf5 install --assumeyes flatpak
+      else
+        sudo dnf install --assumeyes flatpak
+      fi
+      ;;
+    *,pacman,*)
+      sudo pacman -S --needed --noconfirm flatpak
+      ;;
+    *)
+      echo "No supported package manager environment found to install Flatpak" >&2
+      exit 1
+      ;;
+  esac
 fi
 
 flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 '''
 
 [bootstrap.packages]
-"apt:fcitx5" = "latest"
-"apt:fcitx5-chewing" = "latest"
-"apt:fcitx5-frontend-all" = "latest"
-"apt:ghostty" = "latest"
-"apt:wl-clipboard" = "latest"
-"apt:xdg-terminal-exec" = "latest"
-"dnf:fcitx5" = "latest"
-"dnf:fcitx5-chewing" = "latest"
-"dnf:fcitx5-gtk2" = "latest"
-"dnf:fcitx5-gtk3" = "latest"
-"dnf:fcitx5-gtk4" = "latest"
-"dnf:fcitx5-qt5" = "latest"
-"dnf:fcitx5-qt6" = "latest"
-"dnf:ghostty" = "latest"
-"dnf:wl-clipboard" = "latest"
-"dnf:xdg-terminal-exec" = "latest"
 "flatpak-user:com.bitwarden.desktop" = "latest"
 "flatpak-user:com.borgbase.Vorta" = "latest"
 "flatpak-user:com.dec05eba.gpu_screen_recorder" = "latest"
@@ -70,13 +61,6 @@ flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flath
 "flatpak-user:org.signal.Signal" = "latest"
 "flatpak-user:org.telegram.desktop" = "latest"
 
-[dotfiles]
-"~/.config/ghostty/config" = {}
-"~/.config/fcitx5/profile" = {}
-"~/.config/environment.d/90-fcitx5.conf" = {}
-"~/.config/xdg-terminals.list" = {}
-"~/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop" = "/usr/share/applications/com.mitchellh.ghostty.desktop"
-
-[tasks."update:desktop"]
+[tasks."update:flatpak"]
 hide = true
 run = "mise bootstrap packages upgrade --manager flatpak-user --yes"

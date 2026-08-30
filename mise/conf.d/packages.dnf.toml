@@ -1,0 +1,16 @@
+[bootstrap.packages]
+"dnf:openssh-clients" = "latest"
+"dnf:zsh" = "latest"
+"dnf:fcitx5" = "latest"
+"dnf:fcitx5-chewing" = "latest"
+"dnf:fcitx5-gtk2" = "latest"
+"dnf:fcitx5-gtk3" = "latest"
+"dnf:fcitx5-gtk4" = "latest"
+"dnf:fcitx5-qt5" = "latest"
+"dnf:fcitx5-qt6" = "latest"
+"dnf:wl-clipboard" = "latest"
+"dnf:xdg-terminal-exec" = "latest"
+
+[dotfiles]
+"~/.config/fcitx5/profile" = {}
+"~/.config/environment.d/90-fcitx5.conf" = {}
