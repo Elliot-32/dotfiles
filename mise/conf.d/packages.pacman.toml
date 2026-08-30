@@ -1,3 +1,6 @@
+[bootstrap.hooks.pre-packages]
+run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh" pacman'
+
 [bootstrap.packages]
 "pacman:openssh" = "latest"
 "pacman:zsh" = "latest"
