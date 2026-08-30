@@ -2,9 +2,9 @@ env_conf_d = true
 
 {% set desktop = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
 {% set ubuntu = "/etc/lsb-release" is file %}
-{% set apt = "/usr/bin/apt-get" is file and "/etc/apt" is dir %}
-{% set dnf = ("/usr/bin/dnf" is file or "/usr/bin/dnf5" is file) and "/etc/dnf" is dir %}
-{% set pacman = "/usr/bin/pacman" is file and "/etc/pacman.conf" is file %}
+{% set apt = "/usr/bin/apt-get" is file %}
+{% set dnf = "/usr/bin/dnf" is file or "/usr/bin/dnf5" is file %}
+{% set pacman = "/usr/bin/pacman" is file %}
 
 {% if apt %}
 {% if ubuntu and desktop %}
