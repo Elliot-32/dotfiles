@@ -25,6 +25,14 @@ jobs:
           install: false
           cache: false
 
+      - name: Install Zsh
+        run: sudo apt-get update && sudo apt-get install --yes zsh
+
+      - name: Prepare bootstrap fixtures
+        run: |
+          ln -s "$GITHUB_WORKSPACE" "$HOME/.dotfiles"
+          sudo install -Dm644 /dev/null /usr/share/applications/com.mitchellh.ghostty.desktop
+
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
 
@@ -70,9 +78,6 @@ jobs:
 
           check_config "flatpak" \
             "mise.flatpak.toml"
-
-      - name: Install Zsh
-        run: sudo apt-get update && sudo apt-get install --yes zsh
 
       - name: Check shell syntax
         run: |
