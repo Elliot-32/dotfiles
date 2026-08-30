@@ -70,8 +70,6 @@ zoxide = "latest"
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
 "~/.config/mise/conf.d/distro.ubuntu.toml" = "~/.dotfiles/mise/conf.d/distro.ubuntu.toml"
-"~/.config/mise/conf.d/distro.fedora.toml" = "~/.dotfiles/mise/conf.d/distro.fedora.toml"
-"~/.config/mise/conf.d/distro.arch.toml" = "~/.dotfiles/mise/conf.d/distro.arch.toml"
 "~/.config/mise/conf.d/packages.apt.toml" = "~/.dotfiles/mise/conf.d/packages.apt.toml"
 "~/.config/mise/conf.d/packages.dnf.toml" = "~/.dotfiles/mise/conf.d/packages.dnf.toml"
 "~/.config/mise/conf.d/packages.pacman.toml" = "~/.dotfiles/mise/conf.d/packages.pacman.toml"
