@@ -67,13 +67,20 @@ zoxide = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
 
+[bootstrap.packages]
+"apt:openssh-client" = "latest"
+"apt:zsh" = "latest"
+"apt:unattended-upgrades" = "latest"
+"dnf:openssh-clients" = "latest"
+"dnf:zsh" = "latest"
+"pacman:openssh" = "latest"
+"pacman:zsh" = "latest"
+
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
 "~/.config/mise/conf.d/distro.fedora.toml" = "~/.dotfiles/mise/conf.d/distro.fedora.toml"
 "~/.config/mise/conf.d/distro.ubuntu.toml" = "~/.dotfiles/mise/conf.d/distro.ubuntu.toml"
-"~/.config/mise/conf.d/packages.apt.toml" = "~/.dotfiles/mise/conf.d/packages.apt.toml"
-"~/.config/mise/conf.d/packages.dnf.toml" = "~/.dotfiles/mise/conf.d/packages.dnf.toml"
-"~/.config/mise/conf.d/packages.pacman.toml" = "~/.dotfiles/mise/conf.d/packages.pacman.toml"
+"~/.config/mise/conf.d/setting.apt.toml" = "~/.dotfiles/mise/conf.d/setting.apt.toml"
 "~/.config/mise/conf.d/role.desktop.toml" = "~/.dotfiles/mise/conf.d/role.desktop.toml"
 "~/.config/mise/miserc.toml" = "~/.dotfiles/.miserc.toml"
 "~/.gitconfig/defaults" = { block = '''

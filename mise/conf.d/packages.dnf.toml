@@ -1,3 +1,0 @@
-[bootstrap.packages]
-"dnf:openssh-clients" = "latest"
-"dnf:zsh" = "latest"

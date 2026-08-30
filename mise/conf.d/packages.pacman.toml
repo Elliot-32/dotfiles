@@ -1,3 +1,0 @@
-[bootstrap.packages]
-"pacman:openssh" = "latest"
-"pacman:zsh" = "latest"
