@@ -1,3 +1,39 @@
-{% if "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
+env_conf_d = true
+
+{% set desktop = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
+{% set ubuntu = "/etc/lsb-release" is file %}
+{% set apt = "/usr/bin/apt-get" is file %}
+{% set dnf = "/usr/bin/dnf" is file or "/usr/bin/dnf5" is file %}
+{% set pacman = "/usr/bin/pacman" is file %}
+
+{% if apt %}
+{% if ubuntu and desktop %}
+env = ["ubuntu", "apt", "desktop"]
+{% elif ubuntu %}
+env = ["ubuntu", "apt"]
+{% elif desktop %}
+env = ["apt", "desktop"]
+{% else %}
+env = ["apt"]
+{% endif %}
+{% elif dnf %}
+{% if desktop %}
+env = ["dnf", "desktop"]
+{% else %}
+env = ["dnf"]
+{% endif %}
+{% elif pacman %}
+{% if desktop %}
+env = ["pacman", "desktop"]
+{% else %}
+env = ["pacman"]
+{% endif %}
+{% elif ubuntu %}
+{% if desktop %}
+env = ["ubuntu", "desktop"]
+{% else %}
+env = ["ubuntu"]
+{% endif %}
+{% elif desktop %}
 env = ["desktop"]
 {% endif %}

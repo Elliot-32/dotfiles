@@ -1,12 +1,8 @@
-[bootstrap.hooks.pre-packages]
-run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh"'
-
 [bootstrap.packages]
 "apt:fcitx5" = "latest"
 "apt:fcitx5-chewing" = "latest"
 "apt:fcitx5-frontend-all" = "latest"
 "apt:ghostty" = "latest"
-"apt:software-properties-common" = "latest"
 "apt:wl-clipboard" = "latest"
 "apt:xdg-terminal-exec" = "latest"
 "flatpak-user:com.bitwarden.desktop" = "latest"

@@ -1,0 +1,26 @@
+[bootstrap.hooks.pre-packages]
+run = 'sh "$HOME/.dotfiles/scripts/bootstrap-pre-packages.sh" apt'
+
+[bootstrap.packages]
+"apt:openssh-client" = "latest"
+"apt:zsh" = "latest"
+"apt:flatpak" = "latest"
+"apt:unattended-upgrades" = "latest"
+
+[bootstrap.files."/etc/apt/apt.conf.d/20auto-upgrades"]
+content = '''
+APT::Periodic::Enable "1";
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+'''
+owner = "root"
+group = "root"
+mode = "0644"
+
+[bootstrap.services."apt-daily.timer"]
+enabled = true
+state = "running"
+
+[bootstrap.services."apt-daily-upgrade.timer"]
+enabled = true
+state = "running"

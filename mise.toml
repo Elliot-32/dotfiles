@@ -67,13 +67,13 @@ zoxide = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
 
-[bootstrap.packages]
-"apt:openssh-client" = "latest"
-"apt:zsh" = "latest"
-
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
-"~/.config/mise/config.desktop.toml" = "~/.dotfiles/mise.desktop.toml"
+"~/.config/mise/conf.d/distro.ubuntu.toml" = "~/.dotfiles/mise/conf.d/distro.ubuntu.toml"
+"~/.config/mise/conf.d/packages.apt.toml" = "~/.dotfiles/mise/conf.d/packages.apt.toml"
+"~/.config/mise/conf.d/packages.dnf.toml" = "~/.dotfiles/mise/conf.d/packages.dnf.toml"
+"~/.config/mise/conf.d/packages.pacman.toml" = "~/.dotfiles/mise/conf.d/packages.pacman.toml"
+"~/.config/mise/conf.d/role.desktop.toml" = "~/.dotfiles/mise/conf.d/role.desktop.toml"
 "~/.config/mise/miserc.toml" = "~/.dotfiles/.miserc.toml"
 "~/.gitconfig/defaults" = { block = '''
 [push]
@@ -133,17 +133,19 @@ run = "mise exec -- sh ./scripts/login-github.sh"
 
 [tasks.update]
 description = "Update tools, Sheldon plugins, and completions"
-run = [
-  "mise upgrade",
-  { task = "update:desktop" },
-  "mise completion zsh --install",
-  "sheldon --non-interactive lock --update",
-  "misecompsync --shell zsh",
-]
+run = '''
+mise upgrade
 
-[tasks."update:desktop"]
-hide = true
-run = ":"
+case ",${MISE_ENV:-}," in
+  *,desktop,*)
+    mise run update:desktop
+    ;;
+esac
+
+mise completion zsh --install
+sheldon --non-interactive lock --update
+misecompsync --shell zsh
+'''
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
