@@ -8,10 +8,7 @@ if [ -r /etc/os-release ]; then
   . /etc/os-release
 fi
 
-ubuntu_codename=${UBUNTU_CODENAME:-}
-if [ -z "$ubuntu_codename" ] && [ "${ID:-}" = "ubuntu" ]; then
-  ubuntu_codename=${VERSION_CODENAME:-}
-fi
+ubuntu_codename=${UBUNTU_CODENAME:-${VERSION_CODENAME:-}}
 
 case "$ubuntu_codename" in
   noble)
