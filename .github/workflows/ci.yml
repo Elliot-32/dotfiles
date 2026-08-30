@@ -28,8 +28,8 @@ jobs:
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
 
-      - name: Validate locked install plan
-        run: mise --locked install --dry-run
+      - name: Validate bootstrap plan
+        run: mise --locked bootstrap --dry-run
 
       - name: Validate mise config selection
         shell: bash
