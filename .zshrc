@@ -64,6 +64,9 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=auto 
 zstyle ':fzf-tab:complete:j:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
 zstyle ':fzf-tab:*' switch-group '<' '>'
 
+# Use Emacs keymap before plugins register their key bindings.
+bindkey -e
+
 # Sheldon manages completion fpath, compinit, shell integrations, and plugins
 # in dependency order.
 eval "$(sheldon source)"
