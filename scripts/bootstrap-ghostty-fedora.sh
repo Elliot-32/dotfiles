@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if ! dnf copr --help >/dev/null 2>&1; then
+  if command -v dnf5 >/dev/null 2>&1; then
+    sudo dnf install --assumeyes dnf5-plugins
+  else
+    sudo dnf install --assumeyes dnf-plugins-core
+  fi
+fi
+
+sudo dnf copr enable --assumeyes scottames/ghostty
