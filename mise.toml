@@ -76,6 +76,8 @@ zoxide = "latest"
 "~/.config/mise/conf.d/packages.apt.toml" = "~/.dotfiles/mise/conf.d/packages.apt.toml"
 "~/.config/mise/conf.d/packages.dnf.toml" = "~/.dotfiles/mise/conf.d/packages.dnf.toml"
 "~/.config/mise/conf.d/packages.pacman.toml" = "~/.dotfiles/mise/conf.d/packages.pacman.toml"
+"~/.config/mise/conf.d/platform.wsl.toml" = "~/.dotfiles/mise/conf.d/platform.wsl.toml"
+"~/.config/mise/conf.d/platform.wslg.toml" = "~/.dotfiles/mise/conf.d/platform.wslg.toml"
 "~/.config/mise/miserc.toml" = "~/.dotfiles/.miserc.toml"
 "~/.gitconfig/defaults" = { block = '''
 [push]

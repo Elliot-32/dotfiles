@@ -1,0 +1,2 @@
+# WSLg-specific mise configuration.
+# This fragment is loaded only when the `wslg` environment is active.

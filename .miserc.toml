@@ -1,6 +1,8 @@
 env_conf_d = true
 
 {% set flatpak = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
+{% set wslg = "/mnt/wslg/runtime-dir" is dir %}
+{% set wsl = wslg or env.WSL_DISTRO_NAME is defined or env.WSL_INTEROP is defined %}
 {% set arch = "/etc/arch-release" is file %}
 {% set fedora = "/etc/fedora-release" is file %}
 {% set rhel = "/etc/redhat-release" is file %}
@@ -9,34 +11,36 @@ env_conf_d = true
 
 {% if arch %}
 {% if flatpak %}
-env = ["arch", "pacman", "flatpak"]
+env = ["arch", "pacman", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% else %}
-env = ["arch", "pacman"]
+env = ["arch", "pacman"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% endif %}
 {% elif fedora %}
 {% if flatpak %}
-env = ["fedora", "dnf", "flatpak"]
+env = ["fedora", "dnf", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% else %}
-env = ["fedora", "dnf"]
+env = ["fedora", "dnf"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% endif %}
 {% elif rhel %}
 {% if flatpak %}
-env = ["rhel", "dnf", "flatpak"]
+env = ["rhel", "dnf", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% else %}
-env = ["rhel", "dnf"]
+env = ["rhel", "dnf"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% endif %}
 {% elif ubuntu %}
 {% if flatpak %}
-env = ["ubuntu", "apt", "flatpak"]
+env = ["ubuntu", "apt", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% else %}
-env = ["ubuntu", "apt"]
+env = ["ubuntu", "apt"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% endif %}
 {% elif debian %}
 {% if flatpak %}
-env = ["debian", "apt", "flatpak"]
+env = ["debian", "apt", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% else %}
-env = ["debian", "apt"]
+env = ["debian", "apt"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
 {% endif %}
 {% elif flatpak %}
-env = ["flatpak"]
+env = ["flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+{% elif wsl %}
+env = ["wsl"{% if wslg %}, "wslg"{% endif %}]
 {% endif %}
