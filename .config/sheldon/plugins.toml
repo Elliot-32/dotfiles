@@ -73,10 +73,13 @@ github = "Elliot-32/dir-meow"
 
 [plugins.oh-my-zsh-plugins]
 github = "ohmyzsh/ohmyzsh"
-dir = "plugins"
 use = [
-  "sudo/sudo.plugin.zsh",
-  "extract/extract.plugin.zsh",
+  "lib/clipboard.zsh",
+  "plugins/sudo/sudo.plugin.zsh",
+  "plugins/extract/extract.plugin.zsh",
+  "plugins/copyfile/copyfile.plugin.zsh",
+  "plugins/copypath/copypath.plugin.zsh",
+  "plugins/bgnotify/bgnotify.plugin.zsh",
 ]
 
 # Keep syntax highlighting last among plugins.
