@@ -89,7 +89,7 @@ zoxide = "latest"
 ''' }
 "~/.zshrc" = {}
 "~/.p10k.zsh" = {}
-"~/.config/sheldon/plugins.toml" = {}
+"~/.config/sheldon" = { mode = "symlink-each" }
 "~/.local/share/mise-completions-sync/registry.toml" = {}
 
 [bootstrap.mise_shell_activate]

@@ -87,8 +87,7 @@ use = ["plugins/bgnotify/bgnotify.plugin.zsh"]
 profiles = ["wsl"]
 
 [plugins.wsl-notify]
-local = "~/.dotfiles/.config/sheldon"
-use = ["wsl-notify.zsh"]
+local = "~/.config/sheldon/plugins"
 profiles = ["wsl"]
 
 # Keep syntax highlighting last among plugins.
