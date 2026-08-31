@@ -67,6 +67,7 @@ zoxide = "latest"
 "go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
+"cargo:trippy" = "latest"
 
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"

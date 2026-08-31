@@ -79,8 +79,17 @@ use = [
   "plugins/extract/extract.plugin.zsh",
   "plugins/copyfile/copyfile.plugin.zsh",
   "plugins/copypath/copypath.plugin.zsh",
-  "plugins/bgnotify/bgnotify.plugin.zsh",
 ]
+
+[plugins.bgnotify]
+github = "ohmyzsh/ohmyzsh"
+use = ["plugins/bgnotify/bgnotify.plugin.zsh"]
+profiles = ["wsl"]
+
+[plugins.wsl-notify]
+local = "~/.dotfiles/.config/sheldon"
+use = ["wsl-notify.zsh"]
+profiles = ["wsl"]
 
 # Keep syntax highlighting last among plugins.
 [plugins.zsh-syntax-highlighting]

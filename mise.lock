@@ -2,6 +2,55 @@
 
 lockfile_version = 1
 
+[[tools."aqua:fujiapple852/trippy"]]
+version = "0.13.0"
+backend = "aqua:fujiapple852/trippy"
+specifiers = ["latest"]
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-arm64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998578"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-arm64-musl"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998595"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-x64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998787"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-x64-baseline"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998787"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-x64-musl"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999050"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-x64-musl-baseline"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999050"
+
+[tools."aqua:fujiapple852/trippy"."platforms.macos-arm64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998568"
+
+[tools."aqua:fujiapple852/trippy"."platforms.macos-x64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999406"
+
+[tools."aqua:fujiapple852/trippy"."platforms.macos-x64-baseline"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999406"
+
+[tools."aqua:fujiapple852/trippy"."platforms.windows-x64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999097"
+
+[tools."aqua:fujiapple852/trippy"."platforms.windows-x64-baseline"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999097"
+
 [[tools.atuin]]
 version = "18.20.1"
 backend = "aqua:atuinsh/atuin"
@@ -1046,6 +1095,66 @@ specifiers = ["latest"]
 version = "2.16.0"
 backend = "go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder"
 specifiers = ["latest"]
+
+[[tools.gping]]
+version = "1.20.4"
+backend = "aqua:orf/gping"
+specifiers = ["latest"]
+
+[tools.gping."platforms.linux-arm64"]
+checksum = "sha256:a912b76238bf73d4ae6a4a2ada7f6dd42c25da37e8f0044f72543323656f7631"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-Linux-gnu-arm64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988042"
+
+[tools.gping."platforms.linux-arm64-musl"]
+checksum = "sha256:4c160ee83ab5ba3a4db086c5cda9511d857133edb65c62b4ba7c0944d3099696"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-Linux-musl-arm64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988046"
+
+[tools.gping."platforms.linux-x64"]
+checksum = "sha256:91dbcc0a2e279f7c91d9155f846fa5ad2626406f3306138ed2495744aaa9bc84"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-Linux-gnu-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988045"
+
+[tools.gping."platforms.linux-x64-baseline"]
+checksum = "sha256:91dbcc0a2e279f7c91d9155f846fa5ad2626406f3306138ed2495744aaa9bc84"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-Linux-gnu-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988045"
+
+[tools.gping."platforms.linux-x64-musl"]
+checksum = "sha256:42cdad977e084c16b533c6801883f2000944992d523e3442fc85675641ae477c"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-Linux-musl-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988047"
+
+[tools.gping."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:42cdad977e084c16b533c6801883f2000944992d523e3442fc85675641ae477c"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-Linux-musl-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988047"
+
+[tools.gping."platforms.macos-arm64"]
+checksum = "sha256:124e5c44dd05abd8f2019bb23e31cc32d700e7f2f15f74692afde53b8c30a24f"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-macOS-arm64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988041"
+
+[tools.gping."platforms.macos-x64"]
+checksum = "sha256:b39e8ed591117ca4366502d68ad59e7ade46cdd789853ea78a705ff5f7053d55"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-macOS-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988040"
+
+[tools.gping."platforms.macos-x64-baseline"]
+checksum = "sha256:b39e8ed591117ca4366502d68ad59e7ade46cdd789853ea78a705ff5f7053d55"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-macOS-x86_64.tar.gz"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988040"
+
+[tools.gping."platforms.windows-x64"]
+checksum = "sha256:e2211da5056092c13a5690a23c0e03feac7b4caf147e2400ebcad80ca82cabe3"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-Windows-msvc-x86_64.zip"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988049"
+
+[tools.gping."platforms.windows-x64-baseline"]
+checksum = "sha256:e2211da5056092c13a5690a23c0e03feac7b4caf147e2400ebcad80ca82cabe3"
+url = "https://github.com/orf/gping/releases/download/gping-v1.20.4/gping-Windows-msvc-x86_64.zip"
+url_api = "https://api.github.com/repos/orf/gping/releases/assets/456988049"
 
 [[tools.gum]]
 version = "2.0.0"
