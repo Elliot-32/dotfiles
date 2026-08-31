@@ -5,4 +5,5 @@
 "pacman:fcitx5-chewing" = "latest"
 "pacman:fcitx5-gtk" = "latest"
 "pacman:fcitx5-qt" = "latest"
+"pacman:libnotify" = "latest"
 "pacman:wl-clipboard" = "latest"

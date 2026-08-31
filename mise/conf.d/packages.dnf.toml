@@ -9,6 +9,7 @@
 "dnf:fcitx5-gtk4" = "latest"
 "dnf:fcitx5-qt5" = "latest"
 "dnf:fcitx5-qt6" = "latest"
+"dnf:libnotify" = "latest"
 "dnf:wl-clipboard" = "latest"
 "dnf:xdg-terminal-exec" = "latest"
 

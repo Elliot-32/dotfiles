@@ -5,6 +5,7 @@
 "apt:fcitx5" = "latest"
 "apt:fcitx5-chewing" = "latest"
 "apt:fcitx5-frontend-all" = "latest"
+"apt:libnotify-bin" = "latest"
 "apt:wl-clipboard" = "latest"
 "apt:xdg-terminal-exec" = "latest"
 
