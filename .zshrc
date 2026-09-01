@@ -54,15 +54,11 @@ for _rgrc_cmd in ${(k)aliases}; do
 done
 unset _rgrc_cmd
 
-# Configure completion and fzf-tab before Sheldon runs compinit and loads the
-# plugin.
+# Configure completion before Sheldon runs compinit and loads plugins.
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
-zstyle ':fzf-tab:complete:j:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
-zstyle ':fzf-tab:*' switch-group '<' '>'
 
 # Use Emacs keymap before plugins register their key bindings.
 bindkey -e
