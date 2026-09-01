@@ -45,6 +45,13 @@ inline = 'eval "$(atuin init zsh)"'
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
 
+[plugins.fzf-tab-config]
+inline = '''
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
+zstyle ':fzf-tab:complete:j:*' fzf-preview 'eza -1 --color=always --icons=auto $realpath'
+zstyle ':fzf-tab:*' switch-group '<' '>'
+'''
+
 [plugins.zsh-ssh]
 github = "sunlei/zsh-ssh"
 
