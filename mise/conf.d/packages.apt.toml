@@ -1,6 +1,7 @@
 [bootstrap.packages]
 "apt:openssh-client" = "latest"
 "apt:zsh" = "latest"
+"apt:shellcheck" = "latest"
 "apt:unattended-upgrades" = "latest"
 "apt:fcitx5" = "latest"
 "apt:fcitx5-chewing" = "latest"

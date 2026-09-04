@@ -60,6 +60,7 @@ uv = "latest"
 witr = "latest"
 yazi = "latest"
 zoxide = "latest"
+"cargo:hk" = "latest"
 "cargo:rustscan" = "latest"
 "github:Giammarco-Ferranti/deja" = "latest"
 "github:lazywalker/rgrc" = "latest"
@@ -134,6 +135,7 @@ run = [
   "mise completion zsh --install",
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
+  "hk install --mise",
   "mise exec -- sh ./scripts/login-github.sh",
 ]
 
