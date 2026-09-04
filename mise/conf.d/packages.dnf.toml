@@ -1,7 +1,6 @@
 [bootstrap.packages]
 "dnf:openssh-clients" = "latest"
 "dnf:zsh" = "latest"
-"dnf:ShellCheck" = "latest"
 "dnf:dnf-automatic" = "latest"
 "dnf:fcitx5" = "latest"
 "dnf:fcitx5-chewing" = "latest"
