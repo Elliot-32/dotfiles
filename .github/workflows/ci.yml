@@ -37,7 +37,7 @@ jobs:
           sudo install -Dm644 /dev/null /usr/share/applications/com.mitchellh.ghostty.desktop
 
       - name: Run hk checks
-        run: mise exec -- hk check --all
+        run: mise exec hk shellcheck -- hk check --all
 
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
