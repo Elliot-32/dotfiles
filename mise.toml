@@ -46,6 +46,7 @@ go = "latest"
 gum = "latest"
 gup = "latest"
 herdr = "latest"
+hk = "latest"
 lazyjournal = "latest"
 lazyssh = "latest"
 neovim = "latest"
@@ -54,6 +55,7 @@ nub = "latest"
 opencode = "latest"
 qdns = "latest"
 ripgrep = "latest"
+shellcheck = "latest"
 sheldon = "latest"
 tlrc = "latest"
 uv = "latest"
@@ -134,6 +136,7 @@ run = [
   "mise completion zsh --install",
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
+  "hk install --mise",
   "mise exec -- sh ./scripts/login-github.sh",
 ]
 

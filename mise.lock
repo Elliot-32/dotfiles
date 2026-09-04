@@ -330,6 +330,11 @@ version = "2.4.1"
 backend = "cargo:rustscan"
 specifiers = ["latest"]
 
+[[tools."cargo:trippy"]]
+version = "0.13.0"
+backend = "cargo:trippy"
+specifiers = ["latest"]
+
 [[tools.cowsay]]
 version = "1.6.0"
 backend = "npm:cowsay"
@@ -1337,6 +1342,56 @@ checksum = "sha256:ab50262c8190cd7aa9056d249d255c08c328c3e8716de9cfa29db4f131b8e
 url = "https://github.com/herdrdev/herdr/releases/download/v0.8.2/herdr-macos-x86_64"
 url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/521169110"
 
+[[tools.hk]]
+version = "1.57.0"
+backend = "aqua:jdx/hk"
+specifiers = ["latest"]
+
+[tools.hk."platforms.linux-arm64"]
+checksum = "sha256:af6768ba1e3041a988b6518bf8b6e8900dc6a2001208b3f548545fe7de4e6f22"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864258"
+
+[tools.hk."platforms.linux-arm64-musl"]
+checksum = "sha256:969feeff543c2bd30281fdce43139fd0913cbf44385387b94b9411a72775c960"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864262"
+
+[tools.hk."platforms.linux-x64"]
+checksum = "sha256:71449da0187a957233e1cf08565ed3c85fe67cd8d5942a15bc231579e1c7e380"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864279"
+
+[tools.hk."platforms.linux-x64-baseline"]
+checksum = "sha256:71449da0187a957233e1cf08565ed3c85fe67cd8d5942a15bc231579e1c7e380"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864279"
+
+[tools.hk."platforms.linux-x64-musl"]
+checksum = "sha256:e67b730e82e04e3e9b513f9063573a3fc29377ef3b61aa04cce7c9b9f4782b1e"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864280"
+
+[tools.hk."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:e67b730e82e04e3e9b513f9063573a3fc29377ef3b61aa04cce7c9b9f4782b1e"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864280"
+
+[tools.hk."platforms.macos-arm64"]
+checksum = "sha256:7b10c00e1f1b51d3e43cd5e738cc5fd93bf3ec0b777505744ac37c8b1e171188"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864261"
+
+[tools.hk."platforms.windows-x64"]
+checksum = "sha256:b5c4de9ec9e83790642564370c572b559f2b4ea38147ee8ea1f5b415967dab3f"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864259"
+
+[tools.hk."platforms.windows-x64-baseline"]
+checksum = "sha256:b5c4de9ec9e83790642564370c572b559f2b4ea38147ee8ea1f5b415967dab3f"
+url = "https://github.com/jdx/hk/releases/download/v1.57.0/hk-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/jdx/hk/releases/assets/536864259"
+
 [[tools.lazyjournal]]
 version = "0.8.6"
 backend = "aqua:Lifailon/lazyjournal"
@@ -1766,6 +1821,66 @@ url_api = "https://api.github.com/repos/rossmacarthur/sheldon/releases/assets/27
 checksum = "sha256:6e47f10a25f165b095eb2bde1ab617d4d34ad6f3ff2ca984167ca94fadd52730"
 url = "https://github.com/rossmacarthur/sheldon/releases/download/0.8.5/sheldon-0.8.5-aarch64-apple-darwin.tar.gz"
 url_api = "https://api.github.com/repos/rossmacarthur/sheldon/releases/assets/275183435"
+
+[[tools.shellcheck]]
+version = "0.11.0"
+backend = "aqua:koalaman/shellcheck"
+specifiers = ["latest"]
+
+[tools.shellcheck."platforms.linux-arm64"]
+checksum = "sha256:12b331c1d2db6b9eb13cfca64306b1b157a86eb69db83023e261eaa7e7c14588"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.linux.aarch64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056934"
+
+[tools.shellcheck."platforms.linux-arm64-musl"]
+checksum = "sha256:12b331c1d2db6b9eb13cfca64306b1b157a86eb69db83023e261eaa7e7c14588"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.linux.aarch64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056934"
+
+[tools.shellcheck."platforms.linux-x64"]
+checksum = "sha256:8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.linux.x86_64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056942"
+
+[tools.shellcheck."platforms.linux-x64-baseline"]
+checksum = "sha256:8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.linux.x86_64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056942"
+
+[tools.shellcheck."platforms.linux-x64-musl"]
+checksum = "sha256:8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.linux.x86_64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056942"
+
+[tools.shellcheck."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.linux.x86_64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056942"
+
+[tools.shellcheck."platforms.macos-arm64"]
+checksum = "sha256:56affdd8de5527894dca6dc3d7e0a99a873b0f004d7aabc30ae407d3f48b0a79"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.darwin.aarch64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056932"
+
+[tools.shellcheck."platforms.macos-x64"]
+checksum = "sha256:3c89db4edcab7cf1c27bff178882e0f6f27f7afdf54e859fa041fca10febe4c6"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.darwin.x86_64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056930"
+
+[tools.shellcheck."platforms.macos-x64-baseline"]
+checksum = "sha256:3c89db4edcab7cf1c27bff178882e0f6f27f7afdf54e859fa041fca10febe4c6"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.darwin.x86_64.tar.xz"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056930"
+
+[tools.shellcheck."platforms.windows-x64"]
+checksum = "sha256:8a4e35ab0b331c85d73567b12f2a444df187f483e5079ceffa6bda1faa2e740e"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.zip"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056944"
+
+[tools.shellcheck."platforms.windows-x64-baseline"]
+checksum = "sha256:8a4e35ab0b331c85d73567b12f2a444df187f483e5079ceffa6bda1faa2e740e"
+url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.zip"
+url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056944"
 
 [[tools.tlrc]]
 version = "1.13.1"
