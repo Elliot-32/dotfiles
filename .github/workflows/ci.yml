@@ -25,8 +25,11 @@ jobs:
           install: false
           cache: false
 
-      - name: Install shell tooling
-        run: sudo apt-get update && sudo apt-get install --yes zsh shellcheck
+      - name: Install Zsh
+        run: sudo apt-get update && sudo apt-get install --yes zsh
+
+      - name: Install hk tooling
+        run: mise install hk shellcheck
 
       - name: Prepare bootstrap fixtures
         run: |
@@ -34,7 +37,7 @@ jobs:
           sudo install -Dm644 /dev/null /usr/share/applications/com.mitchellh.ghostty.desktop
 
       - name: Run hk checks
-        run: mise exec "github:jdx/hk@1.57.0" -- hk check --all
+        run: mise exec -- hk check --all
 
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
