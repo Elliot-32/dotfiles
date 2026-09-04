@@ -28,8 +28,11 @@ jobs:
       - name: Install Zsh
         run: sudo apt-get update && sudo apt-get install --yes zsh
 
-      - name: Install hk tooling
-        run: mise install --locked hk shellcheck
+      - name: Generate hk tooling lock
+        run: |
+          mise install hk shellcheck
+          git diff -- mise.lock
+          exit 1
 
       - name: Prepare bootstrap fixtures
         run: |
