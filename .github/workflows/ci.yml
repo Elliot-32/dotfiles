@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -17,8 +17,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          ref: feat/hk
 
       - name: Install mise
         uses: jdx/mise-action@v4
@@ -27,13 +25,62 @@ jobs:
           install: false
           cache: false
 
-      - name: Generate mise lock
+      - name: Install Zsh
+        run: sudo apt-get update && sudo apt-get install --yes zsh
+
+      - name: Install hk tooling
+        run: mise install --locked hk shellcheck
+
+      - name: Prepare bootstrap fixtures
         run: |
-          mise install hk shellcheck
-          if ! git diff --quiet -- mise.lock; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add mise.lock
-            git commit -m "chore: update mise lock"
-            git push origin HEAD:feat/hk
-          fi
+          ln -s "$GITHUB_WORKSPACE" "$HOME/.dotfiles"
+          sudo install -Dm644 /dev/null /usr/share/applications/com.mitchellh.ghostty.desktop
+
+      - name: Run hk checks
+        run: mise exec hk shellcheck -- hk check --all
+
+      - name: Validate mise tasks
+        run: mise tasks validate --errors-only
+
+      - name: Validate bootstrap plan
+        run: mise --locked bootstrap --dry-run
+
+      - name: Validate mise config selection
+        shell: bash
+        run: |
+          check_config() {
+            local envs="$1"
+            shift
+
+            local output
+            output="$(MISE_ENV="$envs" MISE_ENV_CONF_D=true mise config ls)"
+            printf '%s\n' "$output"
+
+            local expected
+            for expected in "$@"; do
+              if ! grep -Fq "$expected" <<<"$output"; then
+                echo "::error::MISE_ENV=$envs did not load $expected"
+                return 1
+              fi
+            done
+          }
+
+          check_config "ubuntu,apt" \
+            "mise/conf.d/distro.ubuntu.toml" \
+            "mise/conf.d/packages.apt.toml"
+
+          check_config "debian,apt" \
+            "mise/conf.d/packages.apt.toml"
+
+          check_config "fedora,dnf" \
+            "mise/conf.d/distro.fedora.toml" \
+            "mise/conf.d/packages.dnf.toml"
+
+          check_config "rhel,dnf" \
+            "mise/conf.d/packages.dnf.toml"
+
+          check_config "arch,pacman" \
+            "mise/conf.d/packages.pacman.toml"
+
+          check_config "flatpak" \
+            "mise.flatpak.toml"
