@@ -1,0 +1,24 @@
+[bootstrap.user]
+login_shell = "/bin/bash"
+
+[dotfiles]
+"~/.bashrc/omarchy-zsh" = { block = '''
+# Keep Omarchy's Bash initialization, then hand interactive shells to Zsh.
+if [[ $- == *i* ]] && command -v zsh >/dev/null 2>&1; then
+  if [[ -z ${BASH_EXECUTION_STRING:-} && ${SHLVL:-0} == 1 ]] &&
+     [[ $(ps --no-header --pid="$PPID" --format=comm 2>/dev/null) != "zsh" ]]; then
+    if shopt -q login_shell; then
+      exec zsh -l
+    else
+      exec zsh
+    fi
+  fi
+fi
+''' }
+
+[bootstrap.hooks.post-packages]
+run = '''
+if command -v omarchy-default-terminal >/dev/null 2>&1 && command -v ghostty >/dev/null 2>&1; then
+  omarchy-default-terminal ghostty >/dev/null 2>&1 || true
+fi
+'''
