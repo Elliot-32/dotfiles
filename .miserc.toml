@@ -4,6 +4,7 @@ env_conf_d = true
 {% set wslg = "/mnt/wslg/runtime-dir" is dir %}
 {% set wsl = wslg or env.WSL_DISTRO_NAME is defined or env.WSL_INTEROP is defined %}
 {% set arch = "/etc/arch-release" is file %}
+{% set omarchy = arch and "/usr/share/omarchy" is dir %}
 {% set fedora = "/etc/fedora-release" is file %}
 {% set rhel = "/etc/redhat-release" is file %}
 {% set ubuntu = "/etc/lsb-release" is file and "/usr/share/keyrings/ubuntu-archive-keyring.gpg" is file %}
@@ -11,9 +12,9 @@ env_conf_d = true
 
 {% if arch %}
 {% if flatpak %}
-env = ["arch", "pacman", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["arch", "pacman", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% else %}
-env = ["arch", "pacman"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["arch", "pacman"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% endif %}
 {% elif fedora %}
 {% if flatpak %}
