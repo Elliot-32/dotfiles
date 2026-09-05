@@ -9,12 +9,10 @@ local checks = new Mapping<String, Step> {
   ["sh-syntax"] {
     glob = List("scripts/*.sh")
     check = "sh -n {{files}}"
-    batch = true
   }
   ["zsh-syntax"] {
     glob = List(".zshrc", ".p10k.zsh")
     check = "zsh -n {{files}}"
-    batch = true
   }
 }
 
