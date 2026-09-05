@@ -9,6 +9,9 @@
 "apt:wl-clipboard" = "latest"
 "apt:xdg-terminal-exec" = "latest"
 
+[bootstrap.user]
+login_shell = "/usr/bin/zsh"
+
 [bootstrap.files."/etc/apt/apt.conf.d/20auto-upgrades"]
 content = '''
 APT::Periodic::Enable "1";
