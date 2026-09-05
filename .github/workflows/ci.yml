@@ -82,5 +82,10 @@ jobs:
           check_config "arch,pacman" \
             "mise/conf.d/packages.pacman.toml"
 
+          check_config "arch,pacman,flatpak,omarchy" \
+            "mise/conf.d/packages.pacman.toml" \
+            "mise.flatpak.toml" \
+            "mise/conf.d/platform.omarchy.toml"
+
           check_config "flatpak" \
             "mise.flatpak.toml"
