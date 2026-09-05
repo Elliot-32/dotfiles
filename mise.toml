@@ -100,9 +100,6 @@ zoxide = "latest"
 zprofile = "shims"
 bash = true
 
-[bootstrap.user]
-login_shell = "/usr/bin/zsh"
-
 [bootstrap.linux.systemd.units.gomi-prune]
 description = "Prune gomi trash older than 30 days"
 type = "oneshot"
