@@ -13,6 +13,9 @@
 "dnf:wl-clipboard" = "latest"
 "dnf:xdg-terminal-exec" = "latest"
 
+[bootstrap.user]
+login_shell = "/usr/bin/zsh"
+
 [dotfiles]
 "~/.config/fcitx5/profile" = {}
 "~/.config/environment.d/90-fcitx5.conf" = {}
