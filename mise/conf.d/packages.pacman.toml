@@ -1,9 +1,15 @@
 [bootstrap.packages]
 "pacman:openssh" = "latest"
 "pacman:zsh" = "latest"
+"pacman:ghostty" = "latest"
 "pacman:fcitx5" = "latest"
 "pacman:fcitx5-chewing" = "latest"
 "pacman:fcitx5-gtk" = "latest"
 "pacman:fcitx5-qt" = "latest"
 "pacman:libnotify" = "latest"
 "pacman:wl-clipboard" = "latest"
+
+[dotfiles]
+"~/.config/fcitx5/profile" = {}
+"~/.config/environment.d/90-fcitx5.conf" = {}
+"~/.config/ghostty/config" = {}
