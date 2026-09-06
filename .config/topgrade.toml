@@ -16,21 +16,6 @@ disable = [
   "rustup",
   "self_update",
   "uv",
-
-  # Privileged/system-wide updates.
-  "system",
-  "snap",
-  "deb_get",
-  "pacstall",
-  "pacdef",
-  "config_update",
-  "dkp_pacman",
-  "firmware",
-  "mandb",
-  "pkgfile",
-  "restarts",
-  "waydroid",
-  "auto_cpufreq",
 ]
 
 [flatpak]
