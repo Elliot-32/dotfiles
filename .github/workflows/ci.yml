@@ -49,6 +49,18 @@ jobs:
       - name: Validate bootstrap plan
         run: mise --locked bootstrap --dry-run
 
+      - name: Validate custom mise config directory
+        shell: bash
+        run: |
+          custom_config_dir="$RUNNER_TEMP/custom-mise-config"
+          cp -a "$GITHUB_WORKSPACE" "$custom_config_dir"
+
+          export MISE_CONFIG_DIR="$custom_config_dir"
+          export MISE_TRUSTED_CONFIG_PATHS="$custom_config_dir"
+
+          mise tasks validate --errors-only
+          mise --locked bootstrap --dry-run
+
       - name: Validate mise config selection
         shell: bash
         run: |

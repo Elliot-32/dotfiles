@@ -1,5 +1,7 @@
 [bootstrap.packages]
 "dnf:gcc" = "latest"
+"dnf:fontconfig" = "latest"
+"dnf:xz" = "latest"
 "dnf:nmap" = "latest"
 "dnf:openssh-clients" = "latest"
 "dnf:zsh" = "latest"
@@ -16,5 +18,5 @@
 "dnf:xdg-terminal-exec" = "latest"
 
 [dotfiles]
-"~/.config/fcitx5/profile" = {}
-"~/.config/environment.d/90-fcitx5.conf" = {}
+"~/.config/fcitx5/profile" = { source = "../.config/fcitx5/profile" }
+"~/.config/environment.d/90-fcitx5.conf" = { source = "../.config/environment.d/90-fcitx5.conf" }

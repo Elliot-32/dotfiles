@@ -1,5 +1,7 @@
 [bootstrap.packages]
 "apt:build-essential" = "latest"
+"apt:fontconfig" = "latest"
+"apt:xz-utils" = "latest"
 "apt:nmap" = "latest"
 "apt:openssh-client" = "latest"
 "apt:zsh" = "latest"
@@ -30,5 +32,5 @@ enabled = true
 state = "running"
 
 [dotfiles]
-"~/.config/fcitx5/profile" = {}
-"~/.config/environment.d/90-fcitx5.conf" = {}
+"~/.config/fcitx5/profile" = { source = "../.config/fcitx5/profile" }
+"~/.config/environment.d/90-fcitx5.conf" = { source = "../.config/environment.d/90-fcitx5.conf" }

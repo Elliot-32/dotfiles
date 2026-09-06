@@ -3,7 +3,6 @@ min_version = "2026.8.13"
 [settings]
 auto_update = true
 lockfile = true
-dotfiles.root = "~/.config/mise"
 dotfiles.default_mode = "symlink"
 
 [settings.github]
@@ -81,12 +80,13 @@ codex = "latest"
 [fetch]
 	prune = true
 ''' }
-"~/.zshrc" = {}
-"~/.zshenv" = {}
-"~/.zprofile" = {}
-"~/.p10k.zsh" = {}
-"~/.config/sheldon" = { mode = "symlink-each" }
-"~/.local/share/mise-completions-sync/registry.toml" = {}
+"~/.zshrc" = { source = ".zshrc" }
+"~/.zshenv" = { source = ".zshenv" }
+"~/.zprofile" = { source = ".zprofile" }
+"~/.p10k.zsh" = { source = ".p10k.zsh" }
+"~/.config/sheldon" = { source = ".config/sheldon", mode = "symlink-each" }
+"~/.config/topgrade.toml" = { source = ".config/topgrade.toml" }
+"~/.local/share/mise-completions-sync/registry.toml" = { source = ".local/share/mise-completions-sync/registry.toml" }
 
 [bootstrap.directories]
 "~/.local/share/zsh/site-functions" = {}
@@ -101,6 +101,7 @@ login_shell = "/usr/bin/zsh"
 description = "Prune gomi trash older than 30 days"
 type = "oneshot"
 exec_start = "~/.local/bin/mise exec -- gomi --force --prune=30d"
+environment = { MISE_CONFIG_DIR = "{{ config_source | canonicalize | dirname }}" }
 wanted_by = []
 start = false
 
@@ -111,20 +112,18 @@ persistent = true
 unit = "gomi-prune"
 
 [bootstrap.linux.systemd.units.update]
-description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
+description = "Update tools, Flatpak apps, Sheldon plugins, fonts, and completions with Topgrade"
 type = "oneshot"
-exec_start = "%h/.local/bin/mise run update"
+exec_start = "%h/.local/bin/mise exec -- %h/.local/bin/topgrade"
+environment = { MISE_CONFIG_DIR = "{{ config_source | canonicalize | dirname }}" }
 wanted_by = []
 start = false
 
 [bootstrap.linux.systemd.units.update-timer]
-description = "Daily mise update"
+description = "Daily Topgrade update"
 on_calendar = "daily"
 persistent = true
 unit = "update"
-
-[task_config]
-dir = "{{ env.HOME }}/.config/mise"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
@@ -135,27 +134,19 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "hk install --mise",
+  "test -x \"$HOME/.local/bin/topgrade\" || cargo binstall --no-confirm --root \"$HOME/.local\" topgrade",
+  { task = "update:fonts" },
   { task = "bootstrap:windows" },
-  "mise exec -- sh ./scripts/login-github.sh",
+  "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\"",
 ]
 
 [tasks."bootstrap:windows"]
 hide = true
 run = ":"
 
-[tasks.update]
-description = "Update tools, Sheldon plugins, and completions"
-run = [
-  "mise upgrade",
-  { task = "update:flatpak" },
-  "mise completion zsh --install",
-  "sheldon --non-interactive lock --update",
-  "misecompsync --shell zsh",
-]
-
-[tasks."update:flatpak"]
+[tasks."update:fonts"]
 hide = true
-run = ":"
+run = "bash \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/update-fonts.sh\""
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"

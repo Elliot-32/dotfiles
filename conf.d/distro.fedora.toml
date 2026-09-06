@@ -1,10 +1,10 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "$HOME/.config/mise/scripts/bootstrap-ghostty-fedora.sh"'
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-ghostty-fedora.sh"'
 
 [bootstrap.packages]
 "dnf:ghostty" = "latest"
 
 [dotfiles]
-"~/.config/ghostty/config" = {}
-"~/.config/xdg-terminals.list" = {}
+"~/.config/ghostty/config" = { source = "../.config/ghostty/config" }
+"~/.config/xdg-terminals.list" = { source = "../.config/xdg-terminals.list" }
 "~/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop" = "/usr/share/applications/com.mitchellh.ghostty.desktop"

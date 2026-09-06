@@ -1,5 +1,5 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "$HOME/.config/mise/scripts/bootstrap-flatpak.sh"'
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-flatpak.sh"'
 
 [bootstrap.packages]
 "flatpak-user:com.bitwarden.desktop" = "latest"
@@ -35,7 +35,3 @@ run = 'sh "$HOME/.config/mise/scripts/bootstrap-flatpak.sh"'
 "flatpak-user:org.onlyoffice.desktopeditors" = "latest"
 "flatpak-user:org.signal.Signal" = "latest"
 "flatpak-user:org.telegram.desktop" = "latest"
-
-[tasks."update:flatpak"]
-hide = true
-run = "mise bootstrap packages upgrade --manager flatpak-user --yes"
