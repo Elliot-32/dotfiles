@@ -86,6 +86,7 @@ codex = "latest"
 "~/.zprofile" = {}
 "~/.p10k.zsh" = {}
 "~/.config/sheldon" = { mode = "symlink-each" }
+"~/.config/topgrade.toml" = {}
 "~/.local/share/mise-completions-sync/registry.toml" = {}
 
 [bootstrap.directories]
@@ -111,14 +112,14 @@ persistent = true
 unit = "gomi-prune"
 
 [bootstrap.linux.systemd.units.update]
-description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
+description = "Update tools, Flatpak apps, Sheldon plugins, fonts, and completions with Topgrade"
 type = "oneshot"
-exec_start = "%h/.local/bin/mise run update"
+exec_start = "%h/.local/bin/topgrade"
 wanted_by = []
 start = false
 
 [bootstrap.linux.systemd.units.update-timer]
-description = "Daily mise update"
+description = "Daily Topgrade update"
 on_calendar = "daily"
 persistent = true
 unit = "update"
@@ -135,25 +136,13 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "hk install --mise",
+  "test -x \"$HOME/.local/bin/topgrade\" || cargo binstall --no-confirm --root \"$HOME/.local\" topgrade",
+  "bash ./scripts/update-fonts.sh",
   { task = "bootstrap:windows" },
   "mise exec -- sh ./scripts/login-github.sh",
 ]
 
 [tasks."bootstrap:windows"]
-hide = true
-run = ":"
-
-[tasks.update]
-description = "Update tools, Sheldon plugins, and completions"
-run = [
-  "mise upgrade",
-  { task = "update:flatpak" },
-  "mise completion zsh --install",
-  "sheldon --non-interactive lock --update",
-  "misecompsync --shell zsh",
-]
-
-[tasks."update:flatpak"]
 hide = true
 run = ":"
 
