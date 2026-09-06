@@ -36,7 +36,7 @@ curl https://mise.run | sh
 | 使用指定 backend 新增全域工具 | `mise use -g <backend>:<tool>` |
 | 移除全域工具 | `mise unuse -g <tool>` |
 
-`topgrade` 由 bootstrap 安裝到 `~/.local/bin`。目前只接管 mise tools、Sheldon plugins、user Flatpak、Nerd Font 與更新後的 completion refresh；APT/DNF/Pacman 的系統套件更新仍交給各發行版既有的自動更新機制。
+`topgrade` 由 mise `[tools]` 安裝與更新，Topgrade 本身不執行 self-update。目前只接管 mise tools、Sheldon plugins、user Flatpak、Nerd Font 與更新後的 completion refresh；APT/DNF/Pacman 的系統套件更新仍交給各發行版既有的自動更新機制。
 
 非 WSL Linux 會自動將 JetBrainsMono Nerd Font 安裝到 `~/.local/share/fonts/JetBrainsMonoNerdFont`，更新時會先驗證 Nerd Fonts release 的 SHA-256，再刷新 fontconfig cache。Ghostty 明確使用 `JetBrainsMono Nerd Font Mono`。WSL 的終端字體維持由 Windows bootstrap 管理。
 
