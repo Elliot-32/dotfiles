@@ -25,6 +25,7 @@ rm = "gomi"
 path = "j $(print -l $path | fzf)"
 n = "nvim"
 sl = "systemctl"
+sudo = "sudo "
 
 [tools]
 atuin = "latest"
