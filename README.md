@@ -1,9 +1,9 @@
 # dotfiles
 
-使用 mise 管理開發工具、系統套件與 dotfiles。此 repo 本身就是 mise global config，會安裝到 `$MISE_CONFIG_DIR`（預設 `~/.config/mise`）。
+使用 [mise](https://mise.jdx.dev/) 管理開發工具、系統套件與 dotfiles。此 repo 本身就是 mise global config，會安裝到 `$MISE_CONFIG_DIR`（預設 `~/.config/mise`）。
 
 ## 安裝
-```
+```bash
 curl https://mise.run | sh
 
 git clone https://github.com/Elliot-32/dotfiles.git ~/.config/mise &&
