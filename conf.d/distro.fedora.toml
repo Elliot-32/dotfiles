@@ -5,6 +5,6 @@ run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-ghostty-fedo
 "dnf:ghostty" = "latest"
 
 [dotfiles]
-"~/.config/ghostty/config" = {}
-"~/.config/xdg-terminals.list" = {}
+"~/.config/ghostty/config" = { source = "../.config/ghostty/config" }
+"~/.config/xdg-terminals.list" = { source = "../.config/xdg-terminals.list" }
 "~/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop" = "/usr/share/applications/com.mitchellh.ghostty.desktop"
