@@ -94,6 +94,7 @@ codex = "latest"
 "~/.zshenv" = {}
 "~/.zprofile" = {}
 "~/.p10k.zsh" = {}
+"~/.config/atuin/config.toml" = {}
 "~/.config/sheldon" = { mode = "symlink-each" }
 "~/.local/share/mise-completions-sync/registry.toml" = {}
 
