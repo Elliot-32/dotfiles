@@ -11,6 +11,19 @@ curl https://mise.run | sh
 ~/.local/bin/mise bootstrap --from-git https://github.com/Elliot-32/dotfiles.git --yes --force-dotfiles && exec zsh -l
 ```
 
+### 從舊版遷移
+
+如果 repo 仍位於 `~/.dotfiles`：
+
+```bash
+mv ~/.config/mise ~/.config/mise.pre-from-git
+mv ~/.dotfiles ~/.config/mise
+git -C ~/.config/mise pull --ff-only
+mise bootstrap --yes --force-dotfiles && exec zsh -l
+```
+
+確認新設定正常後即可刪除 `~/.config/mise.pre-from-git`。
+
 ## 常用指令
 
 | 用途 | 指令 |
