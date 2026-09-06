@@ -1,5 +1,5 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "$HOME/.dotfiles/scripts/bootstrap-flatpak.sh"'
+run = 'sh "$HOME/.config/mise/scripts/bootstrap-flatpak.sh"'
 
 [bootstrap.packages]
 "flatpak-user:com.bitwarden.desktop" = "latest"

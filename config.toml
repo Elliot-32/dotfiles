@@ -3,6 +3,7 @@ min_version = "2026.8.13"
 [settings]
 auto_update = true
 lockfile = true
+dotfiles.root = "~/.config/mise"
 dotfiles.default_mode = "symlink"
 
 [settings.github]
@@ -73,16 +74,6 @@ zoxide = "latest"
 codex = "latest"
 
 [dotfiles]
-"~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
-"~/.config/mise/config.flatpak.toml" = "~/.dotfiles/mise.flatpak.toml"
-"~/.config/mise/conf.d/distro.fedora.toml" = "~/.dotfiles/mise/conf.d/distro.fedora.toml"
-"~/.config/mise/conf.d/distro.ubuntu.toml" = "~/.dotfiles/mise/conf.d/distro.ubuntu.toml"
-"~/.config/mise/conf.d/packages.apt.toml" = "~/.dotfiles/mise/conf.d/packages.apt.toml"
-"~/.config/mise/conf.d/packages.dnf.toml" = "~/.dotfiles/mise/conf.d/packages.dnf.toml"
-"~/.config/mise/conf.d/packages.pacman.toml" = "~/.dotfiles/mise/conf.d/packages.pacman.toml"
-"~/.config/mise/conf.d/platform.wsl.toml" = "~/.dotfiles/mise/conf.d/platform.wsl.toml"
-"~/.config/mise/conf.d/platform.wslg.toml" = "~/.dotfiles/mise/conf.d/platform.wslg.toml"
-"~/.config/mise/miserc.toml" = "~/.dotfiles/.miserc.toml"
 "~/.gitconfig/defaults" = { block = '''
 [push]
 	autoSetupRemote = true
@@ -122,7 +113,7 @@ unit = "gomi-prune"
 [bootstrap.linux.systemd.units.update]
 description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
 type = "oneshot"
-exec_start = "%h/.local/bin/mise -C %h/.dotfiles run update"
+exec_start = "%h/.local/bin/mise run update"
 wanted_by = []
 start = false
 
@@ -133,7 +124,7 @@ persistent = true
 unit = "update"
 
 [task_config]
-dir = "{{ env.HOME }}/.dotfiles"
+dir = "{{ env.HOME }}/.config/mise"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"

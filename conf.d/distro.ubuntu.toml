@@ -1,8 +1,8 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "$HOME/.dotfiles/scripts/bootstrap-ghostty-fedora.sh"'
+run = 'sh "$HOME/.config/mise/scripts/bootstrap-ghostty-ubuntu.sh"'
 
 [bootstrap.packages]
-"dnf:ghostty" = "latest"
+"apt:ghostty" = "latest"
 
 [dotfiles]
 "~/.config/ghostty/config" = {}
