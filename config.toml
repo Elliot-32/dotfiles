@@ -124,7 +124,7 @@ persistent = true
 unit = "update"
 
 [task_config]
-dir = "{{ config_source | dirname }}"
+dir = "{{ env.HOME }}/.config/mise"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
