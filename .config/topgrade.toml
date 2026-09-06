@@ -2,7 +2,7 @@
 assume_yes = true
 ask_retry = false
 notify_end = "never"
-only = ["self_update", "mise", "sheldon", "custom_commands"]
+only = ["mise", "sheldon", "custom_commands"]
 
 [commands]
 "Flatpak user apps" = 'if command -v flatpak >/dev/null 2>&1; then flatpak update --user -y; fi'
