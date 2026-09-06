@@ -3,3 +3,13 @@
 
 [env]
 SHELDON_PROFILE = "wsl"
+
+[bootstrap.hooks.final]
+run = '''
+if command -v powershell.exe >/dev/null 2>&1; then
+  script="$HOME/.config/mise/scripts/bootstrap-windows.ps1"
+  powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w "$script")"
+else
+  echo "warning: powershell.exe is unavailable; skipping Windows bootstrap" >&2
+fi
+'''
