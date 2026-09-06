@@ -15,6 +15,7 @@ _.path = [
   "{{ env.HOME }}/go/bin",
   "{{ env.HOME }}/.cargo/bin",
 ]
+DOTFILES_ROOT = "{{ config_source | canonicalize | dirname }}"
 EDITOR = "nvim"
 VISUAL = "nvim"
 SUDO_EDITOR = "nvim"
@@ -127,7 +128,7 @@ persistent = true
 unit = "update"
 
 [task_config]
-dir = "{{ config_source | canonicalize | dirname }}"
+dir = "{{ env.DOTFILES_ROOT }}"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
