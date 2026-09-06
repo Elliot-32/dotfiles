@@ -14,11 +14,12 @@ fi
 
 # Windows Terminal is outside WSL's X/Wayland tree. Query Win32 directly so
 # bgnotify only fires when Windows Terminal is not the foreground application.
-if [[ -n ${WT_SESSION:-} && -n ${commands[powershell.exe]:-} ]]; then
-  function bgnotify_appid {
-    local process_name
-    process_name=$(
-      powershell.exe -NoLogo -NoProfile -NonInteractive -Command '
+if [[ -n ${WT_SESSION:-} ]]; then
+  if [[ -n ${commands[powershell.exe]:-} ]]; then
+    function bgnotify_appid {
+      local process_name
+      process_name=$(
+        powershell.exe -NoLogo -NoProfile -NonInteractive -Command '
 Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -34,10 +35,18 @@ $foregroundPid = [uint32]0
 [void][ForegroundWindow]::GetWindowThreadProcessId($window, [ref]$foregroundPid)
 (Get-Process -Id $foregroundPid).ProcessName
 ' 2>/dev/null | tr -d '\r\n'
-    )
-    print -r -- "${process_name:-$EPOCHSECONDS}"
-  }
-  bgnotify_termid=WindowsTerminal
+      )
+      print -r -- "${process_name:-$EPOCHSECONDS}"
+    }
+    bgnotify_termid=WindowsTerminal
+  else
+    # Without the Win32 foreground probe we cannot guarantee background-only
+    # notifications, so fail closed instead of notifying while focused.
+    autoload -Uz add-zsh-hook
+    add-zsh-hook -d preexec bgnotify_begin
+    add-zsh-hook -d precmd bgnotify_end
+    return
+  fi
 fi
 
 function bgnotify {
@@ -45,22 +54,10 @@ function bgnotify {
   local message="$2"
   local icon="$3"
 
-  if (( ${+commands[wsl-notify-send.exe]} )); then
-    command wsl-notify-send.exe \
-      --category "${WSL_DISTRO_NAME:-WSL}" \
-      "$title" "$message" &>/dev/null && return 0
-  fi
-
-  # Windows Terminal versions with OSC 777 support suppress notifications
-  # while focused. Older versions safely ignore the sequence.
   if [[ -n ${WT_SESSION:-} ]]; then
-    title=${title//$'\e'/}
-    title=${title//;/,}
-    message=${message//$'\e'/}
-    message=${message//$'\a'/}
-    message=${message//$'\n'/ }
-    message=${message//;/,}
-    print -rn -- $'\e]777;notify;'"$title;$message"$'\e\\'
+    # bgnotify_end already verified that Windows Terminal is in the background.
+    # Let Windows Terminal translate BEL according to its bellStyle setting.
+    print -rn -- $'\a'
   elif (( ${+commands[notify-send]} )); then
     command notify-send "$title" "$message" \
       ${=icon:+--icon "$icon"} ${=bgnotify_extraargs:-}
