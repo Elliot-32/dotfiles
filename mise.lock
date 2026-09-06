@@ -335,6 +335,11 @@ version = "0.13.0"
 backend = "cargo:trippy"
 specifiers = ["latest"]
 
+[[tools.codex]]
+version = "0.152.0"
+backend = "aqua:openai/codex"
+specifiers = ["latest"]
+
 [[tools.cowsay]]
 version = "1.6.0"
 backend = "npm:cowsay"
@@ -911,66 +916,6 @@ checksum = "sha256:4098ce061fb4572e53905cba6910dbff372143e608ea84d2f5ca374c75a9e
 url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/site.tar.gz"
 url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/523750825"
 
-[[tools."github:lazywalker/rgrc"]]
-version = "0.6.30"
-backend = "github:lazywalker/rgrc"
-specifiers = ["latest"]
-
-[tools."github:lazywalker/rgrc"."platforms.linux-arm64"]
-checksum = "sha256:208a8a872d931961435af2e11752deccc221107aa2239a29057d6864a047899a"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102723"
-
-[tools."github:lazywalker/rgrc"."platforms.linux-arm64-musl"]
-checksum = "sha256:208a8a872d931961435af2e11752deccc221107aa2239a29057d6864a047899a"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102723"
-
-[tools."github:lazywalker/rgrc"."platforms.linux-x64"]
-checksum = "sha256:8354c7ed836a54a31a5bed9e3e23def62eee3063e492539cf3a42b8fbe9a0e4f"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102714"
-
-[tools."github:lazywalker/rgrc"."platforms.linux-x64-baseline"]
-checksum = "sha256:8354c7ed836a54a31a5bed9e3e23def62eee3063e492539cf3a42b8fbe9a0e4f"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102714"
-
-[tools."github:lazywalker/rgrc"."platforms.linux-x64-musl"]
-checksum = "sha256:6891d69e739070512cfacd6758486ee7e9fdffdd220afdd416676584796997f8"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102722"
-
-[tools."github:lazywalker/rgrc"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:6891d69e739070512cfacd6758486ee7e9fdffdd220afdd416676584796997f8"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102722"
-
-[tools."github:lazywalker/rgrc"."platforms.macos-arm64"]
-checksum = "sha256:61fec3a9f596813121e25ca25f5c5c2510ac10b987e27777aea486b6d3d14bf1"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102729"
-
-[tools."github:lazywalker/rgrc"."platforms.macos-x64"]
-checksum = "sha256:8d26bf2ea06397b04efada00318e1be7f6ff44428ba967a4412480411446bf8b"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102718"
-
-[tools."github:lazywalker/rgrc"."platforms.macos-x64-baseline"]
-checksum = "sha256:8d26bf2ea06397b04efada00318e1be7f6ff44428ba967a4412480411446bf8b"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102718"
-
-[tools."github:lazywalker/rgrc"."platforms.windows-x64"]
-checksum = "sha256:58ef53098f30bd61b072dc8b338b3985fc0bfc58edd3fa989fbed00969915572"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102719"
-
-[tools."github:lazywalker/rgrc"."platforms.windows-x64-baseline"]
-checksum = "sha256:58ef53098f30bd61b072dc8b338b3985fc0bfc58edd3fa989fbed00969915572"
-url = "https://github.com/lazywalker/rgrc/releases/download/v0.6.30/rgrc-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/lazywalker/rgrc/releases/assets/525102719"
-
 [[tools.glow]]
 version = "3.0.0"
 backend = "aqua:charmbracelet/glow"
@@ -1342,6 +1287,16 @@ checksum = "sha256:ab50262c8190cd7aa9056d249d255c08c328c3e8716de9cfa29db4f131b8e
 url = "https://github.com/herdrdev/herdr/releases/download/v0.8.2/herdr-macos-x86_64"
 url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/521169110"
 
+[tools.herdr."platforms.windows-x64"]
+checksum = "sha256:0ab3d0fe1434d55757997542b978c771d642987bb15a7130f4160f0db38821d5"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.8.2/herdr-windows-x86_64.zip"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/521169109"
+
+[tools.herdr."platforms.windows-x64-baseline"]
+checksum = "sha256:0ab3d0fe1434d55757997542b978c771d642987bb15a7130f4160f0db38821d5"
+url = "https://github.com/herdrdev/herdr/releases/download/v0.8.2/herdr-windows-x86_64.zip"
+url_api = "https://api.github.com/repos/herdrdev/herdr/releases/assets/521169109"
+
 [[tools.hk]]
 version = "1.57.0"
 backend = "aqua:jdx/hk"
@@ -1441,6 +1396,16 @@ url_api = "https://api.github.com/repos/Lifailon/lazyjournal/releases/assets/374
 checksum = "sha256:0134a1c51685661d406d126210391c6c06e577dd65ed433ef2124b339fb9b3f4"
 url = "https://github.com/Lifailon/lazyjournal/releases/download/0.8.6/lazyjournal-0.8.6-darwin-amd64"
 url_api = "https://api.github.com/repos/Lifailon/lazyjournal/releases/assets/374974917"
+
+[tools.lazyjournal."platforms.windows-x64"]
+checksum = "sha256:24270caab92b8e8b30fd8e4d6cb78f98c6696e0b8fe8b299807260ad9ee4d785"
+url = "https://github.com/Lifailon/lazyjournal/releases/download/0.8.6/lazyjournal-0.8.6-windows-amd64.exe"
+url_api = "https://api.github.com/repos/Lifailon/lazyjournal/releases/assets/374974887"
+
+[tools.lazyjournal."platforms.windows-x64-baseline"]
+checksum = "sha256:24270caab92b8e8b30fd8e4d6cb78f98c6696e0b8fe8b299807260ad9ee4d785"
+url = "https://github.com/Lifailon/lazyjournal/releases/download/0.8.6/lazyjournal-0.8.6-windows-amd64.exe"
+url_api = "https://api.github.com/repos/Lifailon/lazyjournal/releases/assets/374974887"
 
 [[tools.lazyssh]]
 version = "0.3.0"

@@ -2,7 +2,7 @@
 [[ -n ${WSL_DISTRO_NAME:-} || -n ${WSL_INTEROP:-} ]] || return
 
 bgnotify_bell=false
-bgnotify_threshold=30
+bgnotify_threshold=5
 
 if [[ ${TERM_PROGRAM:-} == ghostty ]]; then
   # Ghostty provides accurate command-finished notifications itself.

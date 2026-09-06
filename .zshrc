@@ -1,5 +1,6 @@
 # Atuin PTY proxy must be initialized before Powerlevel10k instant prompt.
 PATH="$HOME/.local/share/mise/installs/atuin/latest/.mise-bins:$PATH" \
+ZSH_ARGZERO="${commands[zsh]:-/usr/bin/zsh}" \
   eval "$("$HOME/.local/share/mise/installs/atuin/latest/.mise-bins/atuin" pty-proxy init zsh)"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -41,18 +42,6 @@ autoload -Uz zmv
 
 # Shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
 setopt glob_dots     # no special treatment for file names with a leading dot
-
-# Generate rgrc aliases without overriding aliases declared in mise.toml.
-eval "$(rgrc --aliases --except ls)"
-
-# Convert rgrc aliases to wrapper functions: functions are not expanded for
-# completion lookup, so systemctl/podman/... keep their own completions.
-for _rgrc_cmd in ${(k)aliases}; do
-  [[ $aliases[$_rgrc_cmd] == "rgrc "* ]] || continue
-  functions[$_rgrc_cmd]="${aliases[$_rgrc_cmd]} \"\$@\""
-  unalias $_rgrc_cmd
-done
-unset _rgrc_cmd
 
 # Configure completion and fzf-tab before Sheldon runs compinit and loads the
 # plugin.

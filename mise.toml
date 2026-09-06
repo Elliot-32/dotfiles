@@ -65,12 +65,12 @@ yazi = "latest"
 zoxide = "latest"
 "cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
 "github:Giammarco-Ferranti/deja" = "latest"
-"github:lazywalker/rgrc" = "latest"
 "go:github.com/babarot/gomi" = "latest"
 "go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
 "cargo:trippy" = { version = "latest", depends = ["rust", "cargo-binstall"] }
+codex = "latest"
 
 [dotfiles]
 "~/.config/mise/config.toml" = "~/.dotfiles/mise.toml"
@@ -94,6 +94,9 @@ zoxide = "latest"
 "~/.p10k.zsh" = {}
 "~/.config/sheldon" = { mode = "symlink-each" }
 "~/.local/share/mise-completions-sync/registry.toml" = {}
+
+[bootstrap.directories]
+"~/.local/share/zsh/site-functions" = {}
 
 [bootstrap.mise_shell_activate]
 zprofile = "shims"
