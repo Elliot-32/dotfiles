@@ -6,9 +6,11 @@ disable = [
   # Managed by mise; keep Topgrade steps that only update plugins/data.
   "atuin",
   "bun",
+  "bun_packages",
   "cargo",
   "codex",
   "go",
+  "node",
   "opencode",
   "pipx",
   "rustup",
