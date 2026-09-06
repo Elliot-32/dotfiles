@@ -72,6 +72,8 @@ zoxide = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
 "cargo:trippy" = { version = "latest", depends = ["rust", "cargo-binstall"] }
 codex = "latest"
+"aqua:kjokjo/ipcalc" = "latest"
+"pipx:sqlmap" = "latest"
 
 [dotfiles]
 "~/.gitconfig/defaults" = { block = '''
