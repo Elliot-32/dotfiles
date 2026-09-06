@@ -2,7 +2,35 @@
 assume_yes = true
 ask_retry = false
 notify_end = "never"
-only = ["mise", "sheldon", "custom_commands"]
+disable = [
+  # Managed by mise; keep Topgrade steps that only update plugins/data.
+  "atuin",
+  "bun",
+  "cargo",
+  "codex",
+  "go",
+  "opencode",
+  "pipx",
+  "rustup",
+  "self_update",
+  "uv",
+
+  # Privileged/system-wide updates.
+  "system",
+  "flatpak",
+  "snap",
+  "deb_get",
+  "pacstall",
+  "pacdef",
+  "config_update",
+  "dkp_pacman",
+  "firmware",
+  "mandb",
+  "pkgfile",
+  "restarts",
+  "waydroid",
+  "auto_cpufreq",
+]
 
 [commands]
 "Flatpak user apps" = 'if command -v flatpak >/dev/null 2>&1; then flatpak update --user -y; fi'
