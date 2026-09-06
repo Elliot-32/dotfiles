@@ -1,6 +1,20 @@
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+# Windows PowerShell 5.1 can inherit PowerShell 7 module paths from its parent
+# environment. That can make built-in modules such as
+# Microsoft.PowerShell.Security fail to autoload. Keep this bootstrap process
+# on the Windows PowerShell module roots when running powershell.exe.
+if ($PSVersionTable.PSEdition -eq 'Desktop') {
+    $windowsPowerShellModulePaths = @(
+        (Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'WindowsPowerShell\Modules'),
+        (Join-Path $env:ProgramFiles 'WindowsPowerShell\Modules'),
+        (Join-Path $PSHOME 'Modules')
+    ) | Where-Object { $_ }
+
+    $env:PSModulePath = $windowsPowerShellModulePaths -join ';'
+}
+
 $fontPackage = 'JetBrainsMono-NF-Mono'
 $fontFace = 'JetBrainsMono Nerd Font Mono'
 
@@ -74,7 +88,7 @@ function Remove-JsonComments {
             if ($escaped) {
                 $escaped = $false
             }
-            elseif ($char -eq '\') {
+            elseif ($char -eq '\\') {
                 $escaped = $true
             }
             elseif ($char -eq '"') {
@@ -118,7 +132,7 @@ function Remove-JsonTrailingCommas {
             if ($escaped) {
                 $escaped = $false
             }
-            elseif ($char -eq '\') {
+            elseif ($char -eq '\\') {
                 $escaped = $true
             }
             elseif ($char -eq '"') {
