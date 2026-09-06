@@ -46,7 +46,8 @@ inline = 'eval "$(atuin init zsh)"'
 github = "Aloxaf/fzf-tab"
 
 [plugins.zsh-ssh]
-github = "sunlei/zsh-ssh"
+github = "Elliot-32/zsh-ssh"
+branch = "feat/fzf-tab-completion-groups"
 
 [plugins.deja]
 inline = '''
