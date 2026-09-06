@@ -1,4 +1,6 @@
 [bootstrap.packages]
+"dnf:gcc" = "latest"
+"dnf:nmap" = "latest"
 "dnf:openssh-clients" = "latest"
 "dnf:zsh" = "latest"
 "dnf:dnf-automatic" = "latest"

@@ -1,4 +1,6 @@
 [bootstrap.packages]
+"pacman:base-devel" = "latest"
+"pacman:nmap" = "latest"
 "pacman:openssh" = "latest"
 "pacman:zsh" = "latest"
 "pacman:fcitx5" = "latest"
