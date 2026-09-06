@@ -3,7 +3,7 @@ min_version = "2026.8.13"
 [settings]
 auto_update = true
 lockfile = true
-dotfiles.root = "~/.config/mise"
+dotfiles.root = "{{ config_source | canonicalize | dirname }}"
 dotfiles.default_mode = "symlink"
 
 [settings.github]
@@ -102,6 +102,7 @@ login_shell = "/usr/bin/zsh"
 description = "Prune gomi trash older than 30 days"
 type = "oneshot"
 exec_start = "~/.local/bin/mise exec -- gomi --force --prune=30d"
+environment = { MISE_CONFIG_DIR = "{{ config_source | canonicalize | dirname }}" }
 wanted_by = []
 start = false
 
@@ -115,6 +116,7 @@ unit = "gomi-prune"
 description = "Update tools, Flatpak apps, Sheldon plugins, fonts, and completions with Topgrade"
 type = "oneshot"
 exec_start = "%h/.local/bin/mise exec -- %h/.local/bin/topgrade"
+environment = { MISE_CONFIG_DIR = "{{ config_source | canonicalize | dirname }}" }
 wanted_by = []
 start = false
 
@@ -125,7 +127,7 @@ persistent = true
 unit = "update"
 
 [task_config]
-dir = "{{ env.HOME }}/.config/mise"
+dir = "{{ config_source | canonicalize | dirname }}"
 
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
@@ -137,7 +139,7 @@ run = [
   "sheldon --non-interactive lock",
   "hk install --mise",
   "test -x \"$HOME/.local/bin/topgrade\" || cargo binstall --no-confirm --root \"$HOME/.local\" topgrade",
-  "bash ./scripts/update-fonts.sh",
+  { task = "update:fonts" },
   { task = "bootstrap:windows" },
   "mise exec -- sh ./scripts/login-github.sh",
 ]
@@ -145,6 +147,10 @@ run = [
 [tasks."bootstrap:windows"]
 hide = true
 run = ":"
+
+[tasks."update:fonts"]
+hide = true
+run = "bash ./scripts/update-fonts.sh"
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
