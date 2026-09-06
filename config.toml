@@ -1,0 +1,156 @@
+min_version = "2026.8.13"
+
+[settings]
+auto_update = true
+lockfile = true
+dotfiles.root = "~/.config/mise"
+dotfiles.default_mode = "symlink"
+
+[settings.github]
+use_git_credentials = true
+
+[env]
+_.path = [
+  "{{ env.HOME }}/.local/bin",
+  "{{ env.HOME }}/go/bin",
+  "{{ env.HOME }}/.cargo/bin",
+]
+EDITOR = "nvim"
+VISUAL = "nvim"
+SUDO_EDITOR = "nvim"
+
+[shell_alias]
+ls = "eza --icons=auto"
+oc = "opencode"
+rm = "gomi"
+path = "j $(print -l $path | fzf)"
+n = "nvim"
+sl = "systemctl"
+
+[tools]
+atuin = "latest"
+bat = "latest"
+btop = "latest"
+bun = "latest"
+cargo-binstall = "latest"
+cowsay = "latest"
+dasel = "latest"
+doggo = "latest"
+duf = "latest"
+eza = "latest"
+fastfetch = "latest"
+fd = "latest"
+fzf = "latest"
+gh = "latest"
+glow = "latest"
+go = "latest"
+gum = "latest"
+gup = "latest"
+herdr = "latest"
+hk = "latest"
+lazyjournal = "latest"
+lazyssh = "latest"
+neovim = "latest"
+node = "latest"
+nub = "latest"
+opencode = "latest"
+qdns = "latest"
+ripgrep = "latest"
+rust = "latest"
+shellcheck = "latest"
+sheldon = "latest"
+tlrc = "latest"
+uv = "latest"
+witr = "latest"
+yazi = "latest"
+zoxide = "latest"
+"cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
+"github:Giammarco-Ferranti/deja" = "latest"
+"go:github.com/babarot/gomi" = "latest"
+"go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
+"pipx:isd-tui" = "latest"
+"github:alltuner/mise-completions-sync" = "latest"
+"cargo:trippy" = { version = "latest", depends = ["rust", "cargo-binstall"] }
+codex = "latest"
+
+[dotfiles]
+"~/.gitconfig/defaults" = { block = '''
+[push]
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+''' }
+"~/.zshrc" = {}
+"~/.zshenv" = {}
+"~/.zprofile" = {}
+"~/.p10k.zsh" = {}
+"~/.config/sheldon" = { mode = "symlink-each" }
+"~/.local/share/mise-completions-sync/registry.toml" = {}
+
+[bootstrap.directories]
+"~/.local/share/zsh/site-functions" = {}
+
+[bootstrap.mise_shell_activate]
+bash = true
+
+[bootstrap.user]
+login_shell = "/usr/bin/zsh"
+
+[bootstrap.linux.systemd.units.gomi-prune]
+description = "Prune gomi trash older than 30 days"
+type = "oneshot"
+exec_start = "~/.local/bin/mise exec -- gomi --force --prune=30d"
+wanted_by = []
+start = false
+
+[bootstrap.linux.systemd.units.gomi-prune-timer]
+description = "Hourly gomi trash pruning"
+on_calendar = "hourly"
+persistent = true
+unit = "gomi-prune"
+
+[bootstrap.linux.systemd.units.update]
+description = "Update mise tools, Flatpak apps, Sheldon plugins, and completions"
+type = "oneshot"
+exec_start = "%h/.local/bin/mise run update"
+wanted_by = []
+start = false
+
+[bootstrap.linux.systemd.units.update-timer]
+description = "Daily mise update"
+on_calendar = "daily"
+persistent = true
+unit = "update"
+
+[task_config]
+dir = "{{ config_source | dirname }}"
+
+[tasks.bootstrap]
+description = "Finish dotfiles bootstrap"
+run = [
+  "atuin config set --type boolean ai.enabled true",
+  "atuin config set --type boolean ai.opening.send_last_command true",
+  "mise completion zsh --install",
+  "misecompsync --shell zsh",
+  "sheldon --non-interactive lock",
+  "hk install --mise",
+  "mise exec -- sh ./scripts/login-github.sh",
+]
+
+[tasks.update]
+description = "Update tools, Sheldon plugins, and completions"
+run = [
+  "mise upgrade",
+  { task = "update:flatpak" },
+  "mise completion zsh --install",
+  "sheldon --non-interactive lock --update",
+  "misecompsync --shell zsh",
+]
+
+[tasks."update:flatpak"]
+hide = true
+run = ":"
+
+[hooks]
+postinstall = "misecompsync --new-only --shell zsh"
