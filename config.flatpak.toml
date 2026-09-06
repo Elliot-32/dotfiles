@@ -1,5 +1,5 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "{{ config_source | canonicalize | dirname }}/scripts/bootstrap-flatpak.sh"'
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-flatpak.sh"'
 
 [bootstrap.packages]
 "flatpak-user:com.bitwarden.desktop" = "latest"
