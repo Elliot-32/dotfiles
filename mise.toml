@@ -92,6 +92,7 @@ codex = "latest"
 ''' }
 "~/.zshrc" = {}
 "~/.zshenv" = {}
+"~/.zprofile" = {}
 "~/.p10k.zsh" = {}
 "~/.config/sheldon" = { mode = "symlink-each" }
 "~/.local/share/mise-completions-sync/registry.toml" = {}
@@ -100,7 +101,6 @@ codex = "latest"
 "~/.local/share/zsh/site-functions" = {}
 
 [bootstrap.mise_shell_activate]
-zprofile = "shims"
 bash = true
 
 [bootstrap.user]
