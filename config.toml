@@ -114,7 +114,7 @@ unit = "gomi-prune"
 [bootstrap.linux.systemd.units.update]
 description = "Update tools, Flatpak apps, Sheldon plugins, fonts, and completions with Topgrade"
 type = "oneshot"
-exec_start = "%h/.local/bin/topgrade"
+exec_start = "%h/.local/bin/mise exec -- %h/.local/bin/topgrade"
 wanted_by = []
 start = false
 
