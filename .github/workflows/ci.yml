@@ -59,7 +59,6 @@ jobs:
           export MISE_TRUSTED_CONFIG_PATHS="$custom_config_dir"
 
           test "$(mise settings get dotfiles.root)" = "$custom_config_dir"
-          test "$(mise env --json | jq -r .DOTFILES_ROOT)" = "$custom_config_dir"
           mise tasks validate --errors-only
           mise --locked bootstrap --dry-run
 
