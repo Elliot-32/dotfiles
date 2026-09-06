@@ -1,5 +1,5 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "{{ config_source | dirname | dirname }}/scripts/bootstrap-ghostty-ubuntu.sh"'
+run = 'sh "$HOME/.config/mise/scripts/bootstrap-ghostty-ubuntu.sh"'
 
 [bootstrap.packages]
 "apt:ghostty" = "latest"
