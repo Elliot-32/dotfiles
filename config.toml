@@ -72,6 +72,7 @@ zoxide = "latest"
 codex = "latest"
 "aqua:kjokjo/ipcalc" = "latest"
 "pipx:sqlmap" = "latest"
+"pipx:wafw00f" = "latest"
 "github:pythops/oryx" = "latest"
 "aqua:projectdiscovery/nuclei" = "latest"
 "github:pythops/bluetui" = "latest"
@@ -146,6 +147,7 @@ run = [
   "sheldon --non-interactive lock",
   "ya pkg install",
   "cd \"${MISE_CONFIG_DIR:-$HOME/.config/mise}\" && hk install --mise",
+  "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-metasploit.sh\"",
   { task = "update:fonts" },
   { task = "bootstrap:windows" },
   "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\"",
