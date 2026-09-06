@@ -4,6 +4,7 @@ Set-StrictMode -Version Latest
 $gitPackage = 'Git.Git'
 $fontPackage = 'DEVCOM.JetBrainsMonoNerdFont'
 $fontFace = 'JetBrainsMono Nerd Font Mono'
+$wingetPackageAlreadyInstalled = -1978335135 # 0x8A150061 APPINSTALLER_CLI_ERROR_PACKAGE_ALREADY_INSTALLED
 
 function Invoke-WinGetInstall {
     param([Parameter(Mandatory = $true)][string] $Id)
@@ -20,9 +21,18 @@ function Invoke-WinGetInstall {
     )
 
     & $script:WinGetCommand @arguments
-    if ($LASTEXITCODE -ne 0) {
-        throw "winget install '$Id' failed with exit code $LASTEXITCODE"
+    $exitCode = $LASTEXITCODE
+
+    if ($exitCode -eq 0) {
+        return
     }
+
+    if ($exitCode -eq $script:wingetPackageAlreadyInstalled) {
+        Write-Host "WinGet package '$Id' is already installed."
+        return
+    }
+
+    throw "winget install '$Id' failed with exit code $exitCode"
 }
 
 function Remove-JsonComments {
