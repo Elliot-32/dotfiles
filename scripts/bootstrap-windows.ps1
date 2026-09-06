@@ -163,7 +163,7 @@ function Get-OrAddObjectProperty {
         return $value
     }
 
-    if ($null -eq $property.Value -or $property.Value -is [string] -or $property.Value.GetType().IsValueType) {
+    if ($null -eq $property.Value -or $property.Value -isnot [pscustomobject]) {
         $property.Value = [pscustomobject] @{}
     }
 
@@ -196,6 +196,10 @@ function Set-WindowsTerminalFont {
     $json = Remove-JsonComments -Text $raw
     $json = Remove-JsonTrailingCommas -Text $json
     $settings = $json | ConvertFrom-Json
+
+    if ($null -eq $settings) {
+        $settings = [pscustomobject] @{}
+    }
 
     $profiles = Get-OrAddObjectProperty -Object $settings -Name 'profiles'
     $defaults = Get-OrAddObjectProperty -Object $profiles -Name 'defaults'
@@ -257,10 +261,13 @@ if (-not (Test-Path -LiteralPath $nerdFontsBucket -PathType Container)) {
 Ensure-ScoopPackage -Name $fontPackage -InstallName "nerd-fonts/$fontPackage"
 
 $terminalStateDirectories = @(
-    (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState'),
-    (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState'),
-    (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows Terminal')
-) | Where-Object { Test-Path -LiteralPath $_ -PathType Container }
+    @(
+        (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState'),
+        (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState'),
+        (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminalCanary_8wekyb3d8bbwe\LocalState'),
+        (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows Terminal')
+    ) | Where-Object { Test-Path -LiteralPath $_ -PathType Container }
+)
 
 if ($terminalStateDirectories.Count -eq 0) {
     Write-Warning 'Windows Terminal settings directory was not found; skipping font configuration.'
