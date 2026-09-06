@@ -12,6 +12,7 @@
 "apt:libnotify-bin" = "latest"
 "apt:wl-clipboard" = "latest"
 "apt:xdg-terminal-exec" = "latest"
+"apt:nala" = "latest"
 
 [bootstrap.files."/etc/apt/apt.conf.d/20auto-upgrades"]
 content = '''
