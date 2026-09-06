@@ -1,0 +1,10 @@
+[bootstrap.hooks.pre-packages]
+run = 'sh "{{ config_source | dirname | dirname }}/scripts/bootstrap-ghostty-ubuntu.sh"'
+
+[bootstrap.packages]
+"apt:ghostty" = "latest"
+
+[dotfiles]
+"~/.config/ghostty/config" = {}
+"~/.config/xdg-terminals.list" = {}
+"~/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop" = "/usr/share/applications/com.mitchellh.ghostty.desktop"
