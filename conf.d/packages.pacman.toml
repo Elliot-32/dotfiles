@@ -1,5 +1,7 @@
 [bootstrap.packages]
 "pacman:base-devel" = "latest"
+"pacman:pkgconf" = "latest"
+"pacman:dbus" = "latest"
 "pacman:fontconfig" = "latest"
 "pacman:xz" = "latest"
 "pacman:nmap" = "latest"
