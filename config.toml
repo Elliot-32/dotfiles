@@ -134,7 +134,7 @@ run = [
   "mise completion zsh --install",
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
-  "hk install --mise",
+  "cd \"${MISE_CONFIG_DIR:-$HOME/.config/mise}\" && hk install --mise",
   { task = "update:fonts" },
   { task = "bootstrap:windows" },
   "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\"",
