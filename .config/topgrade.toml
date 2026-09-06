@@ -6,7 +6,7 @@ only = ["self_update", "mise", "sheldon", "custom_commands"]
 
 [commands]
 "Flatpak user apps" = 'if command -v flatpak >/dev/null 2>&1; then flatpak update --user -y; fi'
-"Nerd Fonts" = 'bash "$HOME/.config/mise/scripts/update-fonts.sh"'
+"Nerd Fonts" = 'mise run update:fonts'
 
 [post_commands]
 "Refresh completions" = 'mise completion zsh --install && misecompsync --shell zsh'
