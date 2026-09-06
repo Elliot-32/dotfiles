@@ -1,54 +1,28 @@
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
-# Windows PowerShell 5.1 can inherit PowerShell 7 module paths from its parent
-# environment. That can make built-in modules such as
-# Microsoft.PowerShell.Security fail to autoload. Keep this bootstrap process
-# on the Windows PowerShell module roots when running powershell.exe.
-if ($PSVersionTable.PSEdition -eq 'Desktop') {
-    $windowsPowerShellModulePaths = @(
-        (Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'WindowsPowerShell\Modules'),
-        (Join-Path $env:ProgramFiles 'WindowsPowerShell\Modules'),
-        (Join-Path $PSHOME 'Modules')
-    ) | Where-Object { $_ }
-
-    $env:PSModulePath = $windowsPowerShellModulePaths -join ';'
-}
-
-$fontPackage = 'JetBrainsMono-NF-Mono'
+$gitPackage = 'Git.Git'
+$fontPackage = 'DEVCOM.JetBrainsMonoNerdFont'
 $fontFace = 'JetBrainsMono Nerd Font Mono'
 
-function Invoke-ScoopCommand {
-    param(
-        [Parameter(ValueFromRemainingArguments = $true)]
-        [string[]] $Arguments
+function Invoke-WinGetInstall {
+    param([Parameter(Mandatory = $true)][string] $Id)
+
+    $arguments = @(
+        'install',
+        '--id', $Id,
+        '--exact',
+        '--silent',
+        '--no-upgrade',
+        '--accept-package-agreements',
+        '--accept-source-agreements',
+        '--disable-interactivity'
     )
 
-    & $script:ScoopCommand @Arguments
+    & $script:WinGetCommand @arguments
     if ($LASTEXITCODE -ne 0) {
-        throw "scoop $($Arguments -join ' ') failed with exit code $LASTEXITCODE"
+        throw "winget install '$Id' failed with exit code $LASTEXITCODE"
     }
-}
-
-function Test-ScoopPackage {
-    param([Parameter(Mandatory = $true)][string] $Name)
-
-    & $script:ScoopCommand prefix $Name *> $null
-    return $LASTEXITCODE -eq 0
-}
-
-function Ensure-ScoopPackage {
-    param(
-        [Parameter(Mandatory = $true)][string] $Name,
-        [string] $InstallName = $Name
-    )
-
-    if (Test-ScoopPackage -Name $Name) {
-        Write-Host "Scoop package '$Name' is already installed."
-        return
-    }
-
-    Invoke-ScoopCommand install $InstallName
 }
 
 function Remove-JsonComments {
@@ -242,37 +216,14 @@ function Set-WindowsTerminalFont {
     Write-Host "Set Windows Terminal font to '$Face': $SettingsPath"
 }
 
-if ((Get-ExecutionPolicy -Scope CurrentUser) -ne 'RemoteSigned') {
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+$winget = Get-Command winget.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($null -eq $winget) {
+    throw 'WinGet is unavailable. Install or update Microsoft App Installer, then rerun the bootstrap.'
 }
 
-$scoop = Get-Command scoop -ErrorAction SilentlyContinue
-if ($null -eq $scoop) {
-    Write-Host 'Installing Scoop...'
-    Invoke-RestMethod -Uri 'https://get.scoop.sh' | Invoke-Expression
-}
-
-$scoopRoot = if ($env:SCOOP) { $env:SCOOP } else { Join-Path $env:USERPROFILE 'scoop' }
-$scoop = Get-Command scoop -ErrorAction SilentlyContinue
-if ($null -ne $scoop -and $scoop.Source) {
-    $script:ScoopCommand = $scoop.Source
-}
-else {
-    $script:ScoopCommand = Join-Path $scoopRoot 'shims\scoop.ps1'
-}
-
-if (-not (Test-Path -LiteralPath $script:ScoopCommand)) {
-    throw "Unable to find Scoop command at '$script:ScoopCommand'."
-}
-
-Ensure-ScoopPackage -Name 'git'
-
-$nerdFontsBucket = Join-Path $scoopRoot 'buckets\nerd-fonts'
-if (-not (Test-Path -LiteralPath $nerdFontsBucket -PathType Container)) {
-    Invoke-ScoopCommand bucket add nerd-fonts
-}
-
-Ensure-ScoopPackage -Name $fontPackage -InstallName "nerd-fonts/$fontPackage"
+$script:WinGetCommand = $winget.Source
+Invoke-WinGetInstall -Id $gitPackage
+Invoke-WinGetInstall -Id $fontPackage
 
 $terminalStateDirectories = @(
     @(
