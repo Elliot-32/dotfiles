@@ -18,5 +18,5 @@
 "dnf:xdg-terminal-exec" = "latest"
 
 [dotfiles]
-"~/.config/fcitx5/profile" = {}
-"~/.config/environment.d/90-fcitx5.conf" = {}
+"~/.config/fcitx5/profile" = { source = "../.config/fcitx5/profile" }
+"~/.config/environment.d/90-fcitx5.conf" = { source = "../.config/environment.d/90-fcitx5.conf" }
