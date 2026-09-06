@@ -91,6 +91,7 @@ codex = "latest"
 	prune = true
 ''' }
 "~/.zshrc" = {}
+"~/.zshenv" = {}
 "~/.p10k.zsh" = {}
 "~/.config/sheldon" = { mode = "symlink-each" }
 "~/.local/share/mise-completions-sync/registry.toml" = {}
