@@ -1,5 +1,7 @@
 [bootstrap.packages]
 "dnf:gcc" = "latest"
+"dnf:pkgconf-pkg-config" = "latest"
+"dnf:dbus-devel" = "latest"
 "dnf:fontconfig" = "latest"
 "dnf:xz" = "latest"
 "dnf:nmap" = "latest"
