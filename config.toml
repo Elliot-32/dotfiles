@@ -135,8 +135,13 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "hk install --mise",
+  { task = "bootstrap:windows" },
   "mise exec -- sh ./scripts/login-github.sh",
 ]
+
+[tasks."bootstrap:windows"]
+hide = true
+run = ":"
 
 [tasks.update]
 description = "Update tools, Sheldon plugins, and completions"
