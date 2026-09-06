@@ -1,5 +1,5 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "{{ config_source | canonicalize | dirname | dirname }}/scripts/bootstrap-ghostty-fedora.sh"'
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-ghostty-fedora.sh"'
 
 [bootstrap.packages]
 "dnf:ghostty" = "latest"
