@@ -1,5 +1,7 @@
 [bootstrap.packages]
 "apt:build-essential" = "latest"
+"apt:fontconfig" = "latest"
+"apt:xz-utils" = "latest"
 "apt:nmap" = "latest"
 "apt:openssh-client" = "latest"
 "apt:zsh" = "latest"
