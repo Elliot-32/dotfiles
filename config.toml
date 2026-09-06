@@ -59,6 +59,7 @@ rust = "latest"
 shellcheck = "latest"
 sheldon = "latest"
 tlrc = "latest"
+topgrade = "latest"
 uv = "latest"
 witr = "latest"
 yazi = "latest"
@@ -114,7 +115,7 @@ unit = "gomi-prune"
 [bootstrap.linux.systemd.units.update]
 description = "Update tools, Flatpak apps, Sheldon plugins, fonts, and completions with Topgrade"
 type = "oneshot"
-exec_start = "%h/.local/bin/mise exec -- %h/.local/bin/topgrade"
+exec_start = "%h/.local/bin/mise exec -- topgrade"
 environment = { MISE_CONFIG_DIR = "{{ config_source | canonicalize | dirname }}" }
 wanted_by = []
 start = false
@@ -134,7 +135,6 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "hk install --mise",
-  "test -x \"$HOME/.local/bin/topgrade\" || cargo binstall --no-confirm --root \"$HOME/.local\" topgrade",
   { task = "update:fonts" },
   { task = "bootstrap:windows" },
   "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\"",
