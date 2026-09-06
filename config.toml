@@ -87,6 +87,7 @@ codex = "latest"
 "~/.p10k.zsh" = { source = ".p10k.zsh" }
 "~/.config/sheldon" = { source = ".config/sheldon", mode = "symlink-each" }
 "~/.config/topgrade.toml" = { source = ".config/topgrade.toml" }
+"~/.config/topgrade.systemd.toml" = { source = ".config/topgrade.systemd.toml" }
 "~/.local/share/mise-completions-sync/registry.toml" = { source = ".local/share/mise-completions-sync/registry.toml" }
 
 [bootstrap.directories]
@@ -113,9 +114,9 @@ persistent = true
 unit = "gomi-prune"
 
 [bootstrap.linux.systemd.units.update]
-description = "Update tools, Flatpak apps, Sheldon plugins, fonts, and completions with Topgrade"
+description = "Run unattended user-session updates with Topgrade"
 type = "oneshot"
-exec_start = "%h/.local/bin/mise exec -- topgrade"
+exec_start = "%h/.local/bin/mise exec -- topgrade --config %h/.config/topgrade.systemd.toml"
 environment = { MISE_CONFIG_DIR = "{{ config_source | canonicalize | dirname }}" }
 wanted_by = []
 start = false
