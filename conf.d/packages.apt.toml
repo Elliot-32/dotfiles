@@ -2,6 +2,8 @@
 "apt:build-essential" = "latest"
 "apt:fontconfig" = "latest"
 "apt:xz-utils" = "latest"
+"apt:pkg-config" = "latest"
+"apt:libdbus-1-dev" = "latest"
 "apt:nmap" = "latest"
 "apt:openssh-client" = "latest"
 "apt:zsh" = "latest"
