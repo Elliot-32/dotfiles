@@ -18,6 +18,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Prepare global mise config
+        run: |
+          mkdir -p "$HOME/.config"
+          ln -s "$GITHUB_WORKSPACE" "$HOME/.config/mise"
+          sudo install -Dm644 /dev/null /usr/share/applications/com.mitchellh.ghostty.desktop
+
       - name: Install mise
         uses: jdx/mise-action@v4
         with:
@@ -31,13 +37,11 @@ jobs:
       - name: Install hk tooling
         run: mise install --locked hk shellcheck
 
-      - name: Prepare bootstrap fixtures
-        run: |
-          ln -s "$GITHUB_WORKSPACE" "$HOME/.dotfiles"
-          sudo install -Dm644 /dev/null /usr/share/applications/com.mitchellh.ghostty.desktop
-
       - name: Run hk checks
         run: mise exec hk shellcheck -- hk check --all
+
+      - name: Validate mise settings
+        run: test "$(mise settings get auto_update)" = true
 
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
@@ -66,21 +70,21 @@ jobs:
           }
 
           check_config "ubuntu,apt" \
-            "mise/conf.d/distro.ubuntu.toml" \
-            "mise/conf.d/packages.apt.toml"
+            "conf.d/distro.ubuntu.toml" \
+            "conf.d/packages.apt.toml"
 
           check_config "debian,apt" \
-            "mise/conf.d/packages.apt.toml"
+            "conf.d/packages.apt.toml"
 
           check_config "fedora,dnf" \
-            "mise/conf.d/distro.fedora.toml" \
-            "mise/conf.d/packages.dnf.toml"
+            "conf.d/distro.fedora.toml" \
+            "conf.d/packages.dnf.toml"
 
           check_config "rhel,dnf" \
-            "mise/conf.d/packages.dnf.toml"
+            "conf.d/packages.dnf.toml"
 
           check_config "arch,pacman" \
-            "mise/conf.d/packages.pacman.toml"
+            "conf.d/packages.pacman.toml"
 
           check_config "flatpak" \
-            "mise.flatpak.toml"
+            "config.flatpak.toml"
