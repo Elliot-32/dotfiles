@@ -14,9 +14,9 @@ _.path = [
   "{{ env.HOME }}/go/bin",
   "{{ env.HOME }}/.cargo/bin",
 ]
-EDITOR = "nvim"
-VISUAL = "nvim"
-SUDO_EDITOR = "nvim"
+EDITOR = "code --wait"
+VISUAL = "code --wait"
+SUDO_EDITOR = "code --wait"
 
 [shell_alias]
 ls = "eza --icons=auto"
