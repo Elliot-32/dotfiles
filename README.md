@@ -35,7 +35,11 @@ curl https://mise.run | sh
 | 新增全域工具 | `mise use -g <tool>` |
 | 使用指定 backend 新增全域工具 | `mise use -g <backend>:<tool>` |
 | 移除全域工具 | `mise unuse -g <tool>` |
+| 安裝鎖定的 Yazi plugins | `ya pkg install` |
+| 更新 Yazi plugins | `ya pkg upgrade` |
 
+
+`mise bootstrap` 會套用 `~/.config/yazi` 並執行 `ya pkg install`，依 `.config/yazi/package.toml` 安裝鎖定版本的 Yazi plugins。
 
 `install` / `uninstall` 只處理本機已安裝的工具版本，不會修改 mise 設定；`use` 會安裝工具並寫入設定，`unuse` 則會從設定中移除工具。若該工具版本已沒有其他 mise 設定需要，也會順便解除安裝。
 

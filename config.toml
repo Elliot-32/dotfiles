@@ -86,6 +86,7 @@ codex = "latest"
 "~/.zprofile" = { source = ".zprofile" }
 "~/.p10k.zsh" = { source = ".p10k.zsh" }
 "~/.config/sheldon" = { source = ".config/sheldon", mode = "symlink-each" }
+"~/.config/yazi" = { source = ".config/yazi", mode = "symlink-each" }
 "~/.config/topgrade.toml" = { source = ".config/topgrade.toml" }
 "~/.config/topgrade.systemd.toml" = { source = ".config/topgrade.systemd.toml" }
 "~/.local/share/mise-completions-sync/registry.toml" = { source = ".local/share/mise-completions-sync/registry.toml" }
@@ -135,6 +136,7 @@ run = [
   "mise completion zsh --install",
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
+  "ya pkg install",
   "cd \"${MISE_CONFIG_DIR:-$HOME/.config/mise}\" && hk install --mise",
   { task = "update:fonts" },
   { task = "bootstrap:windows" },
