@@ -94,7 +94,6 @@ codex = "latest"
 "~/.zshenv" = {}
 "~/.zprofile" = {}
 "~/.p10k.zsh" = {}
-"~/.config/atuin/config.toml" = {}
 "~/.config/sheldon" = { mode = "symlink-each" }
 "~/.local/share/mise-completions-sync/registry.toml" = {}
 
@@ -139,6 +138,8 @@ dir = "{{ env.HOME }}/.dotfiles"
 [tasks.bootstrap]
 description = "Finish dotfiles bootstrap"
 run = [
+  "atuin config set --type boolean ai.enabled true",
+  "atuin config set --type boolean ai.opening.send_last_command true",
   "mise completion zsh --install",
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
