@@ -66,14 +66,19 @@ yazi = "latest"
 zoxide = "latest"
 "cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
 "github:Giammarco-Ferranti/deja" = "latest"
-"go:github.com/babarot/gomi" = "latest"
-"go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder" = "latest"
 "pipx:isd-tui" = "latest"
 "github:alltuner/mise-completions-sync" = "latest"
-"cargo:trippy" = { version = "latest", depends = ["rust", "cargo-binstall"] }
 codex = "latest"
 "aqua:kjokjo/ipcalc" = "latest"
 "pipx:sqlmap" = "latest"
+"github:pythops/oryx" = "latest"
+"aqua:projectdiscovery/nuclei" = "latest"
+"github:pythops/bluetui" = "latest"
+"aqua:projectdiscovery/subfinder" = "latest"
+"aqua:babarot/gomi" = "latest"
+"aqua:fujiapple852/trippy" = "latest"
+"aqua:alltuner/mise-completions-sync" = "latest"
+"github:pythops/impala" = "latest"
 
 [dotfiles]
 "~/.gitconfig/defaults" = { block = '''

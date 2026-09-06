@@ -2,6 +2,161 @@
 
 lockfile_version = 1
 
+[[tools."aqua:alltuner/mise-completions-sync"]]
+version = "0.5.15"
+backend = "aqua:alltuner/mise-completions-sync"
+specifiers = ["latest"]
+
+[tools."aqua:alltuner/mise-completions-sync"."platforms.linux-arm64"]
+checksum = "sha256:bc5aff1ecde6d78c1432ebc209886bfe77bb3dca9a9917773ed93ce3c159857d"
+url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874668"
+
+[tools."aqua:alltuner/mise-completions-sync"."platforms.linux-x64"]
+checksum = "sha256:2374a4506ceaec0571391b9fcefac672cad38bc0400171be3f2abd82fa0bc8a5"
+url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874183"
+
+[tools."aqua:alltuner/mise-completions-sync"."platforms.linux-x64-baseline"]
+checksum = "sha256:2374a4506ceaec0571391b9fcefac672cad38bc0400171be3f2abd82fa0bc8a5"
+url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874183"
+
+[tools."aqua:alltuner/mise-completions-sync"."platforms.linux-x64-musl"]
+checksum = "sha256:33ae6ea7204fa4f70c1453e7ccc5b8932aa4530a05fed1ea5e15443484c03d3b"
+url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874425"
+
+[tools."aqua:alltuner/mise-completions-sync"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:33ae6ea7204fa4f70c1453e7ccc5b8932aa4530a05fed1ea5e15443484c03d3b"
+url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874425"
+
+[tools."aqua:alltuner/mise-completions-sync"."platforms.macos-arm64"]
+checksum = "sha256:5fece1a48154c386dd23de20bb92b27bd14040c526fe51b9108125f5d771673c"
+url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874383"
+
+[tools."aqua:alltuner/mise-completions-sync"."platforms.macos-x64"]
+checksum = "sha256:fcf299f552bd5dd4e0b2f62932fc2b6718d3f59131d94e5f37c79a7b9f4e1dd6"
+url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874321"
+
+[tools."aqua:alltuner/mise-completions-sync"."platforms.macos-x64-baseline"]
+checksum = "sha256:fcf299f552bd5dd4e0b2f62932fc2b6718d3f59131d94e5f37c79a7b9f4e1dd6"
+url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874321"
+
+[[tools."aqua:babarot/gomi"]]
+version = "1.6.4"
+backend = "aqua:babarot/gomi"
+specifiers = ["latest"]
+
+[tools."aqua:babarot/gomi"."platforms.linux-arm64"]
+checksum = "sha256:505d50f332004bd00dff4ad17c3e9a400e1a2e78c2c3b89b1f0f9c1721b4de84"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758869"
+
+[tools."aqua:babarot/gomi"."platforms.linux-arm64-musl"]
+checksum = "sha256:505d50f332004bd00dff4ad17c3e9a400e1a2e78c2c3b89b1f0f9c1721b4de84"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758869"
+
+[tools."aqua:babarot/gomi"."platforms.linux-x64"]
+checksum = "sha256:d6a8edcdafbd63923e1bdf76f0ad8d06fb4394087e20a5f70979e81bf5a7cce8"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758868"
+
+[tools."aqua:babarot/gomi"."platforms.linux-x64-baseline"]
+checksum = "sha256:d6a8edcdafbd63923e1bdf76f0ad8d06fb4394087e20a5f70979e81bf5a7cce8"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758868"
+
+[tools."aqua:babarot/gomi"."platforms.linux-x64-musl"]
+checksum = "sha256:d6a8edcdafbd63923e1bdf76f0ad8d06fb4394087e20a5f70979e81bf5a7cce8"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758868"
+
+[tools."aqua:babarot/gomi"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:d6a8edcdafbd63923e1bdf76f0ad8d06fb4394087e20a5f70979e81bf5a7cce8"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Linux_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758868"
+
+[tools."aqua:babarot/gomi"."platforms.macos-arm64"]
+checksum = "sha256:1b33045f11844b7dae4af105f6ce7f62d6e25927423cb91b2044760e6b208897"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758884"
+
+[tools."aqua:babarot/gomi"."platforms.macos-x64"]
+checksum = "sha256:f6582f4603d1be4fc8f56d7c02387a9bca8edf204297ab8682a0955761c901dc"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758870"
+
+[tools."aqua:babarot/gomi"."platforms.macos-x64-baseline"]
+checksum = "sha256:f6582f4603d1be4fc8f56d7c02387a9bca8edf204297ab8682a0955761c901dc"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Darwin_x86_64.tar.gz"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758870"
+
+[tools."aqua:babarot/gomi"."platforms.windows-x64"]
+checksum = "sha256:6097b6f1f757f1735c27d65e9e534f21894409d588503dfd673bb3d79c1241bd"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758886"
+
+[tools."aqua:babarot/gomi"."platforms.windows-x64-baseline"]
+checksum = "sha256:6097b6f1f757f1735c27d65e9e534f21894409d588503dfd673bb3d79c1241bd"
+url = "https://github.com/babarot/gomi/releases/download/v1.6.4/gomi_Windows_x86_64.zip"
+url_api = "https://api.github.com/repos/babarot/gomi/releases/assets/440758886"
+
+[[tools."aqua:fujiapple852/trippy"]]
+version = "0.13.0"
+backend = "aqua:fujiapple852/trippy"
+specifiers = ["latest"]
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-arm64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998578"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-arm64-musl"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998595"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-x64"]
+checksum = "blake3:5cdcc3f0e289b5b88b8403ebeceb5b3d68eaa7c6775c250450230d39d2152421"
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998787"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-x64-baseline"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998787"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-x64-musl"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999050"
+
+[tools."aqua:fujiapple852/trippy"."platforms.linux-x64-musl-baseline"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999050"
+
+[tools."aqua:fujiapple852/trippy"."platforms.macos-arm64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251998568"
+
+[tools."aqua:fujiapple852/trippy"."platforms.macos-x64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999406"
+
+[tools."aqua:fujiapple852/trippy"."platforms.macos-x64-baseline"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999406"
+
+[tools."aqua:fujiapple852/trippy"."platforms.windows-x64"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999097"
+
+[tools."aqua:fujiapple852/trippy"."platforms.windows-x64-baseline"]
+url = "https://github.com/fujiapple852/trippy/releases/download/0.13.0/trippy-0.13.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/fujiapple852/trippy/releases/assets/251999097"
+
 [[tools."aqua:kjokjo/ipcalc"]]
 version = "0.51"
 backend = "aqua:kjokjo/ipcalc"
@@ -51,6 +206,126 @@ url_api = "https://api.github.com/repos/kjokjo/ipcalc/contents/ipcalc?ref=0.51"
 [tools."aqua:kjokjo/ipcalc"."platforms.windows-x64-baseline"]
 url = "https://raw.githubusercontent.com/kjokjo/ipcalc/0.51/ipcalc"
 url_api = "https://api.github.com/repos/kjokjo/ipcalc/contents/ipcalc?ref=0.51"
+
+[[tools."aqua:projectdiscovery/nuclei"]]
+version = "3.11.1"
+backend = "aqua:projectdiscovery/nuclei"
+specifiers = ["latest"]
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.linux-arm64"]
+checksum = "sha256:8044e3d9768ba0a744b2872c1a87e813006f013da97ca9f50f7661a4203bec07"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_linux_arm64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379678"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.linux-arm64-musl"]
+checksum = "sha256:8044e3d9768ba0a744b2872c1a87e813006f013da97ca9f50f7661a4203bec07"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_linux_arm64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379678"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.linux-x64"]
+checksum = "sha256:ea63d4ae232808cd7c6bc00d0142428e231fab59dae01042246097d195835ab6"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_linux_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379676"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.linux-x64-baseline"]
+checksum = "sha256:ea63d4ae232808cd7c6bc00d0142428e231fab59dae01042246097d195835ab6"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_linux_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379676"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.linux-x64-musl"]
+checksum = "sha256:ea63d4ae232808cd7c6bc00d0142428e231fab59dae01042246097d195835ab6"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_linux_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379676"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:ea63d4ae232808cd7c6bc00d0142428e231fab59dae01042246097d195835ab6"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_linux_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379676"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.macos-arm64"]
+checksum = "sha256:7d7e291addd1fc29a9bf8d089afe878a9799b20229cbea2fb1693fc40fd4c5f0"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_macOS_arm64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379673"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.macos-x64"]
+checksum = "sha256:75c47ce11e9dbd4288a1c895ed85e3c4df9f4acb8237d6d178da6dccd1628f2a"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_macOS_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379679"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.macos-x64-baseline"]
+checksum = "sha256:75c47ce11e9dbd4288a1c895ed85e3c4df9f4acb8237d6d178da6dccd1628f2a"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_macOS_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379679"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.windows-x64"]
+checksum = "sha256:bb6cb9ff8939b753f6fcab06fd30a15f5bc61d8382a597871334c007a85ff9d2"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_windows_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379677"
+
+[tools."aqua:projectdiscovery/nuclei"."platforms.windows-x64-baseline"]
+checksum = "sha256:bb6cb9ff8939b753f6fcab06fd30a15f5bc61d8382a597871334c007a85ff9d2"
+url = "https://github.com/projectdiscovery/nuclei/releases/download/v3.11.1/nuclei_3.11.1_windows_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/nuclei/releases/assets/506379677"
+
+[[tools."aqua:projectdiscovery/subfinder"]]
+version = "2.16.0"
+backend = "aqua:projectdiscovery/subfinder"
+specifiers = ["latest"]
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.linux-arm64"]
+checksum = "sha256:c81d49559c0f630177be9e347e502e7a3d474aacc6ff78291ffcb4964367d63d"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_linux_arm64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340552"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.linux-arm64-musl"]
+checksum = "sha256:c81d49559c0f630177be9e347e502e7a3d474aacc6ff78291ffcb4964367d63d"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_linux_arm64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340552"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.linux-x64"]
+checksum = "sha256:1b7f9c608e9a5bd59e609a5e09710d63c5485e92d3d49dc2c16eb4fdbe10cb60"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_linux_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340548"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.linux-x64-baseline"]
+checksum = "sha256:1b7f9c608e9a5bd59e609a5e09710d63c5485e92d3d49dc2c16eb4fdbe10cb60"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_linux_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340548"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.linux-x64-musl"]
+checksum = "sha256:1b7f9c608e9a5bd59e609a5e09710d63c5485e92d3d49dc2c16eb4fdbe10cb60"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_linux_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340548"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:1b7f9c608e9a5bd59e609a5e09710d63c5485e92d3d49dc2c16eb4fdbe10cb60"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_linux_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340548"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.macos-arm64"]
+checksum = "sha256:af55827c9e6cdc530cca377ad459214ead16daf1b79d90e3dcefa387f644e057"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_macOS_arm64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340550"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.macos-x64"]
+checksum = "sha256:8300c4d98f75596b7e8460ba6f3322dfeda4674bc2bcbde14d61d098db260b50"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_macOS_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340554"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.macos-x64-baseline"]
+checksum = "sha256:8300c4d98f75596b7e8460ba6f3322dfeda4674bc2bcbde14d61d098db260b50"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_macOS_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340554"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.windows-x64"]
+checksum = "sha256:ef760f0a064c22811100c75a61da35ba73d71398cb99ae85d32d0eed44496ab8"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_windows_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340553"
+
+[tools."aqua:projectdiscovery/subfinder"."platforms.windows-x64-baseline"]
+checksum = "sha256:ef760f0a064c22811100c75a61da35ba73d71398cb99ae85d32d0eed44496ab8"
+url = "https://github.com/projectdiscovery/subfinder/releases/download/v2.16.0/subfinder_2.16.0_windows_amd64.zip"
+url_api = "https://api.github.com/repos/projectdiscovery/subfinder/releases/assets/525340553"
 
 [[tools.atuin]]
 version = "18.21.0"
@@ -329,11 +604,6 @@ provenance = "github-attestations"
 [[tools."cargo:rustscan"]]
 version = "2.4.1"
 backend = "cargo:rustscan"
-specifiers = ["latest"]
-
-[[tools."cargo:trippy"]]
-version = "0.13.0"
-backend = "cargo:trippy"
 specifiers = ["latest"]
 
 [[tools.codex]]
@@ -972,6 +1242,111 @@ checksum = "sha256:4098ce061fb4572e53905cba6910dbff372143e608ea84d2f5ca374c75a9e
 url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/site.tar.gz"
 url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/523750825"
 
+[[tools."github:pythops/bluetui"]]
+version = "0.8.1"
+backend = "github:pythops/bluetui"
+specifiers = ["latest"]
+
+[tools."github:pythops/bluetui"."platforms.linux-arm64"]
+checksum = "sha256:66a5b1dbf5ab5274a05f6926c62bb4bd27601e15a67606c41df625a0a1f1284f"
+url = "https://github.com/pythops/bluetui/releases/download/v0.8.1/bluetui-aarch64-linux-musl"
+url_api = "https://api.github.com/repos/pythops/bluetui/releases/assets/342040729"
+
+[tools."github:pythops/bluetui"."platforms.linux-arm64-musl"]
+checksum = "sha256:66a5b1dbf5ab5274a05f6926c62bb4bd27601e15a67606c41df625a0a1f1284f"
+url = "https://github.com/pythops/bluetui/releases/download/v0.8.1/bluetui-aarch64-linux-musl"
+url_api = "https://api.github.com/repos/pythops/bluetui/releases/assets/342040729"
+
+[tools."github:pythops/bluetui"."platforms.linux-x64"]
+checksum = "sha256:c6d133930af3ef85d5fb6492c98982958619284d1f583c2c8ecf46992460d60e"
+url = "https://github.com/pythops/bluetui/releases/download/v0.8.1/bluetui-x86_64-linux-musl"
+url_api = "https://api.github.com/repos/pythops/bluetui/releases/assets/342040728"
+
+[tools."github:pythops/bluetui"."platforms.linux-x64-baseline"]
+checksum = "sha256:c6d133930af3ef85d5fb6492c98982958619284d1f583c2c8ecf46992460d60e"
+url = "https://github.com/pythops/bluetui/releases/download/v0.8.1/bluetui-x86_64-linux-musl"
+url_api = "https://api.github.com/repos/pythops/bluetui/releases/assets/342040728"
+
+[tools."github:pythops/bluetui"."platforms.linux-x64-musl"]
+checksum = "sha256:c6d133930af3ef85d5fb6492c98982958619284d1f583c2c8ecf46992460d60e"
+url = "https://github.com/pythops/bluetui/releases/download/v0.8.1/bluetui-x86_64-linux-musl"
+url_api = "https://api.github.com/repos/pythops/bluetui/releases/assets/342040728"
+
+[tools."github:pythops/bluetui"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:c6d133930af3ef85d5fb6492c98982958619284d1f583c2c8ecf46992460d60e"
+url = "https://github.com/pythops/bluetui/releases/download/v0.8.1/bluetui-x86_64-linux-musl"
+url_api = "https://api.github.com/repos/pythops/bluetui/releases/assets/342040728"
+
+[[tools."github:pythops/impala"]]
+version = "0.9.0"
+backend = "github:pythops/impala"
+specifiers = ["latest"]
+
+[tools."github:pythops/impala"."platforms.linux-arm64"]
+checksum = "sha256:7010a1b854c18e89c696d2d870c0d3e06f6dd8ce62aad6da5fd7b1d75b7f0786"
+url = "https://github.com/pythops/impala/releases/download/v0.9.0/impala-aarch64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/impala/releases/assets/532620070"
+
+[tools."github:pythops/impala"."platforms.linux-arm64-musl"]
+checksum = "sha256:7010a1b854c18e89c696d2d870c0d3e06f6dd8ce62aad6da5fd7b1d75b7f0786"
+url = "https://github.com/pythops/impala/releases/download/v0.9.0/impala-aarch64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/impala/releases/assets/532620070"
+
+[tools."github:pythops/impala"."platforms.linux-x64"]
+checksum = "sha256:8dd39cec5137277717821c48d04cfd49d95b1393c8ff342bd77e538d87684acd"
+url = "https://github.com/pythops/impala/releases/download/v0.9.0/impala-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/impala/releases/assets/532620069"
+
+[tools."github:pythops/impala"."platforms.linux-x64-baseline"]
+checksum = "sha256:8dd39cec5137277717821c48d04cfd49d95b1393c8ff342bd77e538d87684acd"
+url = "https://github.com/pythops/impala/releases/download/v0.9.0/impala-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/impala/releases/assets/532620069"
+
+[tools."github:pythops/impala"."platforms.linux-x64-musl"]
+checksum = "sha256:8dd39cec5137277717821c48d04cfd49d95b1393c8ff342bd77e538d87684acd"
+url = "https://github.com/pythops/impala/releases/download/v0.9.0/impala-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/impala/releases/assets/532620069"
+
+[tools."github:pythops/impala"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:8dd39cec5137277717821c48d04cfd49d95b1393c8ff342bd77e538d87684acd"
+url = "https://github.com/pythops/impala/releases/download/v0.9.0/impala-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/impala/releases/assets/532620069"
+
+[[tools."github:pythops/oryx"]]
+version = "0.8.0"
+backend = "github:pythops/oryx"
+specifiers = ["latest"]
+
+[tools."github:pythops/oryx"."platforms.linux-arm64"]
+checksum = "sha256:a4f6d1c0fafcd0db1d164f75f530d6e8fbe8bf48cfb1999c3854f977ebe9bff9"
+url = "https://github.com/pythops/oryx/releases/download/v0.8.0/oryx-aarch64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/oryx/releases/assets/350605021"
+
+[tools."github:pythops/oryx"."platforms.linux-arm64-musl"]
+checksum = "sha256:a4f6d1c0fafcd0db1d164f75f530d6e8fbe8bf48cfb1999c3854f977ebe9bff9"
+url = "https://github.com/pythops/oryx/releases/download/v0.8.0/oryx-aarch64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/oryx/releases/assets/350605021"
+
+[tools."github:pythops/oryx"."platforms.linux-x64"]
+checksum = "sha256:f82821b1baa63a5645a38b2e3e9983f38ffa71ae5925b86e7207bb3c82bd0eaa"
+url = "https://github.com/pythops/oryx/releases/download/v0.8.0/oryx-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/oryx/releases/assets/350605019"
+
+[tools."github:pythops/oryx"."platforms.linux-x64-baseline"]
+checksum = "sha256:f82821b1baa63a5645a38b2e3e9983f38ffa71ae5925b86e7207bb3c82bd0eaa"
+url = "https://github.com/pythops/oryx/releases/download/v0.8.0/oryx-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/oryx/releases/assets/350605019"
+
+[tools."github:pythops/oryx"."platforms.linux-x64-musl"]
+checksum = "sha256:f82821b1baa63a5645a38b2e3e9983f38ffa71ae5925b86e7207bb3c82bd0eaa"
+url = "https://github.com/pythops/oryx/releases/download/v0.8.0/oryx-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/oryx/releases/assets/350605019"
+
+[tools."github:pythops/oryx"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:f82821b1baa63a5645a38b2e3e9983f38ffa71ae5925b86e7207bb3c82bd0eaa"
+url = "https://github.com/pythops/oryx/releases/download/v0.8.0/oryx-x86_64-unknown-linux-musl"
+url_api = "https://api.github.com/repos/pythops/oryx/releases/assets/350605019"
+
 [[tools.glow]]
 version = "3.0.0"
 backend = "aqua:charmbracelet/glow"
@@ -1091,16 +1466,6 @@ url = "https://dl.google.com/go/go1.27.1.windows-amd64.zip"
 [tools.go."platforms.windows-x64-baseline"]
 checksum = "sha256:a3911b5e0e1b1053f25ed0675f4c1c6aad1e2bfcf253df2b9be4caabd2edd95d"
 url = "https://dl.google.com/go/go1.27.1.windows-amd64.zip"
-
-[[tools."go:github.com/babarot/gomi"]]
-version = "1.6.4"
-backend = "go:github.com/babarot/gomi"
-specifiers = ["latest"]
-
-[[tools."go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder"]]
-version = "2.16.0"
-backend = "go:github.com/projectdiscovery/subfinder/v2/cmd/subfinder"
-specifiers = ["latest"]
 
 [[tools.gum]]
 version = "2.0.0"
