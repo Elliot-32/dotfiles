@@ -1,6 +1,6 @@
 # dotfiles
 
-使用 [mise](https://mise.jdx.dev/) 管理開發工具、系統套件與 dotfiles。此 repo 本身就是 mise global config，會安裝到 `$MISE_CONFIG_DIR`（預設 `~/.config/mise`）。
+使用 [mise](https://mise.jdx.dev/) 管理開發工具、系統套件與 dotfiles，並以 [Topgrade](https://github.com/topgrade-rs/topgrade) 統一處理日常更新。此 repo 本身就是 mise global config，會安裝到 `$MISE_CONFIG_DIR`（預設 `~/.config/mise`）。
 
 ## 安裝
 ```bash
@@ -23,7 +23,7 @@ curl https://mise.run | sh
 | 用途 | 指令 |
 | --- | --- |
 | 檢查狀態 | `mise bootstrap status` |
-| 更新工具與 plugins | `mise run update` |
+| 更新工具、plugins、Flatpak 與字體 | `topgrade` |
 | 套用所有變更 | `mise bootstrap --yes --force-dotfiles` |
 | 查看 dotfiles 狀態 | `mise bootstrap dotfiles status` |
 | 納管 dotfile | `mise bootstrap dotfiles add ~/.config/example/config` |
@@ -35,6 +35,10 @@ curl https://mise.run | sh
 | 新增全域工具 | `mise use -g <tool>` |
 | 使用指定 backend 新增全域工具 | `mise use -g <backend>:<tool>` |
 | 移除全域工具 | `mise unuse -g <tool>` |
+
+`topgrade` 由 bootstrap 安裝到 `~/.local/bin`。目前只接管 mise tools、Sheldon plugins、user Flatpak、Nerd Font 與更新後的 completion refresh；APT/DNF/Pacman 的系統套件更新仍交給各發行版既有的自動更新機制。
+
+非 WSL Linux 會自動將 JetBrainsMono Nerd Font 安裝到 `~/.local/share/fonts/JetBrainsMonoNerdFont`，更新時會先驗證 Nerd Fonts release 的 SHA-256，再刷新 fontconfig cache。Ghostty 明確使用 `JetBrainsMono Nerd Font Mono`。WSL 的終端字體維持由 Windows bootstrap 管理。
 
 `install` / `uninstall` 只處理本機已安裝的工具版本，不會修改 mise 設定；`use` 會安裝工具並寫入設定，`unuse` 則會從設定中移除工具。若該工具版本已沒有其他 mise 設定需要，也會順便解除安裝。
 
