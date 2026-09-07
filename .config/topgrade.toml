@@ -30,3 +30,4 @@ use_sudo = false
 
 [post_commands]
 "Refresh completions" = 'mise completion zsh --install && misecompsync --shell zsh'
+"Commit mise lockfile" = '''repo="${MISE_CONFIG_DIR:-$HOME/.config/mise}"; if [ -n "$(git -C "$repo" status --porcelain -- mise.lock)" ]; then git -C "$repo" add -- mise.lock && git -C "$repo" commit --only -m "chore: update mise lockfile" -- mise.lock && git -C "$repo" push; fi'''
