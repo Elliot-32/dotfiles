@@ -40,6 +40,22 @@ jobs:
       - name: Run hk checks
         run: mise exec hk shellcheck -- hk check --all
 
+      - name: Validate Windows bootstrap PowerShell syntax
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            "$env:GITHUB_WORKSPACE/scripts/bootstrap-windows.ps1",
+            [ref]$tokens,
+            [ref]$errors
+          ) | Out-Null
+
+          if ($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_ }
+            exit 1
+          }
+
       - name: Validate mise settings
         run: test "$(mise settings get auto_update)" = true
 
