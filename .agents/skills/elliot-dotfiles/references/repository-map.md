@@ -59,7 +59,7 @@ DNF-family package-manager configuration shared where appropriate by Fedora and 
 Pacman/Arch package-manager configuration.
 
 ### `conf.d/platform.wsl.toml`
-WSL-specific configuration. It selects the WSL Sheldon profile and runs the Windows bootstrap through `powershell.exe` from the final bootstrap hook when Windows interop is available.
+WSL-specific configuration. It selects the WSL Sheldon profile and overrides `tasks.bootstrap:windows` with the interactive Windows bootstrap entry point. Keep the Windows setup in the task rather than a bootstrap hook so it can also be rerun manually with `mise run bootstrap:windows`.
 
 ### `conf.d/platform.wslg.toml`
 WSLg-specific configuration.
@@ -126,8 +126,10 @@ XDG terminal preference data.
 
 ## Bundled assets
 
-### `assets/windows-terminal/catppuccin/`
-Pinned Catppuccin Windows Terminal assets used by the WSL Windows bootstrap. `mocha.json` provides the Catppuccin Mocha color scheme and `mochaTheme.json` provides the matching Windows Terminal UI theme. Keep these files vendored so bootstrap does not depend on fetching Catppuccin's `main` branch at runtime.
+### `assets/windows-terminal/`
+Pinned Windows Terminal color schemes and UI themes used by the WSL Windows bootstrap. It currently includes all four Catppuccin flavors plus Tokyo Night and Dracula. Keep theme assets vendored so bootstrap does not depend on fetching upstream theme repositories at runtime.
+
+Catppuccin provides both scheme and UI-theme definitions upstream. Tokyo Night and Dracula provide the source palettes used here; their matching Windows Terminal UI theme definitions are maintained in this repo so selecting them changes both terminal colors and the Windows Terminal chrome.
 
 ## Imperative scripts
 
@@ -140,8 +142,11 @@ Ubuntu-specific Ghostty repository/bootstrap helper.
 ### `scripts/bootstrap-ghostty-fedora.sh`
 Fedora-specific Ghostty repository/bootstrap helper.
 
+### `scripts/bootstrap-windows.sh`
+Interactive WSL-side entry point for `mise run bootstrap:windows`. It uses Gum for the header, theme chooser, status messages, and PowerShell spinner, then passes the selected theme key to the Windows-native script. Keep interactive UI here instead of mixing Gum concerns into PowerShell.
+
 ### `scripts/bootstrap-windows.ps1`
-Windows-native bootstrap invoked from WSL through `powershell.exe`. It currently uses WinGet to ensure Windows Git and JetBrainsMono Nerd Font are installed, then idempotently injects the bundled Catppuccin Mocha color scheme/theme into Windows Terminal, selects them as the default profile color scheme and application theme, sets the default Nerd Font, and preserves a one-time settings backup.
+Windows-native bootstrap invoked from WSL through `powershell.exe`. It uses WinGet to ensure Windows Git and JetBrainsMono Nerd Font are installed, loads the selected vendored scheme/UI-theme pair, updates Windows Terminal defaults idempotently, and preserves a one-time settings backup. It accepts the theme key via `-Theme`.
 
 Keep Windows package and Windows Terminal manipulation here instead of mixing it into Linux package-manager configuration.
 
@@ -162,12 +167,13 @@ Pre-commit/check definitions. Current checks include:
 - `sh -n` for `scripts/*.sh`;
 - `zsh -n` for `.zshrc` and `.p10k.zsh`.
 
-PowerShell is not currently covered by hk, so changes to `scripts/bootstrap-windows.ps1` need an explicit parser/syntax check when PowerShell is available.
+PowerShell is not covered by hk; `.github/workflows/ci.yml` separately parses `scripts/bootstrap-windows.ps1` with PowerShell.
 
 ### `.github/workflows/ci.yml`
 Ubuntu CI that validates:
 
 - hk/static checks;
+- Windows bootstrap PowerShell syntax;
 - mise settings;
 - mise task validity;
 - locked bootstrap dry-run;

@@ -17,7 +17,7 @@ curl https://mise.run | sh
 ```
 -->
 
-在 WSL 中，bootstrap 也會透過 Windows interop 安裝 Windows Git 與 JetBrainsMono Nerd Font，並將 Windows Terminal 預設字體、配色與介面主題設為 Catppuccin Mocha。
+在 WSL 中，bootstrap 會透過 `bootstrap:windows` task 使用 Gum 互動介面設定 Windows：安裝 Windows Git 與 JetBrainsMono Nerd Font，並讓使用者選擇 Windows Terminal 的配色與介面主題。目前可選 Catppuccin Mocha、Macchiato、Frappe、Latte、Tokyo Night 與 Dracula。
 
 ## 常用指令
 
@@ -26,6 +26,7 @@ curl https://mise.run | sh
 | 檢查狀態 | `mise bootstrap status` |
 | 更新工具、plugins、Flatpak 與字體 | `topgrade` |
 | 套用所有變更 | `mise bootstrap --yes --force-dotfiles` |
+| 重新設定 WSL 對應的 Windows / Windows Terminal 主題 | `mise run bootstrap:windows` |
 | 查看 dotfiles 狀態 | `mise bootstrap dotfiles status` |
 | 納管 dotfile | `mise bootstrap dotfiles add ~/.config/example/config` |
 | 解除納管 dotfile | `mise bootstrap dotfiles unapply ~/.config/example/config` |

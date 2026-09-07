@@ -62,6 +62,21 @@ jobs:
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
 
+      - name: Validate WSL Windows bootstrap task
+        shell: bash
+        run: |
+          task_json="$(MISE_ENV=wsl MISE_ENV_CONF_D=true mise tasks info bootstrap:windows --json)"
+          printf '%s\n' "$task_json"
+          grep -Fq 'scripts/bootstrap-windows.sh' <<<"$task_json"
+          grep -Fq '"hide": false' <<<"$task_json"
+
+      - name: Validate Windows bootstrap skips without interop
+        shell: bash
+        run: |
+          output="$(sh scripts/bootstrap-windows.sh 2>&1)"
+          printf '%s\n' "$output"
+          grep -Fq 'powershell.exe is unavailable; skipping Windows bootstrap' <<<"$output"
+
       - name: Validate bootstrap plan
         run: mise --locked bootstrap --dry-run
 
@@ -116,3 +131,6 @@ jobs:
 
           check_config "flatpak" \
             "config.flatpak.toml"
+
+          check_config "wsl" \
+            "conf.d/platform.wsl.toml"

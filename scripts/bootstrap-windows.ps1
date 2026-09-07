@@ -1,3 +1,15 @@
+param(
+    [ValidateSet(
+        'catppuccin-mocha',
+        'catppuccin-macchiato',
+        'catppuccin-frappe',
+        'catppuccin-latte',
+        'tokyo-night',
+        'dracula'
+    )]
+    [string] $Theme = 'catppuccin-mocha'
+)
+
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
@@ -5,9 +17,21 @@ $gitPackage = 'Git.Git'
 $fontPackage = 'DEVCOM.JetBrainsMonoNerdFont'
 $fontFace = 'JetBrainsMono Nerd Font Mono'
 $wingetPackageAlreadyInstalled = -1978335135 # 0x8A150061 APPINSTALLER_CLI_ERROR_PACKAGE_ALREADY_INSTALLED
-$terminalThemeDirectory = Join-Path (Split-Path -Parent $PSScriptRoot) 'assets\windows-terminal\catppuccin'
-$terminalSchemePath = Join-Path $terminalThemeDirectory 'mocha.json'
-$terminalThemePath = Join-Path $terminalThemeDirectory 'mochaTheme.json'
+$terminalAssetsDirectory = Join-Path (Split-Path -Parent $PSScriptRoot) 'assets\windows-terminal'
+
+$themeFiles = @{
+    'catppuccin-mocha' = @('catppuccin', 'mocha.json', 'mochaTheme.json')
+    'catppuccin-macchiato' = @('catppuccin', 'macchiato.json', 'macchiatoTheme.json')
+    'catppuccin-frappe' = @('catppuccin', 'frappe.json', 'frappeTheme.json')
+    'catppuccin-latte' = @('catppuccin', 'latte.json', 'latteTheme.json')
+    'tokyo-night' = @('tokyo-night', 'tokyo-night.json', 'theme.json')
+    'dracula' = @('dracula', 'dracula.json', 'theme.json')
+}
+
+$themeDefinition = $themeFiles[$Theme]
+$terminalThemeDirectory = Join-Path $terminalAssetsDirectory $themeDefinition[0]
+$terminalSchemePath = Join-Path $terminalThemeDirectory $themeDefinition[1]
+$terminalThemePath = Join-Path $terminalThemeDirectory $themeDefinition[2]
 
 function Invoke-WinGetInstall {
     param([Parameter(Mandatory = $true)][string] $Id)
