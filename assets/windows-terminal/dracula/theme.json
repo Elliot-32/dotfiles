@@ -1,0 +1,15 @@
+{
+  "name": "Dracula",
+  "tab": {
+    "background": "#282A36FF",
+    "showCloseButton": "always",
+    "unfocusedBackground": "#21222CFF"
+  },
+  "tabRow": {
+    "background": "#21222CFF",
+    "unfocusedBackground": "#191A21FF"
+  },
+  "window": {
+    "applicationTheme": "dark"
+  }
+}
