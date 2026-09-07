@@ -122,22 +122,12 @@ run_windows_bootstrap() {
   windows_script=$(wslpath -w "$script")
 
   show_info "Selected $theme_name"
+  show_info "Configuring Windows and applying $theme_name..."
 
-  if can_style_output; then
-    if ! gum spin \
-      --spinner dot \
-      --title "Configuring Windows and applying $theme_name..." \
-      --show-error \
-      -- powershell.exe \
-        -NoLogo \
-        -NoProfile \
-        -ExecutionPolicy Bypass \
-        -File "$windows_script" \
-        -Theme "$theme"; then
-      show_error "Windows bootstrap failed"
-      return 1
-    fi
-  elif ! powershell.exe \
+  # Do not wrap powershell.exe in `gum spin` here. WSL interop commands can
+  # behave differently when their stdio is captured by gum, and winget may
+  # appear to hang even though the same PowerShell command works normally.
+  if ! powershell.exe \
     -NoLogo \
     -NoProfile \
     -ExecutionPolicy Bypass \
