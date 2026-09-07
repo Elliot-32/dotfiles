@@ -80,6 +80,7 @@ codex = "latest"
 "aqua:fujiapple852/trippy" = "latest"
 "aqua:alltuner/mise-completions-sync" = "latest"
 "github:pythops/impala" = "latest"
+kubectl = "latest"
 
 [dotfiles]
 "~/.gitconfig/defaults" = { block = '''
