@@ -17,10 +17,10 @@ Primary global mise config. It currently owns:
 - bootstrap directories and mise shell activation;
 - login shell configuration;
 - user systemd units/timers, including Topgrade-driven unattended updates and gomi pruning;
-- `tasks.bootstrap`, `bootstrap:windows`, and `update:fonts`;
+- `tasks.bootstrap`, `bootstrap:github`, `bootstrap:windows`, and `update:fonts`;
 - post-install completion synchronization.
 
-`tasks.bootstrap` currently coordinates Atuin setup, mise completion installation, `mise-completions-sync`, Sheldon locking, Yazi plugin installation, hk setup, Nerd Font update, Windows bootstrap dispatch, and GitHub login.
+`tasks.bootstrap` currently coordinates Atuin setup, mise completion installation, `mise-completions-sync`, Sheldon locking, Yazi plugin installation, hk setup, Nerd Font update, Windows bootstrap dispatch, and the interactive GitHub setup task.
 
 The repo itself is intended to live at the mise global config directory (`~/.config/mise` by default).
 
@@ -154,7 +154,7 @@ Keep Windows package and Windows Terminal manipulation here instead of mixing it
 Linux Nerd Font updater used by `mise run update:fonts`. It skips Linux font installation under WSL, resolves the latest JetBrainsMono Nerd Font release, verifies the release checksum manifest, swaps the installed font directory safely, and refreshes the font cache.
 
 ### `scripts/login-github.sh`
-Interactive/nontrivial GitHub login/configuration workflow used by bootstrap.
+Interactive/nontrivial GitHub login/configuration workflow used by the hidden `bootstrap:github` task during bootstrap.
 
 Prefer extending native mise configuration first. Keep shell and PowerShell scripts focused and idempotent where possible.
 
