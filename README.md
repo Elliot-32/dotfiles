@@ -5,17 +5,8 @@
 ## 安裝
 ```bash
 curl https://mise.run | sh
-
-git clone https://github.com/Elliot-32/dotfiles.git ~/.config/mise &&
-~/.local/bin/mise bootstrap --yes --force-dotfiles &&
-exec zsh -l
-```
-<!--
-```bash
-curl https://mise.run | sh
 ~/.local/bin/mise bootstrap --from-git https://github.com/Elliot-32/dotfiles.git --yes --force-dotfiles && exec zsh -l
 ```
--->
 
 在 WSL 中，bootstrap 會透過 `bootstrap:windows` task 使用 Gum 互動介面設定 Windows：安裝 Windows Git 與 JetBrainsMono Nerd Font，並讓使用者選擇 Windows Terminal 的配色與介面主題。目前可選 Catppuccin Mocha、Macchiato、Frappe、Latte、Tokyo Night 與 Dracula。
 
