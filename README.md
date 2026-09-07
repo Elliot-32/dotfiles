@@ -17,6 +17,7 @@ curl https://mise.run | sh
 ```
 -->
 
+在 WSL 中，bootstrap 也會透過 Windows interop 安裝 Windows Git 與 JetBrainsMono Nerd Font，並將 Windows Terminal 預設字體、配色與介面主題設為 Catppuccin Mocha。
 
 ## 常用指令
 
