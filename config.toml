@@ -147,7 +147,6 @@ run = [
   "sheldon --non-interactive lock",
   "ya pkg install",
   "cd \"${MISE_CONFIG_DIR:-$HOME/.config/mise}\" && hk install --mise",
-  "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-metasploit.sh\"",
   { task = "update:fonts" },
   { task = "bootstrap:windows" },
   "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\"",
