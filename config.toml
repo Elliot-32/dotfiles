@@ -150,8 +150,13 @@ run = [
   "cd \"${MISE_CONFIG_DIR:-$HOME/.config/mise}\" && hk install --mise",
   { task = "update:fonts" },
   { task = "bootstrap:windows" },
-  "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\"",
+  { task = "bootstrap:github" },
 ]
+
+[tasks."bootstrap:github"]
+hide = true
+interactive = true
+run = "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\""
 
 [tasks."bootstrap:windows"]
 hide = true
