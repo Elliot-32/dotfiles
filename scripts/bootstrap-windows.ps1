@@ -5,6 +5,9 @@ $gitPackage = 'Git.Git'
 $fontPackage = 'DEVCOM.JetBrainsMonoNerdFont'
 $fontFace = 'JetBrainsMono Nerd Font Mono'
 $wingetPackageAlreadyInstalled = -1978335135 # 0x8A150061 APPINSTALLER_CLI_ERROR_PACKAGE_ALREADY_INSTALLED
+$terminalThemeDirectory = Join-Path (Split-Path -Parent $PSScriptRoot) 'assets\windows-terminal\catppuccin'
+$terminalSchemePath = Join-Path $terminalThemeDirectory 'mocha.json'
+$terminalThemePath = Join-Path $terminalThemeDirectory 'mochaTheme.json'
 
 function Invoke-WinGetInstall {
     param([Parameter(Mandatory = $true)][string] $Id)
@@ -168,25 +171,76 @@ function Get-OrAddObjectProperty {
     return $property.Value
 }
 
-function Set-WindowsTerminalFont {
+function Set-ObjectPropertyValue {
+    param(
+        [Parameter(Mandatory = $true)] $Object,
+        [Parameter(Mandatory = $true)][string] $Name,
+        [Parameter(Mandatory = $true)] $Value
+    )
+
+    $property = $Object.PSObject.Properties[$Name]
+    if ($null -eq $property) {
+        $Object | Add-Member -MemberType NoteProperty -Name $Name -Value $Value
+        return
+    }
+
+    $property.Value = $Value
+}
+
+function Set-NamedArrayEntry {
+    param(
+        [Parameter(Mandatory = $true)] $Object,
+        [Parameter(Mandatory = $true)][string] $PropertyName,
+        [Parameter(Mandatory = $true)] $Entry
+    )
+
+    $entryName = [string] $Entry.name
+    $property = $Object.PSObject.Properties[$PropertyName]
+    $entries = if ($null -eq $property -or $null -eq $property.Value) { @() } else { @($property.Value) }
+    $filtered = @(
+        $entries | Where-Object {
+            $nameProperty = $_.PSObject.Properties['name']
+            $null -eq $nameProperty -or [string] $nameProperty.Value -ne $entryName
+        }
+    )
+    $updated = @($filtered + @($Entry))
+
+    if ($null -eq $property) {
+        $Object | Add-Member -MemberType NoteProperty -Name $PropertyName -Value $updated
+        return
+    }
+
+    $property.Value = $updated
+}
+
+function Set-WindowsTerminalAppearance {
     param(
         [Parameter(Mandatory = $true)][string] $SettingsPath,
-        [Parameter(Mandatory = $true)][string] $Face
+        [Parameter(Mandatory = $true)][string] $Face,
+        [Parameter(Mandatory = $true)] $Scheme,
+        [Parameter(Mandatory = $true)] $TerminalTheme
     )
+
+    $schemeName = [string] $Scheme.name
+    $themeName = [string] $TerminalTheme.name
 
     if (-not (Test-Path -LiteralPath $SettingsPath -PathType Leaf)) {
         $initialSettings = [pscustomobject] @{
+            theme = $themeName
             profiles = [pscustomobject] @{
                 defaults = [pscustomobject] @{
+                    colorScheme = $schemeName
                     font = [pscustomobject] @{
                         face = $Face
                     }
                 }
             }
+            schemes = @($Scheme)
+            themes = @($TerminalTheme)
         }
         $json = $initialSettings | ConvertTo-Json -Depth 100
         [System.IO.File]::WriteAllText($SettingsPath, $json + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
-        Write-Host "Created Windows Terminal settings with font '$Face': $SettingsPath"
+        Write-Host "Created Windows Terminal settings with '$schemeName': $SettingsPath"
         return
     }
 
@@ -202,19 +256,12 @@ function Set-WindowsTerminalFont {
     $profiles = Get-OrAddObjectProperty -Object $settings -Name 'profiles'
     $defaults = Get-OrAddObjectProperty -Object $profiles -Name 'defaults'
     $font = Get-OrAddObjectProperty -Object $defaults -Name 'font'
-    $faceProperty = $font.PSObject.Properties['face']
 
-    if ($null -ne $faceProperty -and $faceProperty.Value -eq $Face) {
-        Write-Host "Windows Terminal already uses '$Face': $SettingsPath"
-        return
-    }
-
-    if ($null -eq $faceProperty) {
-        $font | Add-Member -MemberType NoteProperty -Name 'face' -Value $Face
-    }
-    else {
-        $faceProperty.Value = $Face
-    }
+    Set-ObjectPropertyValue -Object $font -Name 'face' -Value $Face
+    Set-ObjectPropertyValue -Object $defaults -Name 'colorScheme' -Value $schemeName
+    Set-ObjectPropertyValue -Object $settings -Name 'theme' -Value $themeName
+    Set-NamedArrayEntry -Object $settings -PropertyName 'schemes' -Entry $Scheme
+    Set-NamedArrayEntry -Object $settings -PropertyName 'themes' -Entry $TerminalTheme
 
     $backupPath = "$SettingsPath.dotfiles-backup"
     if (-not (Test-Path -LiteralPath $backupPath)) {
@@ -223,7 +270,7 @@ function Set-WindowsTerminalFont {
 
     $updated = $settings | ConvertTo-Json -Depth 100
     [System.IO.File]::WriteAllText($SettingsPath, $updated + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
-    Write-Host "Set Windows Terminal font to '$Face': $SettingsPath"
+    Write-Host "Set Windows Terminal font and theme to '$schemeName': $SettingsPath"
 }
 
 $winget = Get-Command winget.exe -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -235,6 +282,16 @@ $script:WinGetCommand = $winget.Source
 Invoke-WinGetInstall -Id $gitPackage
 Invoke-WinGetInstall -Id $fontPackage
 
+if (-not (Test-Path -LiteralPath $terminalSchemePath -PathType Leaf)) {
+    throw "Windows Terminal color scheme is missing: $terminalSchemePath"
+}
+if (-not (Test-Path -LiteralPath $terminalThemePath -PathType Leaf)) {
+    throw "Windows Terminal theme is missing: $terminalThemePath"
+}
+
+$terminalScheme = Get-Content -LiteralPath $terminalSchemePath -Raw | ConvertFrom-Json
+$terminalTheme = Get-Content -LiteralPath $terminalThemePath -Raw | ConvertFrom-Json
+
 $terminalStateDirectories = @(
     @(
         (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState'),
@@ -245,10 +302,10 @@ $terminalStateDirectories = @(
 )
 
 if ($terminalStateDirectories.Count -eq 0) {
-    Write-Warning 'Windows Terminal settings directory was not found; skipping font configuration.'
+    Write-Warning 'Windows Terminal settings directory was not found; skipping appearance configuration.'
     exit 0
 }
 
 foreach ($stateDirectory in $terminalStateDirectories) {
-    Set-WindowsTerminalFont -SettingsPath (Join-Path $stateDirectory 'settings.json') -Face $fontFace
+    Set-WindowsTerminalAppearance -SettingsPath (Join-Path $stateDirectory 'settings.json') -Face $fontFace -Scheme $terminalScheme -TerminalTheme $terminalTheme
 }
