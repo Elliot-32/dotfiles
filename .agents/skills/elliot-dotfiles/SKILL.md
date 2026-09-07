@@ -5,7 +5,7 @@ license: MIT
 compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, and shellcheck.
 metadata:
   author: Elliot-32
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Elliot dotfiles maintenance
@@ -20,7 +20,7 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
 2. Read the files that own the behavior being changed; do not rely only on this skill's repository snapshot.
 3. Read [references/repository-map.md](references/repository-map.md) when the task crosses configuration layers or when file ownership is unclear.
 4. Keep unrelated user changes intact.
-5. For version-sensitive mise, shell-plugin, package-manager, or CI behavior, verify current upstream documentation when the answer depends on behavior not demonstrated by this repository.
+5. For version-sensitive mise, shell-plugin, package-manager, completion-registry, or CI behavior, verify current upstream documentation when the answer depends on behavior not demonstrated by this repository.
 
 ## Architecture rules
 
@@ -52,10 +52,43 @@ Use [references/repository-map.md](references/repository-map.md) for details. In
 - Add a distro-only repository or bootstrap prerequisite: edit the matching `conf.d/distro.<distro>.toml`.
 - Add a Flatpak app/remote/bootstrap change: edit `config.flatpak.toml` and its existing bootstrap path.
 - Change distro/platform detection: edit `miserc.toml`, then extend CI selection checks.
-- Change Zsh plugin loading, fpath, completion, widgets, or zstyle setup: inspect `.config/sheldon/plugins.toml` and `.zshrc`; place behavior in the layer that owns it rather than duplicating initialization.
+- Change Zsh plugin loading, `fpath`, completion, widgets, or zstyle setup: inspect `.config/sheldon/plugins.toml` and `.zshrc`; place behavior in the layer that owns it rather than duplicating initialization.
+- Change generated CLI completions: inspect `config.toml` hooks/tasks, `.local/share/mise-completions-sync/registry.toml`, and the current upstream `mise-completions-sync` registry before editing.
 - Change shell startup environment: inspect `.zshenv`, `.zprofile`, `.zshrc`, Sheldon config, and mise shell activation before adding another initialization path.
 - Change bootstrap/update behavior: prefer existing `[bootstrap.*]`, `[tasks.*]`, and `[hooks]` in `config.toml`.
 - Change validation/pre-commit checks: edit `hk.pkl` and, when necessary, `.github/workflows/ci.yml`.
+
+## Completion registry rules
+
+This repository uses `mise-completions-sync` for mise-managed CLI completions. The local overlay is `.local/share/mise-completions-sync/registry.toml`; it is deployed through `[dotfiles]` in `config.toml`. Bootstrap runs `misecompsync --shell zsh`, and the post-install hook runs `misecompsync --new-only --shell zsh`.
+
+When adding or changing completion support for a tool, use this priority order:
+
+1. Check whether the tool already exists in the current upstream `mise-completions-sync` built-in registry. If it does, do not add a local entry unless the repository intentionally needs an override.
+2. If the tool is not built in, check whether its completion command matches one of the built-in patterns. Prefer a short pattern entry such as `tool = "standard"` instead of duplicating shell-specific commands.
+3. Only use an explicit local command table when no built-in pattern matches the CLI syntax.
+4. Re-check upstream before keeping an old custom entry; if upstream later adds the tool, remove the redundant local entry unless an override is still required.
+
+Known built-in patterns include:
+
+- `standard`: `{} completion <shell>`
+- `completions`: `{} completions <shell>`
+- `gh_style`: `{} completion -s <shell>`
+- `generate_shell`: `{} generate-shell-completion <shell>`
+- `gen_completions`: `{} gen-completions --shell <shell>`
+- `completions_flag`: `{} --completions <shell>`
+- `argcomplete`: `register-python-argcomplete -s <shell> {}`
+- `generate_complete`: shell-specific `{} --generate=complete-<shell>` forms
+
+Do not assume this list or upstream mappings are permanent; `mise-completions-sync` is version-sensitive, so verify the current upstream registry when making a completion change.
+
+Current repository custom entries are intentionally minimal:
+
+- `codex`, `dasel`, `gup`, `herdr`, and `witr` use the built-in `standard` pattern through the local overlay because they are not currently built into upstream.
+- `sheldon` uses an explicit zsh command because its syntax is `sheldon completions --shell zsh`, which does not match the existing `completions` pattern.
+- `topgrade` uses an explicit zsh command because its syntax is `topgrade --gen-completion zsh`, which does not match the existing patterns.
+
+Examples of tools already covered by upstream and therefore not present in the local overlay include `doggo` via `completions`, `gh` via `gh_style`, `uv` via `generate_shell`, and `atuin` via `gen_completions`. When auditing the local registry, compare every local entry against upstream first rather than assuming a custom entry is still needed.
 
 ## Editing discipline
 
@@ -66,6 +99,7 @@ Use [references/repository-map.md](references/repository-map.md) for details. In
 - Do not broaden environment detection without checking how the new condition interacts with existing Ubuntu/Debian, Fedora/RHEL, Arch, Flatpak, WSL, and WSLg selection.
 - When changing plugin order, reason about `fpath`, `compinit`, widget wrapping, and syntax-highlighting order before editing.
 - When changing bootstrap actions, distinguish validation/dry-run behavior from actions that mutate the host system, login shell, package repositories, user services, or credentials.
+- When adding a mise-managed CLI that can generate completions, also decide whether `mise-completions-sync` already supports it upstream, can use a built-in pattern in the local registry, or genuinely requires an explicit command.
 
 ## Validation
 
@@ -77,6 +111,7 @@ At minimum:
 - run `mise tasks validate --errors-only` for task/config changes;
 - run `mise --locked bootstrap --dry-run` for bootstrap/config changes when mise is available;
 - validate the relevant `MISE_ENV` selection whenever `miserc.toml`, `conf.d/`, or Flatpak selection changes;
+- for completion-registry changes, validate the generated command shape against the tool and, when available, use `misecompsync list` or a targeted `misecompsync <tool> --shell zsh` run rather than only checking TOML syntax;
 - do not run the full real bootstrap on the user's machine merely as a test unless explicitly requested.
 
 If a required check cannot be run, state exactly which check was skipped and why.
