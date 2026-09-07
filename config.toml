@@ -68,7 +68,6 @@ zoxide = "latest"
 "cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
 "github:Giammarco-Ferranti/deja" = "latest"
 "pipx:isd-tui" = "latest"
-"github:alltuner/mise-completions-sync" = "latest"
 codex = "latest"
 "aqua:kjokjo/ipcalc" = "latest"
 "pipx:sqlmap" = "latest"

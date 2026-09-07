@@ -1182,66 +1182,6 @@ checksum = "sha256:0fb9776289365d541dd2cfd3863dabb2186ef2db1493a2dc749799e2c64c8
 url = "https://github.com/Giammarco-Ferranti/deja/releases/download/v0.4.1/deja_0.4.1_darwin_amd64.tar.gz"
 url_api = "https://api.github.com/repos/Giammarco-Ferranti/deja/releases/assets/505399232"
 
-[[tools."github:alltuner/mise-completions-sync"]]
-version = "0.5.15"
-backend = "github:alltuner/mise-completions-sync"
-specifiers = ["latest"]
-
-[tools."github:alltuner/mise-completions-sync"."platforms.linux-arm64"]
-checksum = "sha256:bc5aff1ecde6d78c1432ebc209886bfe77bb3dca9a9917773ed93ce3c159857d"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874668"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.linux-arm64-musl"]
-checksum = "sha256:bc5aff1ecde6d78c1432ebc209886bfe77bb3dca9a9917773ed93ce3c159857d"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874668"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.linux-x64"]
-checksum = "sha256:2374a4506ceaec0571391b9fcefac672cad38bc0400171be3f2abd82fa0bc8a5"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874183"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.linux-x64-baseline"]
-checksum = "sha256:2374a4506ceaec0571391b9fcefac672cad38bc0400171be3f2abd82fa0bc8a5"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874183"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.linux-x64-musl"]
-checksum = "sha256:33ae6ea7204fa4f70c1453e7ccc5b8932aa4530a05fed1ea5e15443484c03d3b"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874425"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:33ae6ea7204fa4f70c1453e7ccc5b8932aa4530a05fed1ea5e15443484c03d3b"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874425"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.macos-arm64"]
-checksum = "sha256:5fece1a48154c386dd23de20bb92b27bd14040c526fe51b9108125f5d771673c"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874383"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.macos-x64"]
-checksum = "sha256:fcf299f552bd5dd4e0b2f62932fc2b6718d3f59131d94e5f37c79a7b9f4e1dd6"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874321"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.macos-x64-baseline"]
-checksum = "sha256:fcf299f552bd5dd4e0b2f62932fc2b6718d3f59131d94e5f37c79a7b9f4e1dd6"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/mise-completions-sync-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/493874321"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.windows-x64"]
-checksum = "sha256:4098ce061fb4572e53905cba6910dbff372143e608ea84d2f5ca374c75a9eb26"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/site.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/523750825"
-
-[tools."github:alltuner/mise-completions-sync"."platforms.windows-x64-baseline"]
-checksum = "sha256:4098ce061fb4572e53905cba6910dbff372143e608ea84d2f5ca374c75a9eb26"
-url = "https://github.com/alltuner/mise-completions-sync/releases/download/v0.5.15/site.tar.gz"
-url_api = "https://api.github.com/repos/alltuner/mise-completions-sync/releases/assets/523750825"
-
 [[tools."github:pythops/bluetui"]]
 version = "0.8.1"
 backend = "github:pythops/bluetui"
