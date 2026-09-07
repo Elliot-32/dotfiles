@@ -153,8 +153,12 @@ run_windows_bootstrap() {
 main() {
   show_header
 
+  if ! command -v powershell.exe >/dev/null 2>&1; then
+    show_warning "powershell.exe is unavailable; skipping Windows bootstrap"
+    return 0
+  fi
+
   require_command gum || return 1
-  require_command powershell.exe || return 1
   require_command wslpath || return 1
 
   choose_theme || return 1
