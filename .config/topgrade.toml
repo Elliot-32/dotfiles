@@ -2,6 +2,7 @@
 assume_yes = true
 ask_retry = false
 notify_end = "never"
+sudo_loop = true
 disable = [
   # Managed by mise; keep Topgrade steps that only update plugins/data.
   "atuin",
