@@ -26,6 +26,7 @@ path = "j $(print -l $path | fzf)"
 n = "nvim"
 sl = "systemctl"
 sudo = "sudo "
+update = "topgrade"
 
 [tools]
 atuin = "latest"
