@@ -1,7 +1,7 @@
 schema_version = 1
 
 [tools]
-codex = { zsh = "codex completion zsh" }
+codex = "standard"
 dasel = "standard"
 gup = "standard"
 herdr = "standard"
