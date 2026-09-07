@@ -124,6 +124,11 @@ Fcitx5 configuration.
 ### `.config/xdg-terminals.list`
 XDG terminal preference data.
 
+## Bundled assets
+
+### `assets/windows-terminal/catppuccin/`
+Pinned Catppuccin Windows Terminal assets used by the WSL Windows bootstrap. `mocha.json` provides the Catppuccin Mocha color scheme and `mochaTheme.json` provides the matching Windows Terminal UI theme. Keep these files vendored so bootstrap does not depend on fetching Catppuccin's `main` branch at runtime.
+
 ## Imperative scripts
 
 ### `scripts/bootstrap-flatpak.sh`
@@ -136,7 +141,7 @@ Ubuntu-specific Ghostty repository/bootstrap helper.
 Fedora-specific Ghostty repository/bootstrap helper.
 
 ### `scripts/bootstrap-windows.ps1`
-Windows-native bootstrap invoked from WSL through `powershell.exe`. It currently uses WinGet to ensure Windows Git and JetBrainsMono Nerd Font are installed, then updates Windows Terminal profile defaults to use the Nerd Font while preserving a one-time settings backup.
+Windows-native bootstrap invoked from WSL through `powershell.exe`. It currently uses WinGet to ensure Windows Git and JetBrainsMono Nerd Font are installed, then idempotently injects the bundled Catppuccin Mocha color scheme/theme into Windows Terminal, selects them as the default profile color scheme and application theme, sets the default Nerd Font, and preserves a one-time settings backup.
 
 Keep Windows package and Windows Terminal manipulation here instead of mixing it into Linux package-manager configuration.
 
