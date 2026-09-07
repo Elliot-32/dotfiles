@@ -70,6 +70,13 @@ jobs:
           grep -Fq 'scripts/bootstrap-windows.sh' <<<"$task_json"
           grep -Fq '"hide": false' <<<"$task_json"
 
+      - name: Validate Windows bootstrap skips without interop
+        shell: bash
+        run: |
+          output="$(sh scripts/bootstrap-windows.sh 2>&1)"
+          printf '%s\n' "$output"
+          grep -Fq 'powershell.exe is unavailable; skipping Windows bootstrap' <<<"$output"
+
       - name: Validate bootstrap plan
         run: mise --locked bootstrap --dry-run
 
