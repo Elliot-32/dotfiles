@@ -1,11 +1,11 @@
 ---
 name: elliot-dotfiles
-description: Maintain, review, and evolve Elliot-32/dotfiles, a mise-centric Linux/WSL dotfiles repository. Use for work involving config.toml, miserc.toml, conf.d environment selection, mise tools/bootstrap/tasks, package managers, Flatpak, Zsh/Sheldon plugins and completions, Ghostty, WSL/WSLg, hk/CI, mise.lock, README updates, or repository refactors.
+description: Maintain, review, and evolve Elliot-32/dotfiles, a mise-centric Linux/WSL dotfiles repository. Use for work involving config.toml, miserc.toml, conf.d environment selection, mise tools/bootstrap/tasks, package managers, Flatpak, Zsh/Sheldon plugins and completions, Yazi, Topgrade, Ghostty, Nerd Fonts, WSL/WSLg and Windows bootstrap, hk/CI, mise.lock, README updates, or repository refactors.
 license: MIT
-compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, and shellcheck.
+compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, shellcheck, and PowerShell.
 metadata:
   author: Elliot-32
-  version: "1.1"
+  version: "1.2"
 ---
 
 # Elliot dotfiles maintenance
@@ -20,7 +20,7 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
 2. Read the files that own the behavior being changed; do not rely only on this skill's repository snapshot.
 3. Read [references/repository-map.md](references/repository-map.md) when the task crosses configuration layers or when file ownership is unclear.
 4. Keep unrelated user changes intact.
-5. For version-sensitive mise, shell-plugin, package-manager, completion-registry, or CI behavior, verify current upstream documentation when the answer depends on behavior not demonstrated by this repository.
+5. For version-sensitive mise, shell-plugin, package-manager, completion-registry, Yazi-plugin, Topgrade, WinGet, or CI behavior, verify current upstream documentation when the answer depends on behavior not demonstrated by this repository.
 
 ## Architecture rules
 
@@ -31,8 +31,12 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
   - `packages.*.toml`: package-manager-specific packages/settings.
   - `platform.*.toml`: platform behavior such as WSL/WSLg.
 - Keep Flatpak-specific configuration in `config.flatpak.toml`.
-- Prefer declarative mise configuration over shell scripts. Add or extend a script only when the operation is inherently imperative, interactive, or cannot be represented safely in mise configuration.
+- Prefer declarative mise configuration over shell scripts. Add or extend a script only when the operation is inherently imperative, interactive, platform-native, or cannot be represented safely in mise configuration.
 - Dotfiles are deployed by mise and default to symlinks. Add managed files through `[dotfiles]`; do not introduce a second dotfile manager.
+- Treat Topgrade as the user-session update orchestrator. Its configs deliberately disable runtimes/package ecosystems already managed by mise while retaining update steps for plugin/data refreshes, Nerd Fonts, and generated completions. Do not recreate a competing generic mise update task without checking the current Topgrade path first.
+- Treat `.config/yazi/package.toml` as Yazi's plugin manifest. Bootstrap installs declared plugins with `ya pkg install`; change plugin declarations there rather than adding ad-hoc plugin install commands elsewhere.
+- Treat `conf.d/platform.wsl.toml` plus `scripts/bootstrap-windows.ps1` as the WSL-to-Windows bootstrap path. Keep Windows-native WinGet/package/Windows Terminal behavior in PowerShell instead of moving it into Linux package configuration.
+- Linux Nerd Font maintenance is owned by `tasks.update:fonts` and `scripts/update-fonts.sh`; Windows font installation is owned by `scripts/bootstrap-windows.ps1`. Preserve the intentional WSL split.
 - Keep Zsh plugin and completion ordering in `.config/sheldon/plugins.toml` deliberate:
   1. completion directories on `fpath`,
   2. `compinit`,
@@ -55,7 +59,11 @@ Use [references/repository-map.md](references/repository-map.md) for details. In
 - Change Zsh plugin loading, `fpath`, completion, widgets, or zstyle setup: inspect `.config/sheldon/plugins.toml` and `.zshrc`; place behavior in the layer that owns it rather than duplicating initialization.
 - Change generated CLI completions: inspect `config.toml` hooks/tasks, `.local/share/mise-completions-sync/registry.toml`, and the current upstream `mise-completions-sync` registry before editing.
 - Change shell startup environment: inspect `.zshenv`, `.zprofile`, `.zshrc`, Sheldon config, and mise shell activation before adding another initialization path.
-- Change bootstrap/update behavior: prefer existing `[bootstrap.*]`, `[tasks.*]`, and `[hooks]` in `config.toml`.
+- Add, remove, or configure a Yazi plugin: inspect `.config/yazi/package.toml`, `.config/yazi/init.lua`, `.config/yazi/keymap.toml`, and `.config/yazi/yazi.toml`; keep plugin installation delegated to the existing `ya pkg install` bootstrap step.
+- Change unattended/user-session update behavior: inspect `.config/topgrade.toml`, `.config/topgrade.systemd.toml`, and the `update` / `update-timer` systemd units in `config.toml` before adding another updater.
+- Change Linux Nerd Font installation/update behavior: edit `scripts/update-fonts.sh` and the `update:fonts` task path in `config.toml`; preserve checksum verification and WSL skip behavior unless the change explicitly replaces that design.
+- Change Windows packages, Windows Terminal defaults, or other WSL-triggered Windows setup: inspect `conf.d/platform.wsl.toml`, `tasks.bootstrap:windows`, and `scripts/bootstrap-windows.ps1`.
+- Change bootstrap behavior: prefer existing `[bootstrap.*]`, `[tasks.*]`, and `[hooks]` in `config.toml`, including the existing completion sync, Sheldon lock, Yazi package install, hk setup, font update, Windows bootstrap, and GitHub login flow.
 - Change validation/pre-commit checks: edit `hk.pkl` and, when necessary, `.github/workflows/ci.yml`.
 
 ## Completion registry rules
@@ -93,12 +101,13 @@ Examples of tools already covered by upstream and therefore not present in the l
 ## Editing discipline
 
 - Make the smallest change that satisfies the request.
-- Preserve the repository's current TOML/YAML/shell style unless a broader refactor is explicitly requested.
+- Preserve the repository's current TOML/YAML/shell/PowerShell style unless a broader refactor is explicitly requested.
 - Avoid duplicating package or tool declarations across generic and conditional configs.
 - Do not move distro/package-manager logic into scripts merely for convenience.
 - Do not broaden environment detection without checking how the new condition interacts with existing Ubuntu/Debian, Fedora/RHEL, Arch, Flatpak, WSL, and WSLg selection.
 - When changing plugin order, reason about `fpath`, `compinit`, widget wrapping, and syntax-highlighting order before editing.
-- When changing bootstrap actions, distinguish validation/dry-run behavior from actions that mutate the host system, login shell, package repositories, user services, or credentials.
+- When changing bootstrap actions, distinguish validation/dry-run behavior from actions that mutate the host system, login shell, package repositories, user services, credentials, Windows packages, or Windows Terminal settings.
+- When changing update behavior, distinguish mise-managed tool/runtime upgrades from Topgrade-managed plugin/data/system steps so the same ecosystem is not upgraded twice.
 - When adding a mise-managed CLI that can generate completions, also decide whether `mise-completions-sync` already supports it upstream, can use a built-in pattern in the local registry, or genuinely requires an explicit command.
 
 ## Validation
@@ -112,6 +121,8 @@ At minimum:
 - run `mise --locked bootstrap --dry-run` for bootstrap/config changes when mise is available;
 - validate the relevant `MISE_ENV` selection whenever `miserc.toml`, `conf.d/`, or Flatpak selection changes;
 - for completion-registry changes, validate the generated command shape against the tool and, when available, use `misecompsync list` or a targeted `misecompsync <tool> --shell zsh` run rather than only checking TOML syntax;
+- for Yazi plugin changes, validate `package.toml` and prefer a non-destructive Yazi package inspection/sync check when supported by the installed version; do not remove unrelated plugin state;
+- for `scripts/bootstrap-windows.ps1`, run a PowerShell parser/syntax check without executing its WinGet or Windows Terminal mutations;
 - do not run the full real bootstrap on the user's machine merely as a test unless explicitly requested.
 
 If a required check cannot be run, state exactly which check was skipped and why.
