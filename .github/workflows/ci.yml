@@ -163,10 +163,12 @@ jobs:
           jq -e 'any(.entries[]; .path == "~/custom/mise/mise.lock")' <<<"$paths_json" >/dev/null
           jq -e 'all(.entries[]; (.path | startswith("~/.config/mise/") | not))' <<<"$paths_json" >/dev/null
 
-          config_ls="$(run_fresh "$mise_bin" config ls)"
-          printf '%s\n' "$config_ls"
-          grep -Fq "$fresh_config/conf.d/distro.ubuntu.toml" <<<"$config_ls"
-          grep -Fq "$fresh_config/conf.d/packages.apt.toml" <<<"$config_ls"
+          config_json="$(run_fresh "$mise_bin" config ls --json)"
+          printf '%s\n' "$config_json"
+          jq -e --arg path "$fresh_config/conf.d/distro.ubuntu.toml" \
+            'any(.[]; .path == $path)' <<<"$config_json" >/dev/null
+          jq -e --arg path "$fresh_config/conf.d/packages.apt.toml" \
+            'any(.[]; .path == $path)' <<<"$config_json" >/dev/null
           run_fresh "$mise_bin" bootstrap dotfiles status
 
       - name: Validate custom mise config directory
