@@ -1,0 +1,10 @@
+schema_version = 1
+
+[tools]
+codex = "standard"
+dasel = "standard"
+gup = "standard"
+herdr = "standard"
+sheldon = { zsh = "sheldon completions --shell zsh" }
+topgrade = { zsh = "topgrade --gen-completion zsh" }
+witr = "standard"

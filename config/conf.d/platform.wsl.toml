@@ -1,0 +1,11 @@
+# WSL-specific mise configuration.
+# This fragment is loaded only when the `wsl` environment is active.
+
+[env]
+SHELDON_PROFILE = "wsl"
+
+[tasks."bootstrap:windows"]
+description = "Configure Windows packages and Windows Terminal from WSL"
+hide = false
+interactive = true
+run = "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-windows.sh\""

@@ -1,0 +1,46 @@
+[misc]
+assume_yes = true
+ask_retry = false
+notify_end = "never"
+disable = [
+  # Managed by mise; keep Topgrade steps that only update plugins/data.
+  "atuin",
+  "bun",
+  "bun_packages",
+  "cargo",
+  "codex",
+  "go",
+  "node",
+  "opencode",
+  "pipx",
+  "rustup",
+  "self_update",
+  "uv",
+
+  # Privileged/system-wide updates are skipped for the unattended user service.
+  "system",
+  "snap",
+  "deb_get",
+  "pacstall",
+  "pacdef",
+  "config_update",
+  "dkp_pacman",
+  "firmware",
+  "mandb",
+  "pkgfile",
+  "restarts",
+  "waydroid",
+  "auto_cpufreq",
+]
+
+[git]
+pull_predefined = false
+
+[flatpak]
+use_sudo = false
+
+[commands]
+"Nerd Fonts" = 'mise run update:fonts'
+
+[post_commands]
+"Refresh completions" = 'mise completion zsh --install && misecompsync --shell zsh'
