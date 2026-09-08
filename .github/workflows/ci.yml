@@ -139,23 +139,23 @@ jobs:
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
           }
 
-          test ! -e "$fresh_home/.miserc.toml"
-          test ! -e "$fresh_config/miserc.toml"
-          test ! -e "$fresh_config/config.toml"
+          sudo test ! -e "$fresh_home/.miserc.toml"
+          sudo test ! -e "$fresh_config/miserc.toml"
+          sudo test ! -e "$fresh_config/config.toml"
 
           run_fresh "$mise_bin" bootstrap \
             --from-git "file://$setup_bare" \
             --only dotfiles \
             --yes
 
-          test -f "$fresh_home/.miserc.toml"
-          test ! -e "$fresh_config/miserc.toml"
-          test -f "$fresh_config/config.toml"
-          test -f "$fresh_config/mise.lock"
-          test -f "$fresh_config/config.local.toml"
-          test ! -e "$fresh_home/.config/mise/config.toml"
-          cmp "$fresh_home/.miserc.toml" "$GITHUB_WORKSPACE/home/.miserc.toml"
-          cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+          sudo test -f "$fresh_home/.miserc.toml"
+          sudo test ! -e "$fresh_config/miserc.toml"
+          sudo test -f "$fresh_config/config.toml"
+          sudo test -f "$fresh_config/mise.lock"
+          sudo test -f "$fresh_config/config.local.toml"
+          sudo test ! -e "$fresh_home/.config/mise/config.toml"
+          sudo cmp "$fresh_home/.miserc.toml" "$GITHUB_WORKSPACE/home/.miserc.toml"
+          sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
 
           paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
           printf '%s\n' "$paths_json"
