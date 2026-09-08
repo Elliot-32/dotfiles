@@ -3,11 +3,9 @@ set -eu
 
 github_host=github.com
 email_scope=user:email
+sync_mode=sync
+default_repository_name=dotfiles
 gum_available=false
-# Enabled only while origin temporarily points at a repository that has not
-# received its initial push.
-restore_origin_on_exit=false
-original_repository_url=
 
 if command -v gum >/dev/null 2>&1; then
   gum_available=true
@@ -103,19 +101,6 @@ same_github_login() (
   second_login=$(printf '%s' "$2" | tr '[:upper:]' '[:lower:]')
   [ "$first_login" = "$second_login" ]
 )
-
-restore_original_origin() {
-  if [ "$restore_origin_on_exit" != true ]; then
-    return 0
-  fi
-
-  restore_origin_on_exit=false
-  if git remote set-url origin "$original_repository_url"; then
-    show_warning "origin was restored to $original_repository_url"
-  else
-    show_error "Could not restore origin to $original_repository_url"
-  fi
-}
 
 authenticate_github() (
   email_scope_query=".hosts[] | .[] | select(.active) | .scopes | split(\", \") | index(\"$email_scope\") != null"
@@ -257,6 +242,55 @@ configure_git_identity() {
   show_success "Git identity configured for $git_user_name <$git_user_email>"
 }
 
+load_current_dotfiles_origin() {
+  current_repository_url=
+  current_repository_branch=main
+
+  if ! origin_status=$(mise bootstrap dotfiles origin 2>/dev/null); then
+    show_error "Could not read the current mise dotfiles origin"
+    return 1
+  fi
+
+  case "$origin_status" in
+    "no setup repository is connected;"*)
+      return 0
+      ;;
+  esac
+
+  current_repository_url=$(
+    printf '%s\n' "$origin_status" |
+      sed -n 's/^\(.*\) (branch [^)]*) declared in .*; mode .*$/\1/p'
+  )
+  parsed_branch=$(
+    printf '%s\n' "$origin_status" |
+      sed -n 's/^.* (branch \([^)]*\)) declared in .*; mode .*$/\1/p'
+  )
+
+  if [ -z "$current_repository_url" ] || [ -z "$parsed_branch" ]; then
+    show_error "Could not parse the current mise dotfiles origin"
+    return 1
+  fi
+
+  current_repository_branch=$parsed_branch
+}
+
+connect_dotfiles_origin() {
+  repository_url=$1
+  repository_branch=$2
+
+  show_info "Connecting mise dotfiles history to $repository_url (branch $repository_branch)"
+  if ! mise bootstrap dotfiles origin set \
+    "$repository_url" \
+    --branch "$repository_branch" \
+    --sync "$sync_mode" \
+    --yes; then
+    show_error "Could not connect mise dotfiles history to $repository_url"
+    return 1
+  fi
+
+  show_success "mise dotfiles origin now points to $repository_url"
+}
+
 configure_existing_repository() {
   while :; do
     if ! repository_input=$(
@@ -293,12 +327,21 @@ configure_existing_repository() {
   done
 
   existing_repository_url="https://$github_host/$existing_repository.git"
-  if ! git remote set-url origin "$existing_repository_url"; then
-    show_error "Could not update origin to $existing_repository_url"
+  if ! existing_repository_branch=$(
+    gh repo view "$existing_repository" \
+      --json defaultBranchRef \
+      --jq '.defaultBranchRef.name // empty' \
+      2>/dev/null
+  ); then
+    show_error "Could not determine the default branch for $existing_repository"
     return 1
   fi
 
-  show_success "origin now points to $existing_repository_url"
+  if [ -z "$existing_repository_branch" ]; then
+    existing_repository_branch=$current_repository_branch
+  fi
+
+  connect_dotfiles_origin "$existing_repository_url" "$existing_repository_branch"
 }
 
 create_repository() {
@@ -306,8 +349,8 @@ create_repository() {
     gum choose \
       --label-delimiter ":" \
       --header "Choose the visibility for $github_login/$repository_name:" \
-      "Public — Anyone can see this repository:public" \
-      "Private — Only people you grant access can see it:private"
+      "Private — Recommended for automatically synced dotfiles:private" \
+      "Public — Anyone can see this repository:public"
   ); then
     show_warning "Repository setup was cancelled"
     return 1
@@ -330,44 +373,45 @@ create_repository() {
   fi
 
   new_repository_url="https://$github_host/$github_login/$repository_name.git"
-  restore_origin_on_exit=true
-  if ! git remote set-url origin "$new_repository_url"; then
-    show_error "The repository was created, but origin could not be updated"
+  if ! connect_dotfiles_origin "$new_repository_url" "$current_repository_branch"; then
+    show_error "The repository was created, but mise dotfiles history could not be connected"
     return 1
   fi
 
-  if ! run_with_spinner \
-    "Pushing the current branch..." \
-    git push --set-upstream origin HEAD; then
-    show_error "The repository was created, but the initial push failed"
-    return 1
-  fi
-
-  restore_origin_on_exit=false
-  show_success "Created and pushed $new_repository_url"
+  show_success "Created and connected $new_repository_url"
 }
 
 configure_repository() {
-  if ! original_repository_url=$(git remote get-url origin 2>/dev/null); then
-    show_info "No origin remote found; repository setup skipped"
-    return 0
+  repository_name=$default_repository_name
+  current_repository=
+  current_repository_owner=
+
+  if ! load_current_dotfiles_origin; then
+    return 1
   fi
 
-  if ! original_repository=$(
-    gh repo view "$original_repository_url" \
-      --json nameWithOwner \
-      --jq '.nameWithOwner' \
-      2>/dev/null
-  ); then
-    show_warning "Could not identify the GitHub repository configured as origin; remote setup skipped"
-    return 0
+  if [ -n "$current_repository_url" ]; then
+    repository_name=${current_repository_url##*/}
+    repository_name=${repository_name%.git}
+    if [ -z "$repository_name" ]; then
+      repository_name=$default_repository_name
+    fi
+
+    if current_repository=$(
+      gh repo view "$current_repository_url" \
+        --json nameWithOwner \
+        --jq '.nameWithOwner' \
+        2>/dev/null
+    ); then
+      current_repository_owner=${current_repository%%/*}
+    else
+      show_warning "Could not identify the GitHub repository configured as the mise dotfiles origin"
+    fi
   fi
 
-  original_repository_owner=${original_repository%%/*}
-  repository_name=${original_repository#*/}
-
-  if same_github_login "$github_login" "$original_repository_owner"; then
-    show_success "origin already belongs to $github_login: $original_repository_url"
+  if [ -n "$current_repository_owner" ] &&
+    same_github_login "$github_login" "$current_repository_owner"; then
+    show_success "mise dotfiles origin already belongs to $github_login: $current_repository_url"
     return 0
   fi
 
@@ -375,13 +419,21 @@ configure_repository() {
     return 1
   fi
 
+  if [ -n "$current_repository_owner" ]; then
+    repository_prompt="mise dotfiles origin belongs to $current_repository_owner, but GitHub is logged in as $github_login. Choose how to configure the dotfiles origin:"
+  elif [ -n "$current_repository_url" ]; then
+    repository_prompt="The current mise dotfiles origin is $current_repository_url. Choose how to configure the dotfiles origin for $github_login:"
+  else
+    repository_prompt="No mise dotfiles origin is connected. Choose how to configure one for $github_login:"
+  fi
+
   if ! repository_action=$(
     gum choose \
       --label-delimiter ":" \
-      --header "origin belongs to $original_repository_owner, but GitHub is logged in as $github_login. Choose how to configure origin:" \
-      "Use an existing repository — Point origin to one owned by $github_login:existing" \
-      "Create a repository — Create $github_login/$repository_name and push:create" \
-      "Skip — Keep origin unchanged:skip"
+      --header "$repository_prompt" \
+      "Use an existing repository — Connect mise history to one owned by $github_login:existing" \
+      "Create a repository — Create $github_login/$repository_name and connect mise history:create" \
+      "Skip — Keep the current mise dotfiles origin unchanged:skip"
   ); then
     show_warning "Repository setup was cancelled"
     return 1
@@ -395,7 +447,7 @@ configure_repository() {
       create_repository
       ;;
     skip)
-      show_info "Repository setup skipped; origin was left unchanged"
+      show_info "Repository setup skipped; the mise dotfiles origin was left unchanged"
       ;;
     *)
       show_error "gum returned an unexpected repository action"
@@ -407,7 +459,7 @@ configure_repository() {
 main() {
   show_header
 
-  if ! require_command gh || ! require_command git; then
+  if ! require_command gh || ! require_command git || ! require_command mise; then
     return 1
   fi
 
@@ -434,7 +486,6 @@ main() {
   fi
 }
 
-trap 'restore_original_origin' 0
 trap 'exit 129' HUP
 trap 'exit 130' INT
 trap 'exit 143' TERM
