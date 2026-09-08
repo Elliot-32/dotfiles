@@ -21,7 +21,7 @@ jobs:
           cache: false
           env: false
 
-      - name: Reproduce fresh setup onboarding
+      - name: Reproduce setup validation
         shell: bash
         run: |
           set -euo pipefail
@@ -65,38 +65,36 @@ jobs:
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
           }
 
-          test ! -e "$fresh_config/miserc.toml"
-          set +e
           run_fresh "$mise_bin" bootstrap --from-git "file://$setup_bare" --only dotfiles --yes
-          rc=$?
-          set -e
-          echo "onboarding rc=$rc"
 
-          echo '--- live files ---'
-          sudo find "$fresh_home" -maxdepth 5 -type f -o -type l | sort || true
-          if test -e "$fresh_config/miserc.toml"; then
-            echo '--- live miserc ---'
-            sudo sha256sum "$fresh_config/miserc.toml" || true
-            sudo cat "$fresh_config/miserc.toml" || true
-            echo '--- diff against setup snapshot ---'
-            sudo diff -u "$GITHUB_WORKSPACE/config/miserc.toml" "$fresh_config/miserc.toml" || true
-          fi
+          check() {
+            local label="$1"
+            shift
+            echo "CHECK: $label"
+            "$@"
+          }
 
-          echo '--- status json ---'
-          run_fresh "$mise_bin" bootstrap dotfiles status --json || true
-          echo '--- state files ---'
-          sudo find "$fresh_state" -maxdepth 5 -type f -print -exec sh -c 'echo "### $1"; case "$1" in *.json) cat "$1";; esac' sh {} \; || true
+          check home-miserc test -f "$fresh_home/.miserc.toml"
+          check no-config-miserc test ! -e "$fresh_config/miserc.toml"
+          check config test -f "$fresh_config/config.toml"
+          check lock test -f "$fresh_config/mise.lock"
+          check local-config test -f "$fresh_config/config.local.toml"
+          check no-default-config test ! -e "$fresh_home/.config/mise/config.toml"
+          check miserc-content cmp "$fresh_home/.miserc.toml" "$GITHUB_WORKSPACE/home/.miserc.toml"
+          check lock-content cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
 
-          repo="$fresh_state/history/repo.git"
-          if test -d "$repo"; then
-            echo '--- history refs ---'
-            sudo -u "$fresh_user" git --git-dir="$repo" show-ref || true
-            echo '--- commits and trees ---'
-            sudo -u "$fresh_user" git --git-dir="$repo" log --all --oneline --decorate --graph --max-count=20 || true
-            for ref in $(sudo -u "$fresh_user" git --git-dir="$repo" for-each-ref --format='%(refname)'); do
-              echo "### $ref"
-              sudo -u "$fresh_user" git --git-dir="$repo" ls-tree -r "$ref" | grep -E 'miserc|mise-history|config.toml' || true
-            done
-          fi
+          echo 'CHECK: paths-json'
+          paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
+          printf '%s\n' "$paths_json"
+          jq -e 'any(.entries[]; .path == "~/.miserc.toml")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/custom/mise/mise.lock")' <<<"$paths_json" >/dev/null
+          jq -e 'all(.entries[]; (.path | startswith("~/.config/mise/") | not))' <<<"$paths_json" >/dev/null
 
-          exit "$rc"
+          echo 'CHECK: config-ls'
+          config_ls="$(run_fresh "$mise_bin" config ls)"
+          printf '%s\n' "$config_ls"
+          grep -Fq "$fresh_config/conf.d/distro.ubuntu.toml" <<<"$config_ls"
+          grep -Fq "$fresh_config/conf.d/packages.apt.toml" <<<"$config_ls"
+
+          echo 'CHECK: status'
+          run_fresh "$mise_bin" bootstrap dotfiles status
