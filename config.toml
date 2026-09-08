@@ -1,4 +1,4 @@
-min_version = "2026.8.13"
+min_version = "2026.9.2"
 
 [settings]
 auto_update = true
@@ -7,6 +7,9 @@ dotfiles.default_mode = "symlink"
 
 [settings.github]
 use_git_credentials = true
+
+[settings.history]
+sync = "sync"
 
 [env]
 _.path = [
@@ -101,6 +104,24 @@ kubectl = "latest"
 "~/.config/topgrade.systemd.toml" = { source = ".config/topgrade.systemd.toml" }
 "~/.local/share/mise-completions-sync/registry.toml" = { source = ".local/share/mise-completions-sync/registry.toml" }
 
+# Track the mise setup sources themselves. These are the files that sync publishes
+# and a fresh setup repository restores before the ordinary bootstrap deploys them.
+"~/.config/mise/config.toml" = { mode = "track" }
+"~/.config/mise/mise.lock" = { mode = "track" }
+"~/.config/mise/miserc.toml" = { mode = "track" }
+"~/.config/mise/config.flatpak.toml" = { mode = "track" }
+"~/.config/mise/conf.d" = { mode = "track" }
+"~/.config/mise/scripts" = { mode = "track" }
+"~/.config/mise/assets" = { mode = "track" }
+"~/.config/mise/hk.pkl" = { mode = "track" }
+"~/.config/mise/.zshrc" = { mode = "track" }
+"~/.config/mise/.zshenv" = { mode = "track" }
+"~/.config/mise/.zprofile" = { mode = "track" }
+"~/.config/mise/.p10k.zsh" = { mode = "track" }
+"~/.config/mise/.config" = { mode = "track" }
+"~/.config/mise/.local" = { mode = "track" }
+"~/.config/mise/.agents" = { mode = "track" }
+
 [bootstrap.directories]
 "~/.local/share/zsh/site-functions" = {}
 
@@ -109,6 +130,9 @@ bash = true
 
 [bootstrap.user]
 login_shell = "/usr/bin/zsh"
+
+[bootstrap.services.mise-history]
+builtin = "history-watch"
 
 [bootstrap.linux.systemd.units.gomi-prune]
 description = "Prune gomi trash older than 30 days"
