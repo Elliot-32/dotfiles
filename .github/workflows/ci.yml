@@ -21,7 +21,7 @@ jobs:
       - name: Prepare global mise config
         run: |
           mkdir -p "$HOME/.config"
-          ln -s "$GITHUB_WORKSPACE" "$HOME/.config/mise"
+          ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
 
       - name: Install mise
         uses: jdx/mise-action@v4
@@ -45,7 +45,7 @@ jobs:
           $tokens = $null
           $errors = $null
           [System.Management.Automation.Language.Parser]::ParseFile(
-            "$env:GITHUB_WORKSPACE/scripts/bootstrap-windows.ps1",
+            "$env:GITHUB_WORKSPACE/config/scripts/bootstrap-windows.ps1",
             [ref]$tokens,
             [ref]$errors
           ) | Out-Null
@@ -88,7 +88,7 @@ jobs:
       - name: Validate Windows bootstrap skips without interop
         shell: bash
         run: |
-          output="$(sh scripts/bootstrap-windows.sh 2>&1)"
+          output="$(sh config/scripts/bootstrap-windows.sh 2>&1)"
           printf '%s\n' "$output"
           grep -Fq 'powershell.exe is unavailable; skipping Windows bootstrap' <<<"$output"
 
@@ -175,7 +175,7 @@ jobs:
         shell: bash
         run: |
           custom_config_dir="$RUNNER_TEMP/custom-mise-config"
-          cp -a "$GITHUB_WORKSPACE" "$custom_config_dir"
+          cp -a "$GITHUB_WORKSPACE/config" "$custom_config_dir"
 
           export MISE_CONFIG_DIR="$custom_config_dir"
           export MISE_TRUSTED_CONFIG_PATHS="$custom_config_dir"
