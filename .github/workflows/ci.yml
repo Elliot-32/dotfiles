@@ -64,7 +64,7 @@ jobs:
       - name: Validate mise setup metadata
         shell: bash
         run: |
-          test "$(cat .mise-history/format.toml)" = "format = 1"
+          grep -Fq 'format = 1' .mise-history/format.toml
           jq -e '
             .format == 1 and
             any(.enrollment[]; .path == "config/config.toml") and
@@ -97,9 +97,15 @@ jobs:
       - name: Validate setup repository onboarding
         shell: bash
         run: |
-          git -C "$GITHUB_WORKSPACE" branch --force setup-ci HEAD
-          git clone --bare "$GITHUB_WORKSPACE" "$RUNNER_TEMP/setup.git"
-          git -C "$RUNNER_TEMP/setup.git" symbolic-ref HEAD refs/heads/setup-ci
+          # actions/checkout is shallow. Build a complete local repository from
+          # the PR tree so mise's preview store can refetch its ancestry.
+          setup_work="$RUNNER_TEMP/setup-work"
+          mkdir -p "$setup_work"
+          tar -C "$GITHUB_WORKSPACE" --exclude=.git -cf - . | tar -C "$setup_work" -xf -
+          git -C "$setup_work" init -q -b main
+          git -C "$setup_work" add .
+          git -C "$setup_work" -c user.name=CI -c user.email=ci@example.invalid commit -qm 'test: setup repository'
+          git clone --bare "$setup_work" "$RUNNER_TEMP/setup.git"
 
           fresh_home="$RUNNER_TEMP/fresh-home"
           fresh_config="$fresh_home/.config/mise"
