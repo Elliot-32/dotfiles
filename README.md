@@ -6,7 +6,7 @@
 
 ```bash
 curl https://mise.run | sh
-MISE_ENV_CONF_D=true ~/.local/bin/mise bootstrap --adopt https://github.com/Elliot-32/dotfiles.git --yes --force-dotfiles && exec zsh -l
+MISE_ENV_CONF_D=true ~/.local/bin/mise bootstrap --from-git https://github.com/Elliot-32/dotfiles.git --yes --force-dotfiles && exec zsh -l
 ```
 
 ## 同步
