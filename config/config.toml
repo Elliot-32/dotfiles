@@ -1,12 +1,14 @@
-min_version = "2026.8.13"
+min_version = "2026.9.2"
 
 [settings]
 auto_update = true
 lockfile = true
-dotfiles.default_mode = "symlink"
 
 [settings.github]
 use_git_credentials = true
+
+[settings.history]
+sync = "sync"
 
 [env]
 _.path = [
@@ -91,15 +93,19 @@ kubectl = "latest"
 [fetch]
 	prune = true
 ''' }
-"~/.zshrc" = { source = ".zshrc" }
-"~/.zshenv" = { source = ".zshenv" }
-"~/.zprofile" = { source = ".zprofile" }
-"~/.p10k.zsh" = { source = ".p10k.zsh" }
-"~/.config/sheldon" = { source = ".config/sheldon", mode = "symlink-each" }
-"~/.config/yazi" = { source = ".config/yazi", mode = "symlink-each" }
-"~/.config/topgrade.toml" = { source = ".config/topgrade.toml" }
-"~/.config/topgrade.systemd.toml" = { source = ".config/topgrade.systemd.toml" }
-"~/.local/share/mise-completions-sync/registry.toml" = { source = ".local/share/mise-completions-sync/registry.toml" }
+"~/.zshrc" = { mode = "track" }
+"~/.zshenv" = { mode = "track" }
+"~/.zprofile" = { mode = "track" }
+"~/.p10k.zsh" = { mode = "track" }
+"~/.config/sheldon" = { mode = "track" }
+"~/.config/yazi" = { mode = "track" }
+"~/.config/topgrade.toml" = { mode = "track" }
+"~/.config/topgrade.systemd.toml" = { mode = "track" }
+"~/.config/ghostty/config" = { mode = "track" }
+"~/.config/xdg-terminals.list" = { mode = "track" }
+"~/.config/fcitx5/profile" = { mode = "track" }
+"~/.config/environment.d/90-fcitx5.conf" = { mode = "track" }
+"~/.local/share/mise-completions-sync/registry.toml" = { mode = "track" }
 
 [bootstrap.directories]
 "~/.local/share/zsh/site-functions" = {}
@@ -109,6 +115,9 @@ bash = true
 
 [bootstrap.user]
 login_shell = "/usr/bin/zsh"
+
+[bootstrap.services.mise-history]
+builtin = "history-watch"
 
 [bootstrap.linux.systemd.units.gomi-prune]
 description = "Prune gomi trash older than 30 days"
@@ -147,7 +156,6 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "ya pkg install",
-  "cd \"${MISE_CONFIG_DIR:-$HOME/.config/mise}\" && hk install --mise",
   { task = "update:fonts" },
   { task = "bootstrap:windows" },
   { task = "bootstrap:github" },

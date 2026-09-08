@@ -21,13 +21,12 @@ jobs:
       - name: Prepare global mise config
         run: |
           mkdir -p "$HOME/.config"
-          ln -s "$GITHUB_WORKSPACE" "$HOME/.config/mise"
-          sudo install -Dm644 /dev/null /usr/share/applications/com.mitchellh.ghostty.desktop
+          ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
 
       - name: Install mise
         uses: jdx/mise-action@v4
         with:
-          version: 2026.8.13
+          version: 2026.9.2
           install: false
           cache: false
 
@@ -38,6 +37,7 @@ jobs:
         run: mise install --locked hk shellcheck
 
       - name: Run hk checks
+        working-directory: config
         run: mise exec hk shellcheck -- hk check --all
 
       - name: Validate Windows bootstrap PowerShell syntax
@@ -46,7 +46,7 @@ jobs:
           $tokens = $null
           $errors = $null
           [System.Management.Automation.Language.Parser]::ParseFile(
-            "$env:GITHUB_WORKSPACE/scripts/bootstrap-windows.ps1",
+            "$env:GITHUB_WORKSPACE/config/scripts/bootstrap-windows.ps1",
             [ref]$tokens,
             [ref]$errors
           ) | Out-Null
@@ -57,7 +57,38 @@ jobs:
           }
 
       - name: Validate mise settings
-        run: test "$(mise settings get auto_update)" = true
+        run: |
+          test "$(mise settings get auto_update)" = true
+          test "$(mise settings get history.sync)" = sync
+
+      - name: Validate mise setup metadata
+        shell: bash
+        run: |
+          grep -Fq 'format = 1' .mise-history/format.toml
+          test -f home/.zshrc
+          test -f home/.config/yazi/package.toml
+          test -f home/.config/fcitx5/profile
+          test -f home/.config/environment.d/90-fcitx5.conf
+          test ! -e config/.zshrc
+          test ! -e config/.config/yazi
+          test ! -e config/.config/fcitx5/profile
+          jq -e '
+            .format == 1 and
+            any(.enrollment[]; .path == "config/config.toml") and
+            any(.enrollment[]; .path == "config/mise.lock") and
+            any(.enrollment[]; .path == "home/.miserc.toml") and
+            any(.enrollment[]; .path == "home/.zshrc") and
+            any(.enrollment[]; .path == "home/.config/sheldon") and
+            any(.enrollment[]; .path == "home/.config/yazi") and
+            any(.enrollment[]; .path == "home/.config/ghostty/config") and
+            any(.enrollment[]; .path == "home/.config/topgrade.toml") and
+            any(.enrollment[]; .path == "home/.config/fcitx5/profile") and
+            any(.enrollment[]; .path == "home/.config/environment.d/90-fcitx5.conf") and
+            any(.enrollment[]; .path == "home/.local/share/mise-completions-sync/registry.toml") and
+            all(.enrollment[]; .path != "config/.config/fcitx5/profile") and
+            all(.enrollment[]; .path != "config/.zshrc") and
+            all(.enrollment[]; .path != "config/.config/yazi")
+          ' .mise-history/manifest.json >/dev/null
 
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
@@ -73,18 +104,119 @@ jobs:
       - name: Validate Windows bootstrap skips without interop
         shell: bash
         run: |
-          output="$(sh scripts/bootstrap-windows.sh 2>&1)"
+          output="$(sh config/scripts/bootstrap-windows.sh 2>&1)"
           printf '%s\n' "$output"
           grep -Fq 'powershell.exe is unavailable; skipping Windows bootstrap' <<<"$output"
 
       - name: Validate bootstrap plan
         run: mise --locked bootstrap --dry-run
 
+      - name: Validate setup repository onboarding
+        shell: bash
+        run: |
+          setup_work="$RUNNER_TEMP/setup-work"
+          mkdir -p "$setup_work"
+          tar -C "$GITHUB_WORKSPACE" --exclude=.git -cf - . | tar -C "$setup_work" -xf -
+          git -C "$setup_work" init -q -b main
+          git -C "$setup_work" add .
+          git -C "$setup_work" -c user.name=CI -c user.email=ci@example.invalid commit -qm 'test: setup repository'
+
+          fresh_user="mise-sync-ci"
+          fresh_home="/tmp/mise-sync-home"
+          setup_bare="/tmp/mise-sync-setup.git"
+          mise_bin="/tmp/mise-sync-ci-bin"
+          sudo rm -rf "$fresh_home" "$setup_bare" "$mise_bin"
+          sudo useradd --create-home --home-dir "$fresh_home" --shell /bin/bash "$fresh_user"
+
+          git clone --bare "$setup_work" "$setup_bare"
+          sudo chown -R "$fresh_user:$fresh_user" "$setup_bare" "$fresh_home"
+
+          cp "$HOME/.local/share/mise/bin/mise" "$mise_bin"
+          chmod 0755 "$mise_bin"
+
+          fresh_config="$fresh_home/custom/mise"
+          fresh_state="$fresh_home/.local/state/mise"
+          fresh_data="$fresh_home/.local/share/mise"
+          fresh_cache="$fresh_home/.cache/mise"
+
+          run_fresh() {
+            sudo -u "$fresh_user" env -i \
+              HOME="$fresh_home" \
+              XDG_CONFIG_HOME="$fresh_home/.config" \
+              XDG_STATE_HOME="$fresh_home/.local/state" \
+              MISE_CONFIG_DIR="$fresh_config" \
+              MISE_STATE_DIR="$fresh_state" \
+              MISE_DATA_DIR="$fresh_data" \
+              MISE_CACHE_DIR="$fresh_cache" \
+              MISE_GLOBAL_CONFIG_ROOT="$fresh_home" \
+              MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
+              MISE_YES=1 \
+              PATH="/usr/local/bin:/usr/bin:/bin" \
+              sh -c 'cd "$HOME" && exec "$@"' sh "$@"
+          }
+
+          sudo test ! -e "$fresh_home/.zshrc"
+          sudo test ! -e "$fresh_config/config.toml"
+
+          run_fresh "$mise_bin" bootstrap \
+            --from-git "file://$setup_bare" \
+            --only dotfiles \
+            --yes
+
+          sudo test -f "$fresh_home/.miserc.toml"
+          sudo test -f "$fresh_config/config.toml"
+          sudo test -f "$fresh_config/mise.lock"
+          sudo test -f "$fresh_config/config.local.toml"
+          sudo test ! -e "$fresh_home/.config/mise/config.toml"
+
+          sudo test -f "$fresh_home/.zshrc"
+          sudo test ! -L "$fresh_home/.zshrc"
+          sudo test -f "$fresh_home/.config/sheldon/plugins.toml"
+          sudo test ! -L "$fresh_home/.config/sheldon/plugins.toml"
+          sudo test -f "$fresh_home/.config/yazi/package.toml"
+          sudo test ! -L "$fresh_home/.config/yazi/package.toml"
+          sudo test -f "$fresh_home/.config/topgrade.toml"
+          sudo test ! -L "$fresh_home/.config/topgrade.toml"
+          sudo test -f "$fresh_home/.config/ghostty/config"
+          sudo test ! -L "$fresh_home/.config/ghostty/config"
+          sudo test -f "$fresh_home/.config/fcitx5/profile"
+          sudo test ! -L "$fresh_home/.config/fcitx5/profile"
+          sudo test -f "$fresh_home/.config/environment.d/90-fcitx5.conf"
+          sudo test ! -L "$fresh_home/.config/environment.d/90-fcitx5.conf"
+          sudo test -f "$fresh_home/.local/share/mise-completions-sync/registry.toml"
+          sudo test ! -L "$fresh_home/.local/share/mise-completions-sync/registry.toml"
+
+          sudo cmp "$fresh_home/.zshrc" "$GITHUB_WORKSPACE/home/.zshrc"
+          sudo cmp "$fresh_home/.config/yazi/package.toml" "$GITHUB_WORKSPACE/home/.config/yazi/package.toml"
+          sudo cmp "$fresh_home/.config/fcitx5/profile" "$GITHUB_WORKSPACE/home/.config/fcitx5/profile"
+          sudo cmp "$fresh_home/.config/environment.d/90-fcitx5.conf" "$GITHUB_WORKSPACE/home/.config/environment.d/90-fcitx5.conf"
+          sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+
+          paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
+          printf '%s\n' "$paths_json"
+          jq -e 'any(.entries[]; .path == "~/.zshrc" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/.config/sheldon" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/.config/yazi" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/.config/ghostty/config" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/.config/fcitx5/profile" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/.config/environment.d/90-fcitx5.conf" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/custom/mise/mise.lock")' <<<"$paths_json" >/dev/null
+          jq -e 'all(.entries[]; .path != "~/custom/mise/.zshrc")' <<<"$paths_json" >/dev/null
+          jq -e 'all(.entries[]; (.path | startswith("~/.config/mise/") | not))' <<<"$paths_json" >/dev/null
+
+          config_json="$(run_fresh "$mise_bin" config ls --json)"
+          printf '%s\n' "$config_json"
+          jq -e --arg path "$fresh_config/conf.d/distro.ubuntu.toml" \
+            'any(.[]; .path == $path)' <<<"$config_json" >/dev/null
+          jq -e --arg path "$fresh_config/conf.d/packages.apt.toml" \
+            'any(.[]; .path == $path)' <<<"$config_json" >/dev/null
+          run_fresh "$mise_bin" bootstrap dotfiles status
+
       - name: Validate custom mise config directory
         shell: bash
         run: |
           custom_config_dir="$RUNNER_TEMP/custom-mise-config"
-          cp -a "$GITHUB_WORKSPACE" "$custom_config_dir"
+          cp -a "$GITHUB_WORKSPACE/config" "$custom_config_dir"
 
           export MISE_CONFIG_DIR="$custom_config_dir"
           export MISE_TRUSTED_CONFIG_PATHS="$custom_config_dir"
