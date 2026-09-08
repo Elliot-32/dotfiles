@@ -28,7 +28,7 @@ jobs:
       - name: Install mise
         uses: jdx/mise-action@v4
         with:
-          version: 2026.9.2
+          version: 2026.9.3
           install: false
           cache: false
 
@@ -162,7 +162,7 @@ jobs:
           sudo test ! -e "$fresh_config/config.toml"
 
           run_fresh "$mise_bin" bootstrap \
-            --from-git "file://$setup_bare" \
+            --adopt "file://$setup_bare" \
             --only dotfiles \
             --yes
 
