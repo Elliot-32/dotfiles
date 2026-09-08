@@ -32,6 +32,31 @@ ui:
     syntax_highlight: true
     colorscheme: catppuccin-mocha
     directory_command: eza -la --icons=always --color=always
+  style:
+    list_view:
+      cursor: "#AD58B4"
+      selected: "#5FB458"
+      filter_match: "#F39C12"
+      filter_prompt: "#7AA2F7"
+      indent_on_select: false
+    detail_view:
+      border: "#FFFFFF"
+      info_pane:
+        deleted_from:
+          fg: "#EEEEEE"
+          bg: "#1C1C1C"
+        deleted_at:
+          fg: "#EEEEEE"
+          bg: "#1C1C1C"
+      preview_pane:
+        border: "#3C3C3C"
+        size:
+          fg: "#EEEEDD"
+          bg: "#3C3C3C"
+        scroll:
+          fg: "#EEEEDD"
+          bg: "#3C3C3C"
+    deletion_dialog: "#FF007F"
 
 logging:
   enabled: true
