@@ -13,6 +13,8 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-24.04
+    env:
+      MISE_ENV_CONF_D: "true"
 
     steps:
       - name: Checkout
@@ -96,7 +98,7 @@ jobs:
       - name: Validate WSL Windows bootstrap task
         shell: bash
         run: |
-          task_json="$(MISE_ENV=wsl MISE_ENV_CONF_D=true mise tasks info bootstrap:windows --json)"
+          task_json="$(MISE_ENV=wsl mise tasks info bootstrap:windows --json)"
           printf '%s\n' "$task_json"
           grep -Fq 'scripts/bootstrap-windows.sh' <<<"$task_json"
           grep -Fq '"hide": false' <<<"$task_json"
@@ -160,7 +162,7 @@ jobs:
           sudo test ! -e "$fresh_config/config.toml"
 
           run_fresh "$mise_bin" bootstrap \
-            --adopt "file://$setup_bare" \
+            --from-git "file://$setup_bare" \
             --only dotfiles \
             --yes
 
@@ -233,7 +235,7 @@ jobs:
             shift
 
             local output
-            output="$(MISE_ENV="$envs" MISE_ENV_CONF_D=true mise config ls)"
+            output="$(MISE_ENV="$envs" mise config ls)"
             printf '%s\n' "$output"
 
             local expected
