@@ -11,6 +11,8 @@ core:
       - "$HOME/.gomi"
       - "$HOME/.config/mise"
       - "$HOME/.miserc.toml"
+      - "$HOME/.config/topgrade.toml"
+      - "$HOME/.config/topgrade.systemd.toml"
       - "/"
       - "/etc"
       - "/usr"
