@@ -10,6 +10,9 @@ use_git_credentials = true
 [settings.history]
 sync = "sync"
 
+[history]
+exclude = ["~/.config/gomi/config.yaml"]
+
 [env]
 _.path = [
   "{{ env.HOME }}/.local/bin",
@@ -99,7 +102,7 @@ kubectl = "latest"
 "~/.p10k.zsh" = { mode = "track" }
 "~/.config/sheldon" = { mode = "track" }
 "~/.config/yazi" = { mode = "track" }
-"~/.config/gomi/config.yaml" = { mode = "track" }
+"~/.config/gomi/config.yaml" = { source = "../home/.config/gomi/config.yaml", mode = "copy" }
 "~/.config/topgrade.toml" = { mode = "track" }
 "~/.config/topgrade.systemd.toml" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }
