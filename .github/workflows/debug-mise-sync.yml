@@ -1,0 +1,102 @@
+name: Debug mise sync
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.9.2
+          install: false
+          cache: false
+          env: false
+
+      - name: Reproduce fresh setup onboarding
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          setup_work="$RUNNER_TEMP/setup-work"
+          mkdir -p "$setup_work"
+          tar -C "$GITHUB_WORKSPACE" --exclude=.git -cf - . | tar -C "$setup_work" -xf -
+          git -C "$setup_work" init -q -b main
+          git -C "$setup_work" add .
+          git -C "$setup_work" -c user.name=CI -c user.email=ci@example.invalid commit -qm debug
+
+          fresh_user="mise-sync-debug"
+          fresh_home="/tmp/mise-sync-debug-home"
+          setup_bare="/tmp/mise-sync-debug-setup.git"
+          mise_bin="/tmp/mise-sync-debug-bin"
+          sudo rm -rf "$fresh_home" "$setup_bare" "$mise_bin"
+          sudo useradd --create-home --home-dir "$fresh_home" --shell /bin/bash "$fresh_user"
+          git clone --bare "$setup_work" "$setup_bare"
+          sudo chown -R "$fresh_user:$fresh_user" "$setup_bare" "$fresh_home"
+          cp "$HOME/.local/share/mise/bin/mise" "$mise_bin"
+          chmod 0755 "$mise_bin"
+
+          fresh_config="$fresh_home/custom/mise"
+          fresh_state="$fresh_home/.local/state/mise"
+          fresh_data="$fresh_home/.local/share/mise"
+          fresh_cache="$fresh_home/.cache/mise"
+
+          run_fresh() {
+            sudo -u "$fresh_user" env -i \
+              HOME="$fresh_home" \
+              XDG_CONFIG_HOME="$fresh_home/.config" \
+              XDG_STATE_HOME="$fresh_home/.local/state" \
+              MISE_CONFIG_DIR="$fresh_config" \
+              MISE_STATE_DIR="$fresh_state" \
+              MISE_DATA_DIR="$fresh_data" \
+              MISE_CACHE_DIR="$fresh_cache" \
+              MISE_GLOBAL_CONFIG_ROOT="$fresh_home" \
+              MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
+              MISE_YES=1 \
+              PATH="/usr/local/bin:/usr/bin:/bin" \
+              sh -c 'cd "$HOME" && exec "$@"' sh "$@"
+          }
+
+          test ! -e "$fresh_config/miserc.toml"
+          set +e
+          run_fresh "$mise_bin" bootstrap --from-git "file://$setup_bare" --only dotfiles --yes
+          rc=$?
+          set -e
+          echo "onboarding rc=$rc"
+
+          echo '--- live files ---'
+          sudo find "$fresh_home" -maxdepth 5 -type f -o -type l | sort || true
+          if test -e "$fresh_config/miserc.toml"; then
+            echo '--- live miserc ---'
+            sudo sha256sum "$fresh_config/miserc.toml" || true
+            sudo cat "$fresh_config/miserc.toml" || true
+            echo '--- diff against setup snapshot ---'
+            sudo diff -u "$GITHUB_WORKSPACE/config/miserc.toml" "$fresh_config/miserc.toml" || true
+          fi
+
+          echo '--- status json ---'
+          run_fresh "$mise_bin" bootstrap dotfiles status --json || true
+          echo '--- state files ---'
+          sudo find "$fresh_state" -maxdepth 5 -type f -print -exec sh -c 'echo "### $1"; case "$1" in *.json) cat "$1";; esac' sh {} \; || true
+
+          repo="$fresh_state/history/repo.git"
+          if test -d "$repo"; then
+            echo '--- history refs ---'
+            sudo -u "$fresh_user" git --git-dir="$repo" show-ref || true
+            echo '--- commits and trees ---'
+            sudo -u "$fresh_user" git --git-dir="$repo" log --all --oneline --decorate --graph --max-count=20 || true
+            for ref in $(sudo -u "$fresh_user" git --git-dir="$repo" for-each-ref --format='%(refname)'); do
+              echo "### $ref"
+              sudo -u "$fresh_user" git --git-dir="$repo" ls-tree -r "$ref" | grep -E 'miserc|mise-history|config.toml' || true
+            done
+          fi
+
+          exit "$rc"
