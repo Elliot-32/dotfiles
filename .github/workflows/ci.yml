@@ -145,7 +145,7 @@ jobs:
               MISE_ENV_CONF_D=true \
               MISE_YES=1 \
               PATH="/usr/local/bin:/usr/bin:/bin" \
-              "$@"
+              sh -c 'cd "$HOME" && exec "$@"' sh "$@"
           }
 
           run_fresh "$mise_bin" bootstrap \
