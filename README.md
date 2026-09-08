@@ -19,13 +19,17 @@ repo 具有 `.mise-history/format.toml` 後，`--from-git` 會把它視為 mise 
 
 同步使用 `settings.history.sync = "sync"`。`history-watch` user service 會自動保存變更、發布已保存的 commits，並定期抓取及套用其他機器的變更。連線資訊放在 machine-local `config.local.toml`，不會進入共享 history；credential stores、secrets 與其他 machine-local 資料也不應納入 track。
 
-初次在既有機器啟用時，先確認 GitHub credentials 可供背景 Git 使用，再連接 setup repository：
+### 既有 checkout 遷移
+
+第一次從舊的普通 Git checkout 遷移時，先更新到包含 setup marker 的版本，然後**先用 `--from-git` 讓 mise onboarding 接管 history**，不要先跑 `dotfiles save` / watcher，也不要用 `origin set` 建立一條無共同祖先的本機 history：
 
 ```bash
-mise bootstrap dotfiles origin set https://github.com/Elliot-32/dotfiles.git --sync sync
-mise bootstrap services apply
+git -C "${MISE_CONFIG_DIR:-$HOME/.config/mise}" pull --ff-only
+mise bootstrap --from-git https://github.com/Elliot-32/dotfiles.git --yes --force-dotfiles
 mise bootstrap dotfiles status
 ```
+
+`--from-git` 會辨識 `.mise-history/format.toml`，直接採用 setup repository 的 commit identity 並把 origin declaration 寫入 machine-local `config.local.toml`。之後由 `history-watch` 負責保存與同步，不再需要對 `$MISE_CONFIG_DIR` 執行日常 Git pull/push。
 
 需要立即交換變更時可手動執行：
 
