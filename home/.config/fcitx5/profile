@@ -1,15 +1,23 @@
 [Groups/0]
-Name=Default
+# Group Name
+Name=預設
+# Layout
 Default Layout=us
-DefaultIM=chewing
+# Default Input Method
+DefaultIM=keyboard-us
 
 [Groups/0/Items/0]
-Name=keyboard-us
+# Name
+Name=chewing
+# Layout
 Layout=
 
 [Groups/0/Items/1]
-Name=chewing
+# Name
+Name=keyboard-us
+# Layout
 Layout=
 
 [GroupOrder]
-0=Default
+0=預設
+
