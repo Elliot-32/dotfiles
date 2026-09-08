@@ -68,6 +68,8 @@ jobs:
             .format == 1 and
             any(.enrollment[]; .path == "config/config.toml") and
             any(.enrollment[]; .path == "config/mise.lock") and
+            any(.enrollment[]; .path == "home/.miserc.toml") and
+            all(.enrollment[]; .path != "config/miserc.toml") and
             any(.enrollment[]; .path == "config/conf.d") and
             any(.enrollment[]; .path == "config/scripts")
           ' .mise-history/manifest.json >/dev/null
@@ -96,9 +98,6 @@ jobs:
       - name: Validate setup repository onboarding
         shell: bash
         run: |
-          # Build a complete one-commit setup repository from the PR tree. The
-          # checked-out PR merge ref is shallow, while mise may inspect/fetch
-          # setup ancestry during onboarding.
           setup_work="$RUNNER_TEMP/setup-work"
           mkdir -p "$setup_work"
           tar -C "$GITHUB_WORKSPACE" --exclude=.git -cf - . | tar -C "$setup_work" -xf -
@@ -106,9 +105,6 @@ jobs:
           git -C "$setup_work" add .
           git -C "$setup_work" -c user.name=CI -c user.email=ci@example.invalid commit -qm 'test: setup repository'
 
-          # mise resolves `~` from the OS account, not merely the HOME env var.
-          # Use a real isolated account so the test is a genuinely fresh machine
-          # and cannot inherit ~/.config/mise state from mise-action.
           fresh_user="mise-sync-ci"
           fresh_home="/tmp/mise-sync-home"
           setup_bare="/tmp/mise-sync-setup.git"
@@ -122,9 +118,6 @@ jobs:
           cp "$HOME/.local/share/mise/bin/mise" "$mise_bin"
           chmod 0755 "$mise_bin"
 
-          # Deliberately use a non-default config directory. Setup-repository
-          # `config/*` enrollment must follow the active mise config root rather
-          # than a hard-coded ~/.config/mise path.
           fresh_config="$fresh_home/custom/mise"
           fresh_state="$fresh_home/.local/state/mise"
           fresh_data="$fresh_home/.local/share/mise"
@@ -146,7 +139,7 @@ jobs:
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
           }
 
-          # Nothing from the setup may exist locally before onboarding.
+          test ! -e "$fresh_home/.miserc.toml"
           test ! -e "$fresh_config/miserc.toml"
           test ! -e "$fresh_config/config.toml"
 
@@ -155,20 +148,21 @@ jobs:
             --only dotfiles \
             --yes
 
+          test -f "$fresh_home/.miserc.toml"
+          test ! -e "$fresh_config/miserc.toml"
           test -f "$fresh_config/config.toml"
           test -f "$fresh_config/mise.lock"
-          test -f "$fresh_config/miserc.toml"
           test -f "$fresh_config/config.local.toml"
           test ! -e "$fresh_home/.config/mise/config.toml"
+          cmp "$fresh_home/.miserc.toml" "$GITHUB_WORKSPACE/home/.miserc.toml"
           cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
 
           paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
           printf '%s\n' "$paths_json"
+          jq -e 'any(.entries[]; .path == "~/.miserc.toml")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/custom/mise/mise.lock")' <<<"$paths_json" >/dev/null
           jq -e 'all(.entries[]; (.path | startswith("~/.config/mise/") | not))' <<<"$paths_json" >/dev/null
 
-          # A new mise process must load the restored miserc and select the
-          # platform-specific fragments from the custom config root.
           config_ls="$(run_fresh "$mise_bin" config ls)"
           printf '%s\n' "$config_ls"
           grep -Fq "$fresh_config/conf.d/distro.ubuntu.toml" <<<"$config_ls"
