@@ -43,5 +43,10 @@ use = "XYenon/clipboard"
 rev = "b25ec96"
 hash = "9f07d7de37a430833ef33b92c0bcf8cb"
 
+[[plugin.deps]]
+use = "boydaihungst/restore"
+rev = "7bfcfcb"
+hash = "bbb1569978e6d2b3e8343c6ca08a4ea6"
+
 [flavor]
 deps = []
