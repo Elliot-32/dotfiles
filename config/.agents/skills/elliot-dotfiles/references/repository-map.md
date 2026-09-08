@@ -14,7 +14,7 @@ This repository is a mise setup repository, not a checkout intended to live at `
 ## Core mise configuration
 
 ### `config/config.toml`
-Primary global mise config. It owns global settings, tools, native tracking declarations, bootstrap resources, user units/timers, tasks, hooks, and the remaining declarative dotfile exceptions.
+Primary global mise config. It owns global settings, tools, native tracking declarations, bootstrap resources, user units/timers, tasks, hooks, and the remaining declarative dotfile edits.
 
 `tasks.bootstrap` coordinates Atuin setup, completion installation/sync, Sheldon locking, Yazi plugin installation, Nerd Font update, Windows bootstrap dispatch, and GitHub setup. It does not install a Git hook into `$MISE_CONFIG_DIR` because that directory is no longer a Git working tree.
 
@@ -25,9 +25,9 @@ Environment selector restored to `~/.miserc.toml`. It detects Arch, Fedora, RHEL
 
 - `config/conf.d/distro.ubuntu.toml`: Ubuntu-specific Ghostty package/repository bootstrap.
 - `config/conf.d/distro.fedora.toml`: Fedora-specific Ghostty package/repository bootstrap.
-- `config/conf.d/packages.apt.toml`: APT-family packages/settings and the conditional Fcitx5 declarative deployment.
-- `config/conf.d/packages.dnf.toml`: DNF-family packages/settings.
-- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings.
+- `config/conf.d/packages.apt.toml`: APT-family packages/settings, including Fcitx5 packages.
+- `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including Fcitx5 packages.
+- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including Fcitx5 packages.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and interactive Windows bootstrap override.
 - `config/conf.d/platform.wslg.toml`: WSLg-specific configuration.
 - `config/config.flatpak.toml`: Flatpak-specific bootstrap/update behavior.
@@ -42,9 +42,11 @@ These files are restored directly to their application paths and use `mode = "tr
 - `home/.config/topgrade.toml` and `home/.config/topgrade.systemd.toml`;
 - `home/.config/ghostty/config`;
 - `home/.config/xdg-terminals.list`;
+- `home/.config/fcitx5/profile`;
+- `home/.config/environment.d/90-fcitx5.conf`;
 - `home/.local/share/mise-completions-sync/registry.toml`.
 
-`config/conf.d/packages.apt.toml` intentionally keeps Fcitx5 `profile` and `environment.d/90-fcitx5.conf` as declarative sources under `config/.config/` so they are only deployed when the APT environment is selected. `~/.gitconfig` is also managed only through a block edit so machine-local identity is not synchronized.
+Fcitx5 user configuration is shared across APT, DNF, and Pacman systems; only package installation stays package-manager-specific. `~/.gitconfig` is managed only through a block edit so machine-local identity is not synchronized.
 
 ## Bundled assets and scripts
 
@@ -65,7 +67,7 @@ Prefer native mise configuration first; keep scripts focused and idempotent wher
 Static checks run with `config/` as the hk working directory. Shell scripts live under `config/scripts/`; Zsh files are checked through `../home/.zshrc` and `../home/.p10k.zsh`.
 
 ### `.github/workflows/ci.yml`
-Ubuntu CI validates hk/static checks, PowerShell syntax, mise settings/tasks, locked bootstrap dry-run, setup-repository onboarding into an empty user with a custom `MISE_CONFIG_DIR`, native tracked paths, and distro/environment selection.
+Ubuntu CI validates hk/static checks, PowerShell syntax, mise settings/tasks, locked bootstrap dry-run, setup-repository onboarding into an empty user with a custom `MISE_CONFIG_DIR`, native tracked paths including Fcitx5, and distro/environment selection.
 
 ### `config/mise.lock`
 Generated mise lockfile. Do not hand edit.
