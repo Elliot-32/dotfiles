@@ -128,6 +128,13 @@ jobs:
           fresh_data="$fresh_home/.local/share/mise"
           fresh_cache="$fresh_home/.cache/mise"
 
+          # miserc.toml is read before ordinary configuration discovery. mise
+          # 2026.9.2 therefore needs the same early-init file present before
+          # setup-repository onboarding can establish a conflict-free baseline.
+          sudo -u "$fresh_user" mkdir -p "$fresh_config"
+          sudo install -o "$fresh_user" -g "$fresh_user" -m 0644 \
+            "$GITHUB_WORKSPACE/config/miserc.toml" "$fresh_config/miserc.toml"
+
           run_fresh() {
             sudo -u "$fresh_user" env -i \
               HOME="$fresh_home" \
@@ -144,26 +151,10 @@ jobs:
               "$@"
           }
 
-          # miserc.toml is an early-init config file in mise 2026.9.2. On the
-          # first setup-repository invocation it is the one path that requires
-          # an explicit incoming-side decision before the all-or-nothing setup
-          # can be applied. Verify that contract rather than hiding it.
-          set +e
-          onboarding_output="$(run_fresh "$mise_bin" bootstrap \
+          run_fresh "$mise_bin" bootstrap \
             --from-git "file://$setup_bare" \
             --only dotfiles \
-            --yes 2>&1)"
-          onboarding_status=$?
-          set -e
-          printf '%s\n' "$onboarding_output"
-          test "$onboarding_status" -eq 1
-          grep -Fq 'miserc.toml' <<<"$onboarding_output"
-          grep -Fq 'paused; nothing was bootstrapped' <<<"$onboarding_output"
-
-          run_fresh "$mise_bin" bootstrap dotfiles pull \
-            --take-remote "$fresh_config/miserc.toml" \
             --yes
-          run_fresh "$mise_bin" bootstrap --only dotfiles --yes
 
           test -f "$fresh_config/config.toml"
           test -f "$fresh_config/mise.lock"
