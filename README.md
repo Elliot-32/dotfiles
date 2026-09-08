@@ -9,10 +9,6 @@ curl https://mise.run | sh
 ~/.local/bin/mise bootstrap --from-git https://github.com/Elliot-32/dotfiles.git --yes --force-dotfiles && exec zsh -l
 ```
 
-Bootstrap 會安裝並套用所需工具與設定。WSL 會額外設定 Windows Git、JetBrainsMono Nerd Font 與 Windows Terminal 主題。
-
-GitHub setup 會設定 `gh`、Git identity，並在需要時讓使用者選擇或建立自己的 setup repository，再透過 `mise bootstrap dotfiles origin set` 連接同步來源。
-
 ## 同步
 
 同步模式為 `settings.history.sync = "sync"`，由 `history-watch` 自動保存、發布及套用變更。
