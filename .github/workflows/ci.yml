@@ -144,13 +144,30 @@ jobs:
               "$@"
           }
 
-          run_fresh "$mise_bin" bootstrap \
+          # miserc.toml is an early-init config file in mise 2026.9.2. On the
+          # first setup-repository invocation it is the one path that requires
+          # an explicit incoming-side decision before the all-or-nothing setup
+          # can be applied. Verify that contract rather than hiding it.
+          set +e
+          onboarding_output="$(run_fresh "$mise_bin" bootstrap \
             --from-git "file://$setup_bare" \
             --only dotfiles \
+            --yes 2>&1)"
+          onboarding_status=$?
+          set -e
+          printf '%s\n' "$onboarding_output"
+          test "$onboarding_status" -eq 1
+          grep -Fq 'miserc.toml' <<<"$onboarding_output"
+          grep -Fq 'paused; nothing was bootstrapped' <<<"$onboarding_output"
+
+          run_fresh "$mise_bin" bootstrap dotfiles pull \
+            --take-remote "$fresh_config/miserc.toml" \
             --yes
+          run_fresh "$mise_bin" bootstrap --only dotfiles --yes
 
           test -f "$fresh_config/config.toml"
           test -f "$fresh_config/mise.lock"
+          test -f "$fresh_config/miserc.toml"
           test -f "$fresh_config/config.local.toml"
           cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
           run_fresh "$mise_bin" bootstrap dotfiles status
