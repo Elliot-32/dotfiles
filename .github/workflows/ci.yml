@@ -111,8 +111,9 @@ jobs:
           fresh_config="$fresh_home/.config/mise"
           fresh_state="$RUNNER_TEMP/fresh-state"
           mkdir -p "$fresh_home/.config"
-          mise_bin="$(command -v mise)"
+          mise_bin="$HOME/.local/share/mise/bin/mise"
           clean_path="$PATH"
+          test -x "$mise_bin"
 
           run_fresh() {
             (
