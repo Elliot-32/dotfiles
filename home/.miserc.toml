@@ -3,6 +3,7 @@ env_conf_d = true
 {% set flatpak = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
 {% set wslg = "/mnt/wslg/runtime-dir" is dir %}
 {% set wsl = wslg or env.WSL_DISTRO_NAME is defined or env.WSL_INTEROP is defined %}
+{% set omarchy = "/usr/bin/omarchy" is file or "/usr/share/omarchy" is dir %}
 {% set arch = "/etc/arch-release" is file %}
 {% set fedora = "/etc/fedora-release" is file %}
 {% set rhel = "/etc/redhat-release" is file %}
@@ -11,36 +12,38 @@ env_conf_d = true
 
 {% if arch %}
 {% if flatpak %}
-env = ["arch", "pacman", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["arch", "pacman", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% else %}
-env = ["arch", "pacman"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["arch", "pacman"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% endif %}
 {% elif fedora %}
 {% if flatpak %}
-env = ["fedora", "dnf", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["fedora", "dnf", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% else %}
-env = ["fedora", "dnf"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["fedora", "dnf"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% endif %}
 {% elif rhel %}
 {% if flatpak %}
-env = ["rhel", "dnf", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["rhel", "dnf", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% else %}
-env = ["rhel", "dnf"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["rhel", "dnf"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% endif %}
 {% elif ubuntu %}
 {% if flatpak %}
-env = ["ubuntu", "apt", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["ubuntu", "apt", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% else %}
-env = ["ubuntu", "apt"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["ubuntu", "apt"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% endif %}
 {% elif debian %}
 {% if flatpak %}
-env = ["debian", "apt", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["debian", "apt", "flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% else %}
-env = ["debian", "apt"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["debian", "apt"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% endif %}
 {% elif flatpak %}
-env = ["flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}]
+env = ["flatpak"{% if wsl %}, "wsl"{% endif %}{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
 {% elif wsl %}
-env = ["wsl"{% if wslg %}, "wslg"{% endif %}]
+env = ["wsl"{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif %}]
+{% elif omarchy %}
+env = ["omarchy"]
 {% endif %}
