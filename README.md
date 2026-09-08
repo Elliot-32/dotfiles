@@ -15,9 +15,9 @@ repo 具有 `.mise-history/format.toml`，因此 `--from-git` 會把它視為 mi
 
 ## 同步模型
 
-一般使用者設定直接在原生位置使用 `mode = "track"`：例如 `~/.zshrc`、`~/.config/sheldon`、`~/.config/yazi`、`~/.config/ghostty/config`、Topgrade 設定與 `mise-completions-sync` registry 都是普通檔案/目錄，不再透過 `$MISE_CONFIG_DIR` 內的 source 建 symlink。遠端變更由 history pull 直接套到這些原生路徑。
+一般使用者設定直接在原生位置使用 `mode = "track"`：例如 `~/.zshrc`、`~/.config/sheldon`、`~/.config/yazi`、`~/.config/ghostty/config`、Topgrade、Fcitx5 `profile`、`environment.d/90-fcitx5.conf` 與 `mise-completions-sync` registry 都是普通檔案/目錄，不再透過 `$MISE_CONFIG_DIR` 內的 source 建 symlink。遠端變更由 history pull 直接套到這些原生路徑。
 
-mise 自身的 `config.toml`、`mise.lock`、`conf.d/`、scripts、Windows Terminal assets、hk 與 repo skill 仍位於 `$MISE_CONFIG_DIR`，並由 setup repository 的 portable `config/` stream 同步。APT 專用的 Fcitx5 `profile` 與 `environment.d` 保留 declarative source/deployment，避免在沒有 Fcitx5 的其他環境無條件套用輸入法環境變數；`~/.gitconfig` 也只管理 repository defaults block，而不是同步整份可能含 machine-local identity 的檔案。
+mise 自身的 `config.toml`、`mise.lock`、`conf.d/`、scripts、Windows Terminal assets、hk 與 repo skill 仍位於 `$MISE_CONFIG_DIR`，並由 setup repository 的 portable `config/` stream 同步。Fcitx5 套件仍分別由 APT、DNF 與 Pacman 的 package fragments 安裝，但其使用者設定是跨 distro 共用的 native tracked files。`~/.gitconfig` 則只管理 repository defaults block，而不是同步整份可能含 machine-local identity 的檔案。
 
 `mise.lock` 不再由 Topgrade 額外執行 `git add/commit/push`；Topgrade 只負責觸發日常更新，更新後的 tracked 檔案由 mise watcher 儲存並同步。
 
@@ -75,4 +75,4 @@ mise bootstrap dotfiles pull
 
 `install` / `uninstall` 只處理本機已安裝的工具版本，不會修改 mise 設定；`use` 會安裝工具並寫入設定，`unuse` 則會從設定中移除工具。若該工具版本已沒有其他 mise 設定需要，也會順便解除安裝。
 
-對 `mode = "track"` 的原生檔案，`pull` 就是 deployment：遠端版本直接寫到應用程式實際讀取的路徑，不需要再跑 `apply`。`apply` 只保留給 `.gitconfig` managed block 與 APT/Fcitx5 這類仍有 declarative deployment 語意的例外。
+對 `mode = "track"` 的原生檔案，`pull` 就是 deployment：遠端版本直接寫到應用程式實際讀取的路徑，不需要再跑 `apply`。`apply` 目前只保留給 `.gitconfig` managed block 這類仍有 declarative edit 語意的項目。
