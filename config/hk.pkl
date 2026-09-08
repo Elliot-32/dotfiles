@@ -11,7 +11,7 @@ local checks = new Mapping<String, Step> {
     check = "sh -n {{files}}"
   }
   ["zsh-syntax"] {
-    glob = List(".zshrc", ".p10k.zsh")
+    glob = List("../home/.zshrc", "../home/.p10k.zsh")
     check = "zsh -n {{files}}"
   }
 }

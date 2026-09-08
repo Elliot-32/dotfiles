@@ -6,7 +6,3 @@ run = 'mkdir -p "$HOME/.local/share/xdg-terminals" && ln -sfn /usr/share/applica
 
 [bootstrap.packages]
 "apt:ghostty" = "latest"
-
-[dotfiles]
-"~/.config/ghostty/config" = { source = "../.config/ghostty/config" }
-"~/.config/xdg-terminals.list" = { source = "../.config/xdg-terminals.list" }
