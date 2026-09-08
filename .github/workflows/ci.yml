@@ -109,33 +109,36 @@ jobs:
 
           fresh_home="$RUNNER_TEMP/fresh-home"
           fresh_config="$fresh_home/.config/mise"
+          fresh_state="$RUNNER_TEMP/fresh-state"
           mkdir -p "$fresh_home/.config"
 
-          (
-            cd "$fresh_home"
-            HOME="$fresh_home" \
-            MISE_CONFIG_DIR="$fresh_config" \
-            MISE_STATE_DIR="$RUNNER_TEMP/fresh-state" \
-            MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
-            mise bootstrap \
-              --from-git "file://$RUNNER_TEMP/setup.git" \
-              --only dotfiles \
-              --yes
-          )
+          run_fresh() {
+            (
+              cd "$fresh_home"
+              unset MISE_GLOBAL_CONFIG_FILE
+              HOME="$fresh_home" \
+              XDG_CONFIG_HOME="$fresh_home/.config" \
+              XDG_STATE_HOME="$fresh_home/.local/state" \
+              MISE_CONFIG_DIR="$fresh_config" \
+              MISE_STATE_DIR="$fresh_state" \
+              MISE_DATA_DIR="$fresh_home/.local/share/mise" \
+              MISE_CACHE_DIR="$fresh_home/.cache/mise" \
+              MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
+              "$@"
+            )
+          }
+
+          run_fresh mise bootstrap \
+            --from-git "file://$RUNNER_TEMP/setup.git" \
+            --only dotfiles \
+            --yes
 
           test -f "$fresh_config/config.toml"
           test -f "$fresh_config/mise.lock"
           test -f "$fresh_config/config.local.toml"
           cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
 
-          (
-            cd "$fresh_home"
-            HOME="$fresh_home" \
-            MISE_CONFIG_DIR="$fresh_config" \
-            MISE_STATE_DIR="$RUNNER_TEMP/fresh-state" \
-            MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
-            mise bootstrap dotfiles status
-          )
+          run_fresh mise bootstrap dotfiles status
 
       - name: Validate custom mise config directory
         shell: bash
