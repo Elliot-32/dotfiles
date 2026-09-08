@@ -33,6 +33,9 @@ disable = [
   "auto_cpufreq",
 ]
 
+[git]
+pull_predefined = false
+
 [flatpak]
 use_sudo = false
 
