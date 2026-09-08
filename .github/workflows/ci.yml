@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       MISE_ENV_CONF_D: "true"
+      MISE_GITHUB_TOKEN: ${{ github.token }}
+      MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}/config
+      MISE_YES: "1"
 
     steps:
       - name: Checkout
@@ -26,11 +29,10 @@ jobs:
           ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
 
       - name: Install mise
-        uses: jdx/mise-action@v4
-        with:
-          version: 2026.9.3
-          install: false
-          cache: false
+        run: |
+          curl -fsSL https://mise.run | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/mise" --version
 
       - name: Install Zsh
         run: sudo apt-get update && sudo apt-get install --yes zsh
@@ -133,7 +135,7 @@ jobs:
           git clone --bare "$setup_work" "$setup_bare"
           sudo chown -R "$fresh_user:$fresh_user" "$setup_bare" "$fresh_home"
 
-          cp "$HOME/.local/share/mise/bin/mise" "$mise_bin"
+          cp "$HOME/.local/bin/mise" "$mise_bin"
           chmod 0755 "$mise_bin"
 
           fresh_config="$fresh_home/custom/mise"
