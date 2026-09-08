@@ -102,16 +102,34 @@ jobs:
           git -C "$RUNNER_TEMP/setup.git" symbolic-ref HEAD refs/heads/setup-ci
 
           fresh_home="$RUNNER_TEMP/fresh-home"
+          fresh_config="$fresh_home/.config/mise"
           mkdir -p "$fresh_home/.config"
 
-          HOME="$fresh_home" \
-          MISE_CONFIG_DIR="$fresh_home/.config/mise" \
-          MISE_STATE_DIR="$RUNNER_TEMP/fresh-state" \
-          mise bootstrap \
-            --from-git "file://$RUNNER_TEMP/setup.git" \
-            --only dotfiles \
-            --dry-run \
-            --yes
+          (
+            cd "$fresh_home"
+            HOME="$fresh_home" \
+            MISE_CONFIG_DIR="$fresh_config" \
+            MISE_STATE_DIR="$RUNNER_TEMP/fresh-state" \
+            MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
+            mise bootstrap \
+              --from-git "file://$RUNNER_TEMP/setup.git" \
+              --only dotfiles \
+              --yes
+          )
+
+          test -f "$fresh_config/config.toml"
+          test -f "$fresh_config/mise.lock"
+          test -f "$fresh_config/config.local.toml"
+          cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+
+          (
+            cd "$fresh_home"
+            HOME="$fresh_home" \
+            MISE_CONFIG_DIR="$fresh_config" \
+            MISE_STATE_DIR="$RUNNER_TEMP/fresh-state" \
+            MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
+            mise bootstrap dotfiles status
+          )
 
       - name: Validate custom mise config directory
         shell: bash
