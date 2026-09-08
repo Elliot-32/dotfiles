@@ -10,8 +10,6 @@
     { "path": "config/assets", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "config/hk.pkl", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "config/.agents", "autosave": true, "encrypt": false, "variants": [] },
-    { "path": "config/.config/fcitx5/profile", "autosave": true, "encrypt": false, "variants": [] },
-    { "path": "config/.config/environment.d/90-fcitx5.conf", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.zshrc", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.zshenv", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.zprofile", "autosave": true, "encrypt": false, "variants": [] },
@@ -22,6 +20,8 @@
     { "path": "home/.config/topgrade.systemd.toml", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.config/ghostty/config", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.config/xdg-terminals.list", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "home/.config/fcitx5/profile", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "home/.config/environment.d/90-fcitx5.conf", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.local/share/mise-completions-sync/registry.toml", "autosave": true, "encrypt": false, "variants": [] }
   ],
   "exclude": [],
