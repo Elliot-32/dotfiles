@@ -22,7 +22,6 @@ jobs:
         run: |
           mkdir -p "$HOME/.config"
           ln -s "$GITHUB_WORKSPACE" "$HOME/.config/mise"
-          sudo install -Dm644 /dev/null /usr/share/applications/com.mitchellh.ghostty.desktop
 
       - name: Install mise
         uses: jdx/mise-action@v4
