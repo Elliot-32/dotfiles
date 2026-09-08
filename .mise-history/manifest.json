@@ -3,7 +3,7 @@
   "enrollment": [
     { "path": "config/config.toml", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "config/mise.lock", "autosave": true, "encrypt": false, "variants": [] },
-    { "path": "config/miserc.toml", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "home/.miserc.toml", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "config/config.flatpak.toml", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "config/conf.d", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "config/scripts", "autosave": true, "encrypt": false, "variants": [] },
