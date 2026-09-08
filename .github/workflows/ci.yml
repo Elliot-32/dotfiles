@@ -27,7 +27,7 @@ jobs:
       - name: Install mise
         uses: jdx/mise-action@v4
         with:
-          version: 2026.8.13
+          version: 2026.9.2
           install: false
           cache: false
 
@@ -57,7 +57,21 @@ jobs:
           }
 
       - name: Validate mise settings
-        run: test "$(mise settings get auto_update)" = true
+        run: |
+          test "$(mise settings get auto_update)" = true
+          test "$(mise settings get history.sync)" = sync
+
+      - name: Validate mise setup metadata
+        shell: bash
+        run: |
+          test "$(cat .mise-history/format.toml)" = "format = 1"
+          jq -e '
+            .format == 1 and
+            any(.enrollment[]; .path == "config/config.toml") and
+            any(.enrollment[]; .path == "config/mise.lock") and
+            any(.enrollment[]; .path == "config/conf.d") and
+            any(.enrollment[]; .path == "config/scripts")
+          ' .mise-history/manifest.json >/dev/null
 
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
@@ -79,6 +93,25 @@ jobs:
 
       - name: Validate bootstrap plan
         run: mise --locked bootstrap --dry-run
+
+      - name: Validate setup repository onboarding
+        shell: bash
+        run: |
+          git -C "$GITHUB_WORKSPACE" branch --force setup-ci HEAD
+          git clone --bare "$GITHUB_WORKSPACE" "$RUNNER_TEMP/setup.git"
+          git -C "$RUNNER_TEMP/setup.git" symbolic-ref HEAD refs/heads/setup-ci
+
+          fresh_home="$RUNNER_TEMP/fresh-home"
+          mkdir -p "$fresh_home/.config"
+
+          HOME="$fresh_home" \
+          MISE_CONFIG_DIR="$fresh_home/.config/mise" \
+          MISE_STATE_DIR="$RUNNER_TEMP/fresh-state" \
+          mise bootstrap \
+            --from-git "file://$RUNNER_TEMP/setup.git" \
+            --only dotfiles \
+            --dry-run \
+            --yes
 
       - name: Validate custom mise config directory
         shell: bash
