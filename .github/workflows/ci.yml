@@ -107,43 +107,57 @@ jobs:
           git -C "$setup_work" -c user.name=CI -c user.email=ci@example.invalid commit -qm 'test: setup repository'
           git clone --bare "$setup_work" "$RUNNER_TEMP/setup.git"
 
-          fresh_home="$RUNNER_TEMP/fresh-home"
-          fresh_config="$fresh_home/.config/mise"
-          fresh_state="$RUNNER_TEMP/fresh-state"
-          mkdir -p "$fresh_home/.config"
+          # mise expands `~` from the OS account home on Unix. Exercise the
+          # real ~/.config/mise path rather than a fake HOME so tracked paths
+          # and incoming setup paths are identical to a real fresh machine.
+          real_config="$HOME/.config/mise"
           mise_bin="$HOME/.local/share/mise/bin/mise"
           clean_path="$PATH"
-          test -x "$mise_bin"
+          test -L "$real_config"
+          rm "$real_config"
+
+          restore_config() {
+            rm -rf "$real_config"
+            ln -s "$GITHUB_WORKSPACE" "$real_config"
+          }
+          trap restore_config EXIT
 
           run_fresh() {
-            (
-              cd "$fresh_home"
-              env -i \
-                HOME="$fresh_home" \
-                XDG_CONFIG_HOME="$fresh_home/.config" \
-                XDG_STATE_HOME="$fresh_home/.local/state" \
-                MISE_CONFIG_DIR="$fresh_config" \
-                MISE_STATE_DIR="$fresh_state" \
-                MISE_DATA_DIR="$fresh_home/.local/share/mise" \
-                MISE_CACHE_DIR="$fresh_home/.cache/mise" \
-                MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
-                MISE_YES=1 \
-                PATH="$clean_path" \
-                "$@"
-            )
+            env -i \
+              HOME="$HOME" \
+              XDG_CONFIG_HOME="$HOME/.config" \
+              XDG_STATE_HOME="$RUNNER_TEMP/fresh-xdg-state" \
+              MISE_CONFIG_DIR="$real_config" \
+              MISE_STATE_DIR="$RUNNER_TEMP/fresh-state" \
+              MISE_DATA_DIR="$RUNNER_TEMP/fresh-data" \
+              MISE_CACHE_DIR="$RUNNER_TEMP/fresh-cache" \
+              MISE_GLOBAL_CONFIG_ROOT="$HOME" \
+              MISE_TRUSTED_CONFIG_PATHS="$real_config" \
+              MISE_YES=1 \
+              PATH="$clean_path" \
+              "$@"
           }
 
-          run_fresh "$mise_bin" bootstrap \
-            --from-git "file://$RUNNER_TEMP/setup.git" \
-            --only dotfiles \
-            --yes
+          (
+            cd "$RUNNER_TEMP"
+            run_fresh "$mise_bin" bootstrap \
+              --from-git "file://$RUNNER_TEMP/setup.git" \
+              --only dotfiles \
+              --yes
+          )
 
-          test -f "$fresh_config/config.toml"
-          test -f "$fresh_config/mise.lock"
-          test -f "$fresh_config/config.local.toml"
-          cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+          test -f "$real_config/config.toml"
+          test -f "$real_config/mise.lock"
+          test -f "$real_config/config.local.toml"
+          cmp "$real_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
 
-          run_fresh "$mise_bin" bootstrap dotfiles status
+          (
+            cd "$RUNNER_TEMP"
+            run_fresh "$mise_bin" bootstrap dotfiles status
+          )
+
+          restore_config
+          trap - EXIT
 
       - name: Validate custom mise config directory
         shell: bash
