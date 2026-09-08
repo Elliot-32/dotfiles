@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "enrollment": [
+    { "path": "config/config.toml", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/mise.lock", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/miserc.toml", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/config.flatpak.toml", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/conf.d", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/scripts", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/assets", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/hk.pkl", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/.zshrc", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/.zshenv", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/.zprofile", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/.p10k.zsh", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/.config", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/.local", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "config/.agents", "autosave": true, "encrypt": false, "variants": [] }
+  ],
+  "exclude": [],
+  "recipients": [],
+  "permissions": {}
+}
