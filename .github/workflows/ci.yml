@@ -67,8 +67,11 @@ jobs:
           grep -Fq 'format = 1' .mise-history/format.toml
           test -f home/.zshrc
           test -f home/.config/yazi/package.toml
+          test -f home/.config/fcitx5/profile
+          test -f home/.config/environment.d/90-fcitx5.conf
           test ! -e config/.zshrc
           test ! -e config/.config/yazi
+          test ! -e config/.config/fcitx5/profile
           jq -e '
             .format == 1 and
             any(.enrollment[]; .path == "config/config.toml") and
@@ -79,8 +82,10 @@ jobs:
             any(.enrollment[]; .path == "home/.config/yazi") and
             any(.enrollment[]; .path == "home/.config/ghostty/config") and
             any(.enrollment[]; .path == "home/.config/topgrade.toml") and
+            any(.enrollment[]; .path == "home/.config/fcitx5/profile") and
+            any(.enrollment[]; .path == "home/.config/environment.d/90-fcitx5.conf") and
             any(.enrollment[]; .path == "home/.local/share/mise-completions-sync/registry.toml") and
-            any(.enrollment[]; .path == "config/.config/fcitx5/profile") and
+            all(.enrollment[]; .path != "config/.config/fcitx5/profile") and
             all(.enrollment[]; .path != "config/.zshrc") and
             all(.enrollment[]; .path != "config/.config/yazi")
           ' .mise-history/manifest.json >/dev/null
@@ -174,11 +179,17 @@ jobs:
           sudo test ! -L "$fresh_home/.config/topgrade.toml"
           sudo test -f "$fresh_home/.config/ghostty/config"
           sudo test ! -L "$fresh_home/.config/ghostty/config"
+          sudo test -f "$fresh_home/.config/fcitx5/profile"
+          sudo test ! -L "$fresh_home/.config/fcitx5/profile"
+          sudo test -f "$fresh_home/.config/environment.d/90-fcitx5.conf"
+          sudo test ! -L "$fresh_home/.config/environment.d/90-fcitx5.conf"
           sudo test -f "$fresh_home/.local/share/mise-completions-sync/registry.toml"
           sudo test ! -L "$fresh_home/.local/share/mise-completions-sync/registry.toml"
 
           sudo cmp "$fresh_home/.zshrc" "$GITHUB_WORKSPACE/home/.zshrc"
           sudo cmp "$fresh_home/.config/yazi/package.toml" "$GITHUB_WORKSPACE/home/.config/yazi/package.toml"
+          sudo cmp "$fresh_home/.config/fcitx5/profile" "$GITHUB_WORKSPACE/home/.config/fcitx5/profile"
+          sudo cmp "$fresh_home/.config/environment.d/90-fcitx5.conf" "$GITHUB_WORKSPACE/home/.config/environment.d/90-fcitx5.conf"
           sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
 
           paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
@@ -187,6 +198,8 @@ jobs:
           jq -e 'any(.entries[]; .path == "~/.config/sheldon" and .mode == "track")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/.config/yazi" and .mode == "track")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/.config/ghostty/config" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/.config/fcitx5/profile" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/.config/environment.d/90-fcitx5.conf" and .mode == "track")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/custom/mise/mise.lock")' <<<"$paths_json" >/dev/null
           jq -e 'all(.entries[]; .path != "~/custom/mise/.zshrc")' <<<"$paths_json" >/dev/null
           jq -e 'all(.entries[]; (.path | startswith("~/.config/mise/") | not))' <<<"$paths_json" >/dev/null
