@@ -123,17 +123,13 @@ jobs:
           cp "$HOME/.local/share/mise/bin/mise" "$mise_bin"
           chmod 0755 "$mise_bin"
 
-          fresh_config="$fresh_home/.config/mise"
+          # Deliberately use a non-default config directory. Setup-repository
+          # `config/*` enrollment must follow the active mise config root rather
+          # than a hard-coded ~/.config/mise path.
+          fresh_config="$fresh_home/custom/mise"
           fresh_state="$fresh_home/.local/state/mise"
           fresh_data="$fresh_home/.local/share/mise"
           fresh_cache="$fresh_home/.cache/mise"
-
-          # miserc.toml is read before ordinary configuration discovery. mise
-          # 2026.9.2 therefore needs the same early-init file present before
-          # setup-repository onboarding can establish a conflict-free baseline.
-          sudo -u "$fresh_user" mkdir -p "$fresh_config"
-          sudo install -o "$fresh_user" -g "$fresh_user" -m 0644 \
-            "$GITHUB_WORKSPACE/config/miserc.toml" "$fresh_config/miserc.toml"
 
           run_fresh() {
             sudo -u "$fresh_user" env -i \
@@ -146,6 +142,7 @@ jobs:
               MISE_CACHE_DIR="$fresh_cache" \
               MISE_GLOBAL_CONFIG_ROOT="$fresh_home" \
               MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
+              MISE_ENV_CONF_D=true \
               MISE_YES=1 \
               PATH="/usr/local/bin:/usr/bin:/bin" \
               "$@"
@@ -160,7 +157,13 @@ jobs:
           test -f "$fresh_config/mise.lock"
           test -f "$fresh_config/miserc.toml"
           test -f "$fresh_config/config.local.toml"
+          test ! -e "$fresh_home/.config/mise/config.toml"
           cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+
+          paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
+          printf '%s\n' "$paths_json"
+          jq -e 'any(.entries[]; .path == "~/custom/mise/mise.lock")' <<<"$paths_json" >/dev/null
+          jq -e 'all(.entries[]; (.path | startswith("~/.config/mise/") | not))' <<<"$paths_json" >/dev/null
           run_fresh "$mise_bin" bootstrap dotfiles status
 
       - name: Validate custom mise config directory
