@@ -1,6 +1,6 @@
 ---
 name: elliot-dotfiles
-description: Maintain, review, and evolve Elliot-32/dotfiles, a mise-centric Linux/WSL setup repository. Use for work involving config.toml, miserc.toml, conf.d environment selection, mise tools/bootstrap/tasks, native tracked dotfiles, package managers, Flatpak, Zsh/Sheldon plugins and completions, Yazi, Topgrade, Ghostty, Nerd Fonts, WSL/WSLg and Windows bootstrap, hk/CI, mise.lock, README updates, or repository refactors.
+description: Maintain, review, and evolve Elliot-32/dotfiles, a mise-centric Linux/WSL setup repository. Use for work involving config.toml, miserc.toml, conf.d environment selection, mise tools/bootstrap/tasks, native tracked dotfiles, package managers, Flatpak, Zsh/Sheldon plugins and completions, Yazi, Topgrade, Ghostty, Fcitx5, Nerd Fonts, WSL/WSLg and Windows bootstrap, hk/CI, mise.lock, README updates, or repository refactors.
 license: MIT
 compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, shellcheck, and PowerShell.
 metadata:
@@ -30,7 +30,7 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
 - Route conditional mise configuration through `config/conf.d/`: `distro.*.toml` for distro behavior, `packages.*.toml` for package-manager behavior, and `platform.*.toml` for WSL/WSLg or other platform behavior.
 - Keep Flatpak-specific configuration in `config/config.flatpak.toml`.
 - Prefer declarative mise configuration over shell scripts. Add or extend a script only when the operation is inherently imperative, interactive, platform-native, or cannot be represented safely in mise configuration.
-- Prefer native `mode = "track"` for ordinary user dotfiles. Keep them at the path applications actually read (`home/...` in the setup repository) instead of introducing source-to-target symlinks. Use declarative copy/symlink/template/edit modes only when deployment semantics are genuinely needed, such as the managed `.gitconfig` block or environment-specific Fcitx5 sources.
+- Prefer native `mode = "track"` for ordinary user dotfiles. Keep them at the path applications actually read (`home/...` in the setup repository) instead of introducing source-to-target symlinks. Fcitx5 user configuration is shared this way across APT, DNF, and Pacman systems; use package-manager fragments only for installing the distro-specific packages. Use declarative copy/symlink/template/edit modes only when deployment semantics are genuinely needed, such as the managed `.gitconfig` block.
 - Treat Topgrade as the user-session update orchestrator, while mise history/sync is the synchronization authority for tracked configuration and `mise.lock`. Do not add Git pull/push behavior that competes with history sync.
 - Treat `home/.config/yazi/package.toml` as Yazi's plugin manifest. Bootstrap installs declared plugins with `ya pkg install`; change plugin declarations there rather than adding ad-hoc plugin install commands elsewhere.
 - Treat `config/conf.d/platform.wsl.toml` plus `config/scripts/bootstrap-windows.ps1` as the WSL-to-Windows bootstrap path. Keep Windows-native WinGet/package/Windows Terminal behavior in PowerShell instead of moving it into Linux package configuration.
@@ -53,6 +53,7 @@ Use [references/repository-map.md](references/repository-map.md) for details. In
 - Change generated CLI completions: inspect `config/config.toml` hooks/tasks, `home/.local/share/mise-completions-sync/registry.toml`, and the current upstream `mise-completions-sync` registry before editing.
 - Change shell startup environment: inspect `home/.zshenv`, `home/.zprofile`, `home/.zshrc`, Sheldon config, and mise shell activation before adding another initialization path.
 - Add, remove, or configure a Yazi plugin: inspect `home/.config/yazi/package.toml`, `init.lua`, `keymap.toml`, and `yazi.toml`; keep plugin installation delegated to `ya pkg install`.
+- Change Fcitx5 configuration: edit `home/.config/fcitx5/profile` or `home/.config/environment.d/90-fcitx5.conf`; change package availability separately in the APT, DNF, and Pacman package fragments.
 - Change unattended/user-session update behavior: inspect `home/.config/topgrade.toml`, `home/.config/topgrade.systemd.toml`, and the `update` / `update-timer` systemd units in `config/config.toml` before adding another updater.
 - Change Linux Nerd Font installation/update behavior: edit `config/scripts/update-fonts.sh` and the `update:fonts` task path in `config/config.toml`; preserve checksum verification and WSL skip behavior unless the change explicitly replaces that design.
 - Change Windows packages, Windows Terminal defaults, or other WSL-triggered Windows setup: inspect `config/conf.d/platform.wsl.toml`, `tasks.bootstrap:windows`, and `config/scripts/bootstrap-windows.ps1`.
