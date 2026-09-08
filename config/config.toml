@@ -99,7 +99,7 @@ kubectl = "latest"
 "~/.p10k.zsh" = { mode = "track" }
 "~/.config/sheldon" = { mode = "track" }
 "~/.config/yazi" = { mode = "track" }
-"~/.config/gomi/config.yaml" = { mode = "track" }
+"~/.config/gomi/config.yaml" = { source = "assets/gomi/config.yaml", mode = "copy" }
 "~/.config/topgrade.toml" = { mode = "track" }
 "~/.config/topgrade.systemd.toml" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }

@@ -68,12 +68,6 @@
       "variants": []
     },
     {
-      "path": "home/.config/gomi/config.yaml",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
-    },
-    {
       "path": "home/.config/sheldon",
       "autosave": true,
       "encrypt": false,
