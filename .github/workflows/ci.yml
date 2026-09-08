@@ -150,6 +150,7 @@ jobs:
               MISE_CACHE_DIR="$fresh_cache" \
               MISE_GLOBAL_CONFIG_ROOT="$fresh_home" \
               MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
+              MISE_ENV_CONF_D=true \
               MISE_YES=1 \
               PATH="/usr/local/bin:/usr/bin:/bin" \
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
@@ -159,7 +160,7 @@ jobs:
           sudo test ! -e "$fresh_config/config.toml"
 
           run_fresh "$mise_bin" bootstrap \
-            --from-git "file://$setup_bare" \
+            --adopt "file://$setup_bare" \
             --only dotfiles \
             --yes
 
