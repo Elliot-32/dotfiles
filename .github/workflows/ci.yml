@@ -111,14 +111,15 @@ jobs:
           # Use a real isolated account so the test is a genuinely fresh machine
           # and cannot inherit ~/.config/mise state from mise-action.
           fresh_user="mise-sync-ci"
-          fresh_home="$RUNNER_TEMP/mise-sync-home"
+          fresh_home="/tmp/mise-sync-home"
+          setup_bare="/tmp/mise-sync-setup.git"
+          mise_bin="/tmp/mise-sync-ci-bin"
+          sudo rm -rf "$fresh_home" "$setup_bare" "$mise_bin"
           sudo useradd --create-home --home-dir "$fresh_home" --shell /bin/bash "$fresh_user"
 
-          setup_bare="$RUNNER_TEMP/setup.git"
           git clone --bare "$setup_work" "$setup_bare"
           sudo chown -R "$fresh_user:$fresh_user" "$setup_bare" "$fresh_home"
 
-          mise_bin="$RUNNER_TEMP/mise-ci"
           cp "$HOME/.local/share/mise/bin/mise" "$mise_bin"
           chmod 0755 "$mise_bin"
 
