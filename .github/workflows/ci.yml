@@ -97,67 +97,62 @@ jobs:
       - name: Validate setup repository onboarding
         shell: bash
         run: |
-          # actions/checkout is shallow. Build a complete local repository from
-          # the PR tree so mise's preview store can refetch its ancestry.
+          # Build a complete one-commit setup repository from the PR tree. The
+          # checked-out PR merge ref is shallow, while mise may inspect/fetch
+          # setup ancestry during onboarding.
           setup_work="$RUNNER_TEMP/setup-work"
           mkdir -p "$setup_work"
           tar -C "$GITHUB_WORKSPACE" --exclude=.git -cf - . | tar -C "$setup_work" -xf -
           git -C "$setup_work" init -q -b main
           git -C "$setup_work" add .
           git -C "$setup_work" -c user.name=CI -c user.email=ci@example.invalid commit -qm 'test: setup repository'
-          git clone --bare "$setup_work" "$RUNNER_TEMP/setup.git"
 
-          # mise expands `~` from the OS account home on Unix. Exercise the
-          # real ~/.config/mise path rather than a fake HOME so tracked paths
-          # and incoming setup paths are identical to a real fresh machine.
-          real_config="$HOME/.config/mise"
-          mise_bin="$HOME/.local/share/mise/bin/mise"
-          clean_path="$PATH"
-          test -L "$real_config"
-          rm "$real_config"
+          # mise resolves `~` from the OS account, not merely the HOME env var.
+          # Use a real isolated account so the test is a genuinely fresh machine
+          # and cannot inherit ~/.config/mise state from mise-action.
+          fresh_user="mise-sync-ci"
+          fresh_home="$RUNNER_TEMP/mise-sync-home"
+          sudo useradd --create-home --home-dir "$fresh_home" --shell /bin/bash "$fresh_user"
 
-          restore_config() {
-            rm -rf "$real_config"
-            ln -s "$GITHUB_WORKSPACE" "$real_config"
-          }
-          trap restore_config EXIT
+          setup_bare="$RUNNER_TEMP/setup.git"
+          git clone --bare "$setup_work" "$setup_bare"
+          sudo chown -R "$fresh_user:$fresh_user" "$setup_bare" "$fresh_home"
+
+          mise_bin="$RUNNER_TEMP/mise-ci"
+          cp "$HOME/.local/share/mise/bin/mise" "$mise_bin"
+          chmod 0755 "$mise_bin"
+
+          fresh_config="$fresh_home/.config/mise"
+          fresh_state="$fresh_home/.local/state/mise"
+          fresh_data="$fresh_home/.local/share/mise"
+          fresh_cache="$fresh_home/.cache/mise"
 
           run_fresh() {
-            env -i \
-              HOME="$HOME" \
-              XDG_CONFIG_HOME="$HOME/.config" \
-              XDG_STATE_HOME="$RUNNER_TEMP/fresh-xdg-state" \
-              MISE_CONFIG_DIR="$real_config" \
-              MISE_STATE_DIR="$RUNNER_TEMP/fresh-state" \
-              MISE_DATA_DIR="$RUNNER_TEMP/fresh-data" \
-              MISE_CACHE_DIR="$RUNNER_TEMP/fresh-cache" \
-              MISE_GLOBAL_CONFIG_ROOT="$HOME" \
-              MISE_TRUSTED_CONFIG_PATHS="$real_config" \
+            sudo -u "$fresh_user" env -i \
+              HOME="$fresh_home" \
+              XDG_CONFIG_HOME="$fresh_home/.config" \
+              XDG_STATE_HOME="$fresh_home/.local/state" \
+              MISE_CONFIG_DIR="$fresh_config" \
+              MISE_STATE_DIR="$fresh_state" \
+              MISE_DATA_DIR="$fresh_data" \
+              MISE_CACHE_DIR="$fresh_cache" \
+              MISE_GLOBAL_CONFIG_ROOT="$fresh_home" \
+              MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
               MISE_YES=1 \
-              PATH="$clean_path" \
+              PATH="/usr/local/bin:/usr/bin:/bin" \
               "$@"
           }
 
-          (
-            cd "$RUNNER_TEMP"
-            run_fresh "$mise_bin" bootstrap \
-              --from-git "file://$RUNNER_TEMP/setup.git" \
-              --only dotfiles \
-              --yes
-          )
+          run_fresh "$mise_bin" bootstrap \
+            --from-git "file://$setup_bare" \
+            --only dotfiles \
+            --yes
 
-          test -f "$real_config/config.toml"
-          test -f "$real_config/mise.lock"
-          test -f "$real_config/config.local.toml"
-          cmp "$real_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
-
-          (
-            cd "$RUNNER_TEMP"
-            run_fresh "$mise_bin" bootstrap dotfiles status
-          )
-
-          restore_config
-          trap - EXIT
+          test -f "$fresh_config/config.toml"
+          test -f "$fresh_config/mise.lock"
+          test -f "$fresh_config/config.local.toml"
+          cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+          run_fresh "$mise_bin" bootstrap dotfiles status
 
       - name: Validate custom mise config directory
         shell: bash
