@@ -103,6 +103,8 @@ kubectl = "latest"
 "~/.config/topgrade.systemd.toml" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }
 "~/.config/xdg-terminals.list" = { mode = "track" }
+"~/.config/fcitx5/profile" = { mode = "track" }
+"~/.config/environment.d/90-fcitx5.conf" = { mode = "track" }
 "~/.local/share/mise-completions-sync/registry.toml" = { mode = "track" }
 
 [bootstrap.directories]
