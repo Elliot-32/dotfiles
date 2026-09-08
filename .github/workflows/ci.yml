@@ -142,11 +142,14 @@ jobs:
               MISE_CACHE_DIR="$fresh_cache" \
               MISE_GLOBAL_CONFIG_ROOT="$fresh_home" \
               MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
-              MISE_ENV_CONF_D=true \
               MISE_YES=1 \
               PATH="/usr/local/bin:/usr/bin:/bin" \
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
           }
+
+          # Nothing from the setup may exist locally before onboarding.
+          test ! -e "$fresh_config/miserc.toml"
+          test ! -e "$fresh_config/config.toml"
 
           run_fresh "$mise_bin" bootstrap \
             --from-git "file://$setup_bare" \
@@ -164,6 +167,13 @@ jobs:
           printf '%s\n' "$paths_json"
           jq -e 'any(.entries[]; .path == "~/custom/mise/mise.lock")' <<<"$paths_json" >/dev/null
           jq -e 'all(.entries[]; (.path | startswith("~/.config/mise/") | not))' <<<"$paths_json" >/dev/null
+
+          # A new mise process must load the restored miserc and select the
+          # platform-specific fragments from the custom config root.
+          config_ls="$(run_fresh "$mise_bin" config ls)"
+          printf '%s\n' "$config_ls"
+          grep -Fq "$fresh_config/conf.d/distro.ubuntu.toml" <<<"$config_ls"
+          grep -Fq "$fresh_config/conf.d/packages.apt.toml" <<<"$config_ls"
           run_fresh "$mise_bin" bootstrap dotfiles status
 
       - name: Validate custom mise config directory
