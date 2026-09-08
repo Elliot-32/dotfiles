@@ -16,6 +16,7 @@
     { "path": "home/.p10k.zsh", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.config/sheldon", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.config/yazi", "autosave": true, "encrypt": false, "variants": [] },
+    { "path": "home/.config/gomi/config.yaml", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.config/topgrade.toml", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.config/topgrade.systemd.toml", "autosave": true, "encrypt": false, "variants": [] },
     { "path": "home/.config/ghostty/config", "autosave": true, "encrypt": false, "variants": [] },
