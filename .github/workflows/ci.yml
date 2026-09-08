@@ -37,6 +37,7 @@ jobs:
         run: mise install --locked hk shellcheck
 
       - name: Run hk checks
+        working-directory: config
         run: mise exec hk shellcheck -- hk check --all
 
       - name: Validate Windows bootstrap PowerShell syntax
