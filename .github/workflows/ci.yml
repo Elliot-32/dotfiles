@@ -44,20 +44,32 @@ jobs:
         working-directory: config
         run: mise exec hk shellcheck -- hk check --all
 
-      - name: Validate Windows bootstrap PowerShell syntax
+      - name: Validate theme scripts
+        shell: bash
+        run: |
+          python3 -m py_compile config/scripts/theme.py
+          sh -n config/scripts/gomi-runtime.sh
+          bash -n config/scripts/nerd-font-linux.sh config/scripts/omarchy-gomi-theme-sync.sh
+
+      - name: Validate Windows PowerShell syntax
         shell: pwsh
         run: |
-          $tokens = $null
-          $errors = $null
-          [System.Management.Automation.Language.Parser]::ParseFile(
-            "$env:GITHUB_WORKSPACE/config/scripts/bootstrap-windows.ps1",
-            [ref]$tokens,
-            [ref]$errors
-          ) | Out-Null
+          foreach ($path in @(
+            "$env:GITHUB_WORKSPACE/config/scripts/theme-windows-terminal.ps1",
+            "$env:GITHUB_WORKSPACE/config/scripts/nerd-font-windows.ps1"
+          )) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              $path,
+              [ref]$tokens,
+              [ref]$errors
+            ) | Out-Null
 
-          if ($errors.Count -gt 0) {
-            $errors | ForEach-Object { Write-Error $_ }
-            exit 1
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error $_ }
+              exit 1
+            }
           }
 
       - name: Validate mise settings
@@ -97,20 +109,77 @@ jobs:
       - name: Validate mise tasks
         run: mise tasks validate --errors-only
 
-      - name: Validate WSL Windows bootstrap task
+      - name: Validate theme task architecture
         shell: bash
         run: |
-          task_json="$(MISE_ENV=wsl mise tasks info bootstrap:windows --json)"
-          printf '%s\n' "$task_json"
-          grep -Fq 'scripts/bootstrap-windows.sh' <<<"$task_json"
-          grep -Fq '"hide": false' <<<"$task_json"
+          theme_json="$(mise tasks info theme --json)"
+          printf '%s\n' "$theme_json"
+          grep -Fq 'scripts/theme.py' <<<"$theme_json"
+          grep -Fq 'github:tinted-theming/tinty@0.34.1' <<<"$theme_json"
 
-      - name: Validate Windows bootstrap skips without interop
+          init_json="$(mise tasks info theme:init --json)"
+          grep -Fq 'scripts/theme.py' <<<"$init_json"
+
+      - name: Validate WSL Nerd Font overrides
         shell: bash
         run: |
-          output="$(sh config/scripts/bootstrap-windows.sh 2>&1)"
-          printf '%s\n' "$output"
-          grep -Fq 'powershell.exe is unavailable; skipping Windows bootstrap' <<<"$output"
+          install_json="$(MISE_ENV=wsl mise tasks info nerd-font --json)"
+          printf '%s\n' "$install_json"
+          grep -Fq 'scripts/nerd-font-windows.ps1' <<<"$install_json"
+
+          update_json="$(MISE_ENV=wsl mise tasks info nerd-font:update --json)"
+          printf '%s\n' "$update_json"
+          grep -Fq '"run": ":"' <<<"$update_json"
+
+          theme_json="$(MISE_ENV=wsl mise tasks info theme --json)"
+          grep -Fq 'scripts/theme.py' <<<"$theme_json"
+
+      - name: Validate gomi runtime overlay
+        shell: bash
+        run: |
+          temp_config="$RUNNER_TEMP/theme-config"
+          temp_state="$RUNNER_TEMP/theme-state"
+          mkdir -p "$temp_config/assets/gomi" "$temp_state"
+          cp config/assets/gomi/config.yaml "$temp_config/assets/gomi/config.yaml"
+
+          theme_file="$RUNNER_TEMP/gomi-theme.json"
+          cat > "$theme_file" <<'JSON'
+          {
+            "colors": {
+              "cursor": "#111111",
+              "selected": "#222222",
+              "filter_match": "#333333",
+              "filter_prompt": "#444444",
+              "detail_border": "#555555",
+              "pane_fg": "#666666",
+              "pane_bg": "#777777",
+              "preview_border": "#888888",
+              "preview_fg": "#999999",
+              "preview_bg": "#AAAAAA",
+              "danger": "#BBBBBB"
+            }
+          }
+          JSON
+
+          before="$(sha256sum "$temp_config/assets/gomi/config.yaml" | cut -d' ' -f1)"
+          MISE_CONFIG_DIR="$temp_config" XDG_STATE_HOME="$temp_state" \
+            python3 config/scripts/theme.py apply-gomi "$theme_file" dracula
+          after="$(sha256sum "$temp_config/assets/gomi/config.yaml" | cut -d' ' -f1)"
+
+          test "$before" = "$after"
+          runtime="$temp_state/dotfiles/theme/gomi.yaml"
+          test -f "$runtime"
+          grep -Fq 'forbidden_paths:' "$runtime"
+          grep -Fq 'cursor: "#111111"' "$runtime"
+          grep -Fq 'colorscheme: "dracula"' "$runtime"
+
+      - name: Validate runtime theme paths
+        shell: bash
+        run: |
+          grep -Fq 'config-file = ?~/.local/state/dotfiles/theme/ghostty.conf' home/.config/ghostty/config
+          grep -Fq 'config-file = ?~/.local/state/omarchy/current/theme/ghostty.conf' home/.config/ghostty/config
+          grep -Fq 'dotfiles/theme/gomi.yaml' config/scripts/gomi-runtime.sh
+          ! grep -Fq '~/.config/gomi/config.yaml' config/scripts/omarchy-gomi-theme-sync.sh
 
       - name: Validate bootstrap plan
         run: mise --locked bootstrap --dry-run

@@ -4,8 +4,13 @@ set -euo pipefail
 theme="${1:-}"
 [[ -n "$theme" ]] || exit 0
 
-config="${XDG_CONFIG_HOME:-$HOME/.config}/gomi/config.yaml"
-[[ -f "$config" ]] || exit 0
+config_dir="${MISE_CONFIG_DIR:-$HOME/.config/mise}"
+base_config="$config_dir/assets/gomi/config.yaml"
+runtime_config="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles/theme/gomi.yaml"
+
+[[ -f "$base_config" ]] || exit 0
+mkdir -p "$(dirname "$runtime_config")"
+cp -f "$base_config" "$runtime_config"
 
 theme="${theme,,}"
 theme="${theme// /-}"
@@ -36,7 +41,7 @@ esac
 if [[ -n "$colorscheme" ]]; then
   sed -i -E \
     "s|^([[:space:]]*colorscheme:).*|\\1 ${colorscheme}|" \
-    "$config"
+    "$runtime_config"
 fi
 
 command -v omarchy-theme-color >/dev/null 2>&1 || exit 0
@@ -76,4 +81,4 @@ sed -i -E \
   -e "s|^          fg:.*|          fg: \"${pane_fg}\"|" \
   -e "s|^          bg:.*|          bg: \"${pane_bg}\"|" \
   -e "s|^    deletion_dialog:.*|    deletion_dialog: \"${danger}\"|" \
-  "$config"
+  "$runtime_config"

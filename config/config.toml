@@ -23,7 +23,8 @@ SUDO_EDITOR = "code --wait"
 [shell_alias]
 ls = "eza --icons=auto"
 oc = "opencode"
-rm = "gomi"
+gomi = "\"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/gomi-runtime.sh\""
+rm = "\"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/gomi-runtime.sh\""
 path = "j $(print -l $path | fzf)"
 n = "nvim"
 sl = "systemctl"
@@ -157,8 +158,8 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "ya pkg install",
-  { task = "update:fonts" },
-  { task = "bootstrap:windows" },
+  { task = "nerd-font" },
+  { task = "theme:init" },
   { task = "bootstrap:github" },
 ]
 
@@ -167,13 +168,24 @@ hide = true
 interactive = true
 run = "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\""
 
-[tasks."bootstrap:windows"]
-hide = true
-run = ":"
+[tasks."nerd-font"]
+description = "Install or update JetBrainsMono Nerd Font"
+run = "bash \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/nerd-font-linux.sh\""
 
-[tasks."update:fonts"]
+[tasks."nerd-font:update"]
+description = "Update JetBrainsMono Nerd Font during Topgrade"
 hide = true
-run = "bash \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/update-fonts.sh\""
+run = "bash \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/nerd-font-linux.sh\""
+
+[tasks.theme]
+description = "Choose and apply a Base24 theme with Tinty"
+interactive = true
+run = "mise x github:tinted-theming/tinty@0.34.1 -- python3 \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/theme.py\" choose"
+
+[tasks."theme:init"]
+description = "Initialize the Tinty theme integration"
+hide = true
+run = "mise x github:tinted-theming/tinty@0.34.1 -- python3 \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/theme.py\" init"
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"

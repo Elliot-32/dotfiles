@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ -n ${WSL_DISTRO_NAME:-} || -n ${WSL_INTEROP:-} || -e /proc/sys/fs/binfmt_misc/WSLInterop ]]; then
-  echo 'WSL detected; skipping Linux font installation.'
-  exit 0
-fi
-
 for command in curl tar sha256sum fc-cache; do
   if ! command -v "$command" >/dev/null 2>&1; then
     echo "error: required command '$command' is unavailable" >&2

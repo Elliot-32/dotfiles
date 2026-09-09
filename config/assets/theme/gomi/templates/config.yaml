@@ -1,0 +1,3 @@
+base24:
+  filename: "themes/{{scheme.system}}-{{scheme.slug}}.json"
+  supported-systems: [base24]

@@ -1,66 +1,10 @@
 param(
-    [ValidateSet(
-        'catppuccin-mocha',
-        'catppuccin-macchiato',
-        'catppuccin-frappe',
-        'catppuccin-latte',
-        'tokyo-night',
-        'dracula'
-    )]
-    [string] $Theme = 'catppuccin-mocha'
+    [Parameter(Mandatory = $true)]
+    [string] $ThemeFile
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-
-$gitPackage = 'Git.Git'
-$fontPackage = 'DEVCOM.JetBrainsMonoNerdFont'
-$fontFace = 'JetBrainsMono Nerd Font Mono'
-$wingetPackageAlreadyInstalled = -1978335135 # 0x8A150061 APPINSTALLER_CLI_ERROR_PACKAGE_ALREADY_INSTALLED
-$terminalAssetsDirectory = Join-Path (Split-Path -Parent $PSScriptRoot) 'assets\windows-terminal'
-
-$themeFiles = @{
-    'catppuccin-mocha' = @('catppuccin', 'mocha.json', 'mochaTheme.json')
-    'catppuccin-macchiato' = @('catppuccin', 'macchiato.json', 'macchiatoTheme.json')
-    'catppuccin-frappe' = @('catppuccin', 'frappe.json', 'frappeTheme.json')
-    'catppuccin-latte' = @('catppuccin', 'latte.json', 'latteTheme.json')
-    'tokyo-night' = @('tokyo-night', 'tokyo-night.json', 'theme.json')
-    'dracula' = @('dracula', 'dracula.json', 'theme.json')
-}
-
-$themeDefinition = $themeFiles[$Theme]
-$terminalThemeDirectory = Join-Path $terminalAssetsDirectory $themeDefinition[0]
-$terminalSchemePath = Join-Path $terminalThemeDirectory $themeDefinition[1]
-$terminalThemePath = Join-Path $terminalThemeDirectory $themeDefinition[2]
-
-function Invoke-WinGetInstall {
-    param([Parameter(Mandatory = $true)][string] $Id)
-
-    $arguments = @(
-        'install',
-        '--id', $Id,
-        '--exact',
-        '--silent',
-        '--no-upgrade',
-        '--accept-package-agreements',
-        '--accept-source-agreements',
-        '--disable-interactivity'
-    )
-
-    & $script:WinGetCommand @arguments
-    $exitCode = $LASTEXITCODE
-
-    if ($exitCode -eq 0) {
-        return
-    }
-
-    if ($exitCode -eq $script:wingetPackageAlreadyInstalled) {
-        Write-Host "WinGet package '$Id' is already installed."
-        return
-    }
-
-    throw "winget install '$Id' failed with exit code $exitCode"
-}
 
 function Remove-JsonComments {
     param([Parameter(Mandatory = $true)][string] $Text)
@@ -237,10 +181,9 @@ function Set-NamedArrayEntry {
     $property.Value = $updated
 }
 
-function Set-WindowsTerminalAppearance {
+function Set-WindowsTerminalTheme {
     param(
         [Parameter(Mandatory = $true)][string] $SettingsPath,
-        [Parameter(Mandatory = $true)][string] $Face,
         [Parameter(Mandatory = $true)] $Scheme,
         [Parameter(Mandatory = $true)] $TerminalTheme
     )
@@ -254,9 +197,6 @@ function Set-WindowsTerminalAppearance {
             profiles = [pscustomobject] @{
                 defaults = [pscustomobject] @{
                     colorScheme = $schemeName
-                    font = [pscustomobject] @{
-                        face = $Face
-                    }
                 }
             }
             schemes = @($Scheme)
@@ -279,9 +219,7 @@ function Set-WindowsTerminalAppearance {
 
     $profiles = Get-OrAddObjectProperty -Object $settings -Name 'profiles'
     $defaults = Get-OrAddObjectProperty -Object $profiles -Name 'defaults'
-    $font = Get-OrAddObjectProperty -Object $defaults -Name 'font'
 
-    Set-ObjectPropertyValue -Object $font -Name 'face' -Value $Face
     Set-ObjectPropertyValue -Object $defaults -Name 'colorScheme' -Value $schemeName
     Set-ObjectPropertyValue -Object $settings -Name 'theme' -Value $themeName
     Set-NamedArrayEntry -Object $settings -PropertyName 'schemes' -Entry $Scheme
@@ -294,27 +232,19 @@ function Set-WindowsTerminalAppearance {
 
     $updated = $settings | ConvertTo-Json -Depth 100
     [System.IO.File]::WriteAllText($SettingsPath, $updated + [Environment]::NewLine, [System.Text.UTF8Encoding]::new($false))
-    Write-Host "Set Windows Terminal font and theme to '$schemeName': $SettingsPath"
+    Write-Host "Set Windows Terminal theme to '$schemeName': $SettingsPath"
 }
 
-$winget = Get-Command winget.exe -ErrorAction SilentlyContinue | Select-Object -First 1
-if ($null -eq $winget) {
-    throw 'WinGet is unavailable. Install or update Microsoft App Installer, then rerun the bootstrap.'
+if (-not (Test-Path -LiteralPath $ThemeFile -PathType Leaf)) {
+    throw "Tinty Windows Terminal theme file is missing: $ThemeFile"
 }
 
-$script:WinGetCommand = $winget.Source
-Invoke-WinGetInstall -Id $gitPackage
-Invoke-WinGetInstall -Id $fontPackage
-
-if (-not (Test-Path -LiteralPath $terminalSchemePath -PathType Leaf)) {
-    throw "Windows Terminal color scheme is missing: $terminalSchemePath"
+$generated = Get-Content -LiteralPath $ThemeFile -Raw | ConvertFrom-Json
+$scheme = $generated.scheme
+$terminalTheme = $generated.theme
+if ($null -eq $scheme -or $null -eq $terminalTheme) {
+    throw "Tinty Windows Terminal theme file must contain 'scheme' and 'theme': $ThemeFile"
 }
-if (-not (Test-Path -LiteralPath $terminalThemePath -PathType Leaf)) {
-    throw "Windows Terminal theme is missing: $terminalThemePath"
-}
-
-$terminalScheme = Get-Content -LiteralPath $terminalSchemePath -Raw | ConvertFrom-Json
-$terminalTheme = Get-Content -LiteralPath $terminalThemePath -Raw | ConvertFrom-Json
 
 $terminalStateDirectories = @(
     @(
@@ -326,10 +256,10 @@ $terminalStateDirectories = @(
 )
 
 if ($terminalStateDirectories.Count -eq 0) {
-    Write-Warning 'Windows Terminal settings directory was not found; skipping appearance configuration.'
+    Write-Warning 'Windows Terminal settings directory was not found; skipping theme configuration.'
     exit 0
 }
 
 foreach ($stateDirectory in $terminalStateDirectories) {
-    Set-WindowsTerminalAppearance -SettingsPath (Join-Path $stateDirectory 'settings.json') -Face $fontFace -Scheme $terminalScheme -TerminalTheme $terminalTheme
+    Set-WindowsTerminalTheme -SettingsPath (Join-Path $stateDirectory 'settings.json') -Scheme $scheme -TerminalTheme $terminalTheme
 }

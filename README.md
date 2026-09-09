@@ -24,13 +24,30 @@ mise bootstrap dotfiles sync
 mise bootstrap dotfiles pull
 ```
 
+## 主題
+
+`mise run theme` 使用 Tinty 的 Base24 schemes 與 Gum 選擇器統一切換主題。
+
+- Ghostty 只更新 `~/.local/state/dotfiles/theme/ghostty.conf`；主設定透過 `config-file` include 它，Omarchy 的 include 仍具有較高優先權。
+- gomi 的 `~/.config/gomi/config.yaml` 保持為同步的 base/fallback；主題會從 base 產生 `~/.local/state/dotfiles/theme/gomi.yaml`，互動式 `gomi` / `rm` 優先使用 runtime config。
+- WSL 下會另外把同一個 Base24 palette merge 到 Windows Terminal 的 `schemes[]` / `themes[]`，不覆寫整份 `settings.json`。
+
+Bootstrap 會執行隱藏的 `theme:init`，同步 Tinty schemes、重建 runtime templates，並重新套用上次的 scheme；第一次使用則套用 Catppuccin Macchiato。
+
+## Nerd Font
+
+`mise run nerd-font` 安裝或更新 JetBrainsMono Nerd Font。Linux 直接更新使用者字型；WSL 會改由 Windows 的 WinGet 安裝，因此可能出現 UAC 提示。
+
+Topgrade 使用 `nerd-font:update`：Linux 會更新字型，WSL 則跳過 Windows 字型更新，避免排程或一般 Topgrade 流程被 UAC 卡住。
+
 ## 常用指令
 
 | 用途 | 指令 |
 | --- | --- |
 | 更新系統與工具 | `topgrade` |
+| 切換主題 | `mise run theme` |
+| 安裝 / 更新 Nerd Font | `mise run nerd-font` |
 | 重新套用 bootstrap | `mise bootstrap --yes --force-dotfiles` |
-| 設定 Windows / Windows Terminal | `mise run bootstrap:windows` |
 | 查看同步狀態 | `mise bootstrap dotfiles status` |
 | 納管檔案 | `mise bootstrap dotfiles track <path>` |
 | 解除納管 | `mise bootstrap dotfiles untrack <path>` |
