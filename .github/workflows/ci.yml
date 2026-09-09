@@ -129,7 +129,7 @@ jobs:
 
           update_json="$(MISE_ENV=wsl mise tasks info nerd-font:update --json)"
           printf '%s\n' "$update_json"
-          grep -Fq '"run": ":"' <<<"$update_json"
+          jq -e '.run == [":"]' <<<"$update_json" >/dev/null
 
           theme_json="$(MISE_ENV=wsl mise tasks info theme --json)"
           grep -Fq 'scripts/theme.py' <<<"$theme_json"
