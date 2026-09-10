@@ -23,8 +23,7 @@ SUDO_EDITOR = "code --wait"
 [shell_alias]
 ls = "eza --icons=auto"
 oc = "opencode"
-gomi = "\"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/gomi-runtime.sh\""
-rm = "gomi"
+rm = 'gomi --config "${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles/theme/gomi.yaml"'
 path = "j $(print -l $path | fzf)"
 n = "nvim"
 sl = "systemctl"
@@ -100,7 +99,7 @@ kubectl = "latest"
 "~/.p10k.zsh" = { mode = "track" }
 "~/.config/sheldon" = { mode = "track" }
 "~/.config/yazi" = { mode = "track" }
-"~/.config/gomi/config.yaml" = { source = "assets/gomi/config.yaml", mode = "copy" }
+"~/.config/gomi/config.yaml" = { mode = "track" }
 "~/.config/topgrade.toml" = { mode = "track" }
 "~/.config/topgrade.systemd.toml" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }
