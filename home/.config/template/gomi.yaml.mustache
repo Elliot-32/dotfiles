@@ -1,0 +1,66 @@
+core:
+  trash:
+    strategy: xdg
+    home_fallback: true
+    forbidden_paths:
+      - "$HOME/.local/share/Trash"
+      - "$HOME/.trash"
+      - "$XDG_DATA_HOME/Trash"
+      - "/tmp/Trash"
+      - "/var/tmp/Trash"
+      - "$HOME/.gomi"
+      - "$HOME/.config/mise"
+      - "$MISE_CONFIG_DIR"
+      - "$HOME/.miserc.toml"
+      - "$HOME/.config/gomi/config.yaml"
+      - "$HOME/.zshrc"
+      - "$HOME/.zprofile"
+      - "$HOME/.config/sheldon"
+      - "$HOME/.config/topgrade.toml"
+      - "$HOME/.config/topgrade.systemd.toml"
+      - "/"
+      - "/etc"
+      - "/usr"
+      - "/var"
+      - "/bin"
+      - "/sbin"
+      - "/lib"
+      - "/lib64"
+
+ui:
+  preview:
+    syntax_highlight: true
+    colorscheme: catppuccin-mocha
+    directory_command: eza -la --icons=always --color=always
+  style:
+    list_view:
+      cursor: "#{{base0D-hex}}"
+      selected: "#{{base0B-hex}}"
+      filter_match: "#{{base09-hex}}"
+      filter_prompt: "#{{base0D-hex}}"
+      indent_on_select: false
+    detail_view:
+      border: "#{{base05-hex}}"
+      info_pane:
+        deleted_from:
+          fg: "#{{base05-hex}}"
+          bg: "#{{base00-hex}}"
+        deleted_at:
+          fg: "#{{base05-hex}}"
+          bg: "#{{base00-hex}}"
+      preview_pane:
+        border: "#{{base03-hex}}"
+        size:
+          fg: "#{{base05-hex}}"
+          bg: "#{{base02-hex}}"
+        scroll:
+          fg: "#{{base05-hex}}"
+          bg: "#{{base02-hex}}"
+    deletion_dialog: "#{{base08-hex}}"
+
+logging:
+  enabled: true
+  level: info
+  rotation:
+    max_size: 10MB
+    max_files: 3
