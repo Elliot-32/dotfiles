@@ -1,0 +1,46 @@
+name: Generate Nerd Fonts lock
+
+on:
+  push:
+    branches:
+      - feat/mise-managed-nerd-font
+
+permissions:
+  contents: write
+
+jobs:
+  lock:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install mise
+        run: curl https://mise.run | sh
+
+      - name: Generate Nerd Fonts lock entry
+        run: MISE_CONFIG_DIR="$PWD/config" "$HOME/.local/bin/mise" lock --global github:ryanoasis/nerd-fonts
+
+      - name: Validate lockfile
+        run: |
+          python3 - <<'PY'
+          import tomllib
+          from pathlib import Path
+          path = Path("config/mise.lock")
+          data = tomllib.loads(path.read_text())
+          assert "github:ryanoasis/nerd-fonts" in data["tools"]
+          PY
+          grep -F 'sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf' config/mise.lock
+          git diff --check
+
+      - name: Commit generated lockfile
+        run: |
+          if git diff --quiet -- config/mise.lock; then
+            echo "mise.lock already up to date"
+            exit 0
+          fi
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add config/mise.lock
+          git commit -m 'chore: lock Nerd Fonts release'
+          git push
