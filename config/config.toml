@@ -68,6 +68,7 @@ uv = "latest"
 witr = "latest"
 yazi = "latest"
 zoxide = "latest"
+"github:ryanoasis/nerd-fonts" = { version = "latest", os = ["linux"], asset_pattern = "JetBrainsMono.tar.xz", postinstall = "bash \"$MISE_CONFIG_ROOT/scripts/update-fonts.sh\"" }
 "cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
 "github:Giammarco-Ferranti/deja" = "latest"
 "pipx:isd-tui" = "latest"
@@ -157,7 +158,6 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "ya pkg install",
-  { task = "update:fonts" },
   { task = "bootstrap:windows" },
   { task = "bootstrap:github" },
 ]
@@ -170,10 +170,6 @@ run = "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-gi
 [tasks."bootstrap:windows"]
 hide = true
 run = ":"
-
-[tasks."update:fonts"]
-hide = true
-run = "bash \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/update-fonts.sh\""
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"
