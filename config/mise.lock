@@ -1297,6 +1297,69 @@ checksum = "sha256:f82821b1baa63a5645a38b2e3e9983f38ffa71ae5925b86e7207bb3c82bd0
 url = "https://github.com/pythops/oryx/releases/download/v0.8.0/oryx-x86_64-unknown-linux-musl"
 url_api = "https://api.github.com/repos/pythops/oryx/releases/assets/350605019"
 
+[[tools."github:ryanoasis/nerd-fonts"]]
+version = "3.5.1"
+backend = "github:ryanoasis/nerd-fonts"
+specifiers = ["latest"]
+
+[tools."github:ryanoasis/nerd-fonts".options]
+asset_pattern = "JetBrainsMono.tar.xz"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.linux-arm64"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.linux-arm64-musl"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.linux-x64"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.linux-x64-baseline"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.linux-x64-musl"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.macos-arm64"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.macos-x64"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.macos-x64-baseline"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.windows-x64"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
+[tools."github:ryanoasis/nerd-fonts"."platforms.windows-x64-baseline"]
+checksum = "sha256:04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz"
+url_api = "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/assets/523475208"
+
 [[tools.glow]]
 version = "3.0.0"
 backend = "aqua:charmbracelet/glow"

@@ -5,7 +5,7 @@ license: MIT
 compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, shellcheck, and PowerShell.
 metadata:
   author: Elliot-32
-  version: "1.3"
+  version: "1.5"
 ---
 
 # Elliot dotfiles maintenance
@@ -34,7 +34,7 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
 - Treat Topgrade as the user-session update orchestrator, while mise history/sync is the synchronization authority for tracked configuration and `mise.lock`. Do not add Git pull/push behavior that competes with history sync.
 - Treat `home/.config/yazi/package.toml` as Yazi's plugin manifest. Bootstrap installs declared plugins with `ya pkg install`; change plugin declarations there rather than adding ad-hoc plugin install commands elsewhere.
 - Treat `config/conf.d/platform.wsl.toml` plus `config/scripts/bootstrap-windows.ps1` as the WSL-to-Windows bootstrap path. Keep Windows-native WinGet/package/Windows Terminal behavior in PowerShell instead of moving it into Linux package configuration.
-- Linux Nerd Font maintenance is owned by `tasks.update:fonts` and `config/scripts/update-fonts.sh`; Windows font installation is owned by `config/scripts/bootstrap-windows.ps1`. Preserve the intentional WSL split.
+- Linux Nerd Font download/version ownership belongs to the `github:ryanoasis/nerd-fonts` tool declaration in `config/config.toml`. Its inline tool-level `postinstall` symlinks the mise-managed install into the user font directory and refreshes fontconfig on Linux hosts, including WSL. Windows font installation remains separately owned by `config/scripts/bootstrap-windows.ps1`.
 - Keep Zsh plugin and completion ordering in `home/.config/sheldon/plugins.toml` deliberate: completion directories on `fpath`, then `compinit`, integrations that require it, `fzf-tab` before widget-wrapping plugins, and syntax highlighting last.
 - Prefer `nvim` for editor commands and examples; do not introduce `nano`.
 - If a user-visible command, bootstrap behavior, installation flow, or maintenance workflow changes, update `README.md` in the same change.
@@ -55,9 +55,9 @@ Use [references/repository-map.md](references/repository-map.md) for details. In
 - Add, remove, or configure a Yazi plugin: inspect `home/.config/yazi/package.toml`, `init.lua`, `keymap.toml`, and `yazi.toml`; keep plugin installation delegated to `ya pkg install`.
 - Change Fcitx5 configuration: edit `home/.config/fcitx5/profile` or `home/.config/environment.d/90-fcitx5.conf`; change package availability separately in the APT, DNF, and Pacman package fragments.
 - Change unattended/user-session update behavior: inspect `home/.config/topgrade.toml`, `home/.config/topgrade.systemd.toml`, and the `update` / `update-timer` systemd units in `config/config.toml` before adding another updater.
-- Change Linux Nerd Font installation/update behavior: edit `config/scripts/update-fonts.sh` and the `update:fonts` task path in `config/config.toml`; preserve checksum verification and WSL skip behavior unless the change explicitly replaces that design.
+- Change Linux Nerd Font installation/update behavior: edit the `github:ryanoasis/nerd-fonts` tool declaration and its inline tool-level `postinstall` in `config/config.toml`. Keep Linux and WSL registration behavior aligned unless the user explicitly requests a platform-specific split.
 - Change Windows packages, Windows Terminal defaults, or other WSL-triggered Windows setup: inspect `config/conf.d/platform.wsl.toml`, `tasks.bootstrap:windows`, and `config/scripts/bootstrap-windows.ps1`.
-- Change bootstrap behavior: prefer existing `[bootstrap.*]`, `[tasks.*]`, and `[hooks]` in `config/config.toml`, including completion sync, Sheldon locking, Yazi package install, font update, Windows bootstrap, and GitHub login flow.
+- Change bootstrap behavior: prefer existing `[bootstrap.*]`, `[tasks.*]`, and `[hooks]` in `config/config.toml`, including completion sync, Sheldon locking, Yazi package install, Windows bootstrap, and GitHub login flow. Nerd Font installation is tool-owned and should not be reintroduced as a bootstrap task.
 - Change validation checks: edit `config/hk.pkl` and, when necessary, `.github/workflows/ci.yml`.
 
 ## Completion registry rules

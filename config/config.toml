@@ -88,6 +88,18 @@ codex = "latest"
 "github:pythops/impala" = "latest"
 kubectl = "latest"
 
+[tools."github:ryanoasis/nerd-fonts"]
+version = "latest"
+os = ["linux"]
+asset_pattern = "JetBrainsMono.tar.xz"
+postinstall = '''
+font_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fonts/JetBrainsMonoNerdFont"
+mkdir -p "$(dirname "$font_dir")"
+rm -rf -- "$font_dir"
+ln -s "$MISE_TOOL_INSTALL_PATH" "$font_dir"
+fc-cache -f "$font_dir"
+'''
+
 [dotfiles]
 "~/.gitconfig/defaults" = { block = '''
 [push]
@@ -160,7 +172,6 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "ya pkg install",
-  { task = "update:fonts" },
   { task = "bootstrap:windows" },
   { task = "bootstrap:github" },
 ]
@@ -173,10 +184,6 @@ run = "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-gi
 [tasks."bootstrap:windows"]
 hide = true
 run = ":"
-
-[tasks."update:fonts"]
-hide = true
-run = "bash \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/update-fonts.sh\""
 
 [hooks]
 postinstall = "misecompsync --new-only --shell zsh"

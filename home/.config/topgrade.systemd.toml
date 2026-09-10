@@ -39,8 +39,5 @@ pull_predefined = false
 [flatpak]
 use_sudo = false
 
-[commands]
-"Nerd Fonts" = 'mise run update:fonts'
-
 [post_commands]
 "Refresh completions" = 'mise completion zsh --install && misecompsync --shell zsh'
