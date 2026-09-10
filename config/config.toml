@@ -68,7 +68,6 @@ uv = "latest"
 witr = "latest"
 yazi = "latest"
 zoxide = "latest"
-"github:ryanoasis/nerd-fonts" = { version = "latest", os = ["linux"], asset_pattern = "JetBrainsMono.tar.xz", postinstall = "bash \"$MISE_CONFIG_ROOT/scripts/update-fonts.sh\"" }
 "cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
 "github:Giammarco-Ferranti/deja" = "latest"
 "pipx:isd-tui" = "latest"
@@ -85,6 +84,18 @@ codex = "latest"
 "aqua:alltuner/mise-completions-sync" = "latest"
 "github:pythops/impala" = "latest"
 kubectl = "latest"
+
+[tools."github:ryanoasis/nerd-fonts"]
+version = "latest"
+os = ["linux"]
+asset_pattern = "JetBrainsMono.tar.xz"
+postinstall = '''
+font_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fonts/JetBrainsMonoNerdFont"
+mkdir -p "$(dirname "$font_dir")"
+rm -rf -- "$font_dir"
+ln -s "$MISE_TOOL_INSTALL_PATH" "$font_dir"
+fc-cache -f "$font_dir"
+'''
 
 [dotfiles]
 "~/.gitconfig/defaults" = { block = '''
