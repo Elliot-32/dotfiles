@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ -n ${WSL_DISTRO_NAME:-} || -n ${WSL_INTEROP:-} || -e /proc/sys/fs/binfmt_misc/WSLInterop ]]; then
-  echo 'WSL detected; skipping Linux font registration.'
-  exit 0
-fi
-
 : "${MISE_TOOL_INSTALL_PATH:?MISE_TOOL_INSTALL_PATH is required}"
 
 if ! command -v fc-cache >/dev/null 2>&1; then
