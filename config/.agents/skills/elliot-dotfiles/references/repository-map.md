@@ -16,7 +16,7 @@ This repository is a mise setup repository, not a checkout intended to live at `
 ### `config/config.toml`
 Primary global mise config. It owns global settings, tools, native tracking declarations, bootstrap resources, user units/timers, tasks, hooks, and the remaining declarative dotfile edits.
 
-JetBrainsMono Nerd Font is declared as a mise-managed GitHub release tool. Its tool-level `postinstall` registers the extracted font directory with Linux fontconfig; WSL still downloads the tool but intentionally skips Linux font registration.
+JetBrainsMono Nerd Font is declared as a mise-managed GitHub release tool. Its tool-level `postinstall` registers the extracted font directory with Linux fontconfig on Linux hosts, including WSL.
 
 `tasks.bootstrap` coordinates Atuin setup, completion installation/sync, Sheldon locking, Yazi plugin installation, Windows bootstrap dispatch, and GitHub setup. It does not install a Git hook into `$MISE_CONFIG_DIR` because that directory is no longer a Git working tree.
 
@@ -58,7 +58,7 @@ Fcitx5 user configuration is shared across APT, DNF, and Pacman systems; only pa
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side interactive Gum entry point.
 - `config/scripts/bootstrap-windows.ps1`: Windows-native WinGet/Windows Terminal setup.
-- `config/scripts/update-fonts.sh`: Linux fontconfig registrar invoked by the Nerd Font tool's `postinstall`; intentionally skips WSL registration.
+- `config/scripts/update-fonts.sh`: Linux fontconfig registrar invoked by the Nerd Font tool's `postinstall`, including on WSL.
 - `config/scripts/login-github.sh`: GitHub login/configuration workflow.
 
 Prefer native mise configuration first; keep scripts focused and idempotent where imperative/platform-native behavior is required.
