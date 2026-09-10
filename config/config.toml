@@ -10,6 +10,9 @@ use_git_credentials = true
 [settings.history]
 sync = "sync"
 
+[history]
+exclude = ["~/.config/yazi/plugins/**"]
+
 [env]
 _.path = [
   "{{ env.HOME }}/.local/bin",
