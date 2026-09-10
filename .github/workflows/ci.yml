@@ -71,6 +71,8 @@ jobs:
           grep -Fq 'format = 1' .mise-history/format.toml
           test -f home/.zshrc
           test -f home/.config/yazi/package.toml
+          test -f home/.config/template/gomi.yaml.mustache
+          test -f home/.config/template/ghostty.conf.mustache
           test -f home/.config/fcitx5/profile
           test -f home/.config/environment.d/90-fcitx5.conf
           test ! -e config/.zshrc
@@ -84,6 +86,7 @@ jobs:
             any(.enrollment[]; .path == "home/.zshrc") and
             any(.enrollment[]; .path == "home/.config/sheldon") and
             any(.enrollment[]; .path == "home/.config/yazi") and
+            any(.enrollment[]; .path == "home/.config/template") and
             any(.enrollment[]; .path == "home/.config/ghostty/config") and
             any(.enrollment[]; .path == "home/.config/topgrade.toml") and
             any(.enrollment[]; .path == "home/.config/fcitx5/profile") and
@@ -180,6 +183,11 @@ jobs:
           sudo test ! -L "$fresh_home/.config/sheldon/plugins.toml"
           sudo test -f "$fresh_home/.config/yazi/package.toml"
           sudo test ! -L "$fresh_home/.config/yazi/package.toml"
+          sudo test -f "$fresh_home/.config/template/gomi.yaml.mustache"
+          sudo test ! -L "$fresh_home/.config/template/gomi.yaml.mustache"
+          sudo test -f "$fresh_home/.config/template/ghostty.conf.mustache"
+          sudo test ! -L "$fresh_home/.config/template/ghostty.conf.mustache"
+          sudo test ! -e "$fresh_home/.config/gomi/config.yaml"
           sudo test -f "$fresh_home/.config/topgrade.toml"
           sudo test ! -L "$fresh_home/.config/topgrade.toml"
           sudo test -f "$fresh_home/.config/ghostty/config"
@@ -193,6 +201,8 @@ jobs:
 
           sudo cmp "$fresh_home/.zshrc" "$GITHUB_WORKSPACE/home/.zshrc"
           sudo cmp "$fresh_home/.config/yazi/package.toml" "$GITHUB_WORKSPACE/home/.config/yazi/package.toml"
+          sudo cmp "$fresh_home/.config/template/gomi.yaml.mustache" "$GITHUB_WORKSPACE/home/.config/template/gomi.yaml.mustache"
+          sudo cmp "$fresh_home/.config/template/ghostty.conf.mustache" "$GITHUB_WORKSPACE/home/.config/template/ghostty.conf.mustache"
           sudo cmp "$fresh_home/.config/fcitx5/profile" "$GITHUB_WORKSPACE/home/.config/fcitx5/profile"
           sudo cmp "$fresh_home/.config/environment.d/90-fcitx5.conf" "$GITHUB_WORKSPACE/home/.config/environment.d/90-fcitx5.conf"
           sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
@@ -202,6 +212,8 @@ jobs:
           jq -e 'any(.entries[]; .path == "~/.zshrc" and .mode == "track")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/.config/sheldon" and .mode == "track")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/.config/yazi" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'any(.entries[]; .path == "~/.config/template" and .mode == "track")' <<<"$paths_json" >/dev/null
+          jq -e 'all(.entries[]; .path != "~/.config/gomi/config.yaml")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/.config/ghostty/config" and .mode == "track")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/.config/fcitx5/profile" and .mode == "track")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/.config/environment.d/90-fcitx5.conf" and .mode == "track")' <<<"$paths_json" >/dev/null
