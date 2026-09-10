@@ -74,6 +74,12 @@
       "variants": []
     },
     {
+      "path": "home/.config/template",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/topgrade.systemd.toml",
       "autosave": true,
       "encrypt": false,
