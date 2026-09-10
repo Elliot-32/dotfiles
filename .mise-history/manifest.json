@@ -134,39 +134,9 @@
       "variants": []
     }
   ],
-  "exclude": [],
+  "exclude": [
+    "~/.config/yazi/plugins/**"
+  ],
   "recipients": [],
-  "permissions": {
-    "home/.config/yazi/plugins/chmod.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/chmod.yazi/README.md": 292,
-    "home/.config/yazi/plugins/chmod.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/clipboard.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/clipboard.yazi/README.md": 292,
-    "home/.config/yazi/plugins/clipboard.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/diff.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/diff.yazi/README.md": 292,
-    "home/.config/yazi/plugins/diff.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/git.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/git.yazi/README.md": 292,
-    "home/.config/yazi/plugins/git.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/git.yazi/types.lua": 292,
-    "home/.config/yazi/plugins/piper.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/piper.yazi/README.md": 292,
-    "home/.config/yazi/plugins/piper.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/restore.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/restore.yazi/README.md": 292,
-    "home/.config/yazi/plugins/restore.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/smart-enter.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/smart-enter.yazi/README.md": 292,
-    "home/.config/yazi/plugins/smart-enter.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/smart-paste.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/smart-paste.yazi/README.md": 292,
-    "home/.config/yazi/plugins/smart-paste.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/toggle-pane.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/toggle-pane.yazi/README.md": 292,
-    "home/.config/yazi/plugins/toggle-pane.yazi/main.lua": 292,
-    "home/.config/yazi/plugins/vcs-files.yazi/LICENSE": 292,
-    "home/.config/yazi/plugins/vcs-files.yazi/README.md": 292,
-    "home/.config/yazi/plugins/vcs-files.yazi/main.lua": 292
-  }
+  "permissions": {}
 }
