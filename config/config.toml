@@ -128,9 +128,11 @@ fc-cache -f "$font_dir"
 
 [bootstrap.hooks.post-packages]
 run = '''
-mkdir -p "$HOME/.local/share/xdg-terminals"
-ln -sfn /usr/share/applications/com.mitchellh.ghostty.desktop "$HOME/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop"
-systemctl enable --now --user app-com.mitchellh.ghostty.service
+if command -v ghostty >/dev/null 2>&1; then
+  mkdir -p "$HOME/.local/share/xdg-terminals"
+  ln -sfn /usr/share/applications/com.mitchellh.ghostty.desktop "$HOME/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop"
+  systemctl enable --now --user app-com.mitchellh.ghostty.service
+fi
 '''
 
 [bootstrap.mise_shell_activate]
