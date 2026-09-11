@@ -1,0 +1,2 @@
+[dotfiles]
+"~/.config/omarchy/hooks/theme-set.d/50-gomi" = { source = "../scripts/omarchy-gomi-theme-sync.sh", mode = "copy" }
