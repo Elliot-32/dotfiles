@@ -1,8 +1,5 @@
 [bootstrap.hooks.pre-packages]
 run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-ghostty-ubuntu.sh"'
 
-[bootstrap.hooks.post-packages]
-run = 'mkdir -p "$HOME/.local/share/xdg-terminals" && ln -sfn /usr/share/applications/com.mitchellh.ghostty.desktop "$HOME/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop"'
-
 [bootstrap.packages]
 "apt:ghostty" = "latest"
