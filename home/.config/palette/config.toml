@@ -1,0 +1,8 @@
+[theme]
+backend = "auto"
+
+[template."palette.json"]
+output = "~/.local/state/dotfiles/theme/windows-terminal/palette.json"
+
+[template."palette.json".targets]
+omarchy = false
