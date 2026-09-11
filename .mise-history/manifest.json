@@ -68,7 +68,7 @@
       "variants": []
     },
     {
-      "path": "home/.config/palette/template/palette.json",
+      "path": "home/.config/palette",
       "autosave": true,
       "encrypt": false,
       "variants": []

@@ -28,7 +28,7 @@ mise bootstrap dotfiles pull
 
 WSL 環境下的 `bootstrap:windows` 會安裝 Windows 端的 Git 與 JetBrainsMono Nerd Font，並以 Microsoft `jsonc-parser` 對既有 Windows Terminal `settings.json` 做最小 JSONC 修改，確保頂層 `import` 包含 `palette.json`。既有的註解、其他 import 與其餘設定不會被整份重新序列化。
 
-`jsonc-parser` 固定使用 `3.3.1`，只安裝到 `~/.cache/elliot-dotfiles/windows-terminal-jsonc`，不會在 `$MISE_CONFIG_DIR` 產生 `node_modules`。WSL 另外追蹤 `~/.config/palette/template/palette.json` 作為 Windows Terminal 的 Palette canonical template；它同時定義固定名稱的 `Palette` color scheme 與 UI theme，並使用 Base16-compatible Tinted placeholders。實際輸出的 `palette.json` 應放在對應的 Windows Terminal `settings.json` 同一目錄。
+`jsonc-parser` 固定使用 `3.3.1`，只安裝到 `~/.cache/elliot-dotfiles/windows-terminal-jsonc`，不會在 `$MISE_CONFIG_DIR` 產生 `node_modules`。`~/.config/palette/` 由全域 dotfiles 追蹤，WSL fragment 設定 `PALETTE_PROFILE=wsl`。Windows Terminal 的 canonical template 名為 `wsl.json`，宣告 `profiles = ["wsl"]` 並設定 `omarchy = false`；它的 output 仍是 `~/.local/state/dotfiles/theme/windows-terminal/palette.json`，因此 Windows Terminal 匯入檔名維持 `palette.json`。
 
 ## 常用指令
 
