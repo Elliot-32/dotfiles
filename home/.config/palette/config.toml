@@ -3,6 +3,7 @@ backend = "auto"
 
 [template."palette.json"]
 output = "~/.local/state/dotfiles/theme/windows-terminal/palette.json"
+profiles = ["wsl"]
 
 [template."palette.json".targets]
 omarchy = false
