@@ -113,6 +113,7 @@ fc-cache -f "$font_dir"
 "~/.zprofile" = { mode = "track" }
 "~/.p10k.zsh" = { mode = "track" }
 "~/.config/sheldon" = { mode = "track" }
+"~/.config/palette" = { mode = "track" }
 "~/.config/yazi" = { mode = "track" }
 "~/.config/gomi/config.yaml" = { source = "assets/gomi/config.yaml", mode = "copy" }
 "~/.config/topgrade.toml" = { mode = "track" }
