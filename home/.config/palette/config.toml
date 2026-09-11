@@ -1,30 +1,9 @@
 [theme]
 backend = "auto"
 
-[target.tinty]
-
-[target.omarchy.fields]
-"base01-hex" = "dark_background_strip"
-"base03-hex" = "muted_strip"
-"base05-hex" = "foreground_strip"
-"base06-hex" = "light_foreground_strip"
-"base08-hex" = "red_strip"
-"base09-hex" = "yellow_strip"
-"base0B-hex" = "green_strip"
-"base0D-hex" = "accent_strip"
-
 [template."wsl.json"]
 output = "~/.local/state/dotfiles/theme/windows-terminal/palette.json"
 profiles = ["wsl"]
 
 [template."wsl.json".targets]
-omarchy = false
-
-[template."gomi.yaml"]
-output = "~/.config/gomi/config.yaml"
-
-[template."ghostty.conf"]
-output = "~/.local/state/dotfiles/theme/ghostty.conf"
-
-[template."ghostty.conf".targets]
 omarchy = false
