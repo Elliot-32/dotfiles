@@ -115,7 +115,6 @@ fc-cache -f "$font_dir"
 "~/.config/sheldon" = { mode = "track" }
 "~/.config/palette" = { mode = "track" }
 "~/.config/yazi" = { mode = "track" }
-"~/.config/gomi/config.yaml" = { source = "assets/gomi/config.yaml", mode = "copy" }
 "~/.config/topgrade.toml" = { mode = "track" }
 "~/.config/topgrade.systemd.toml" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }
