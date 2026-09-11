@@ -30,7 +30,7 @@ WSL 環境下的 `bootstrap:windows` 會安裝 Windows 端的 Git 與 JetBrainsM
 
 `jsonc-parser` 固定使用 `3.3.1`，只安裝到 `~/.cache/elliot-dotfiles/windows-terminal-jsonc`，不會在 `$MISE_CONFIG_DIR` 產生 `node_modules`。`~/.config/palette/` 由全域 dotfiles 追蹤，讓 Palette config 與 canonical templates 可同時管理 Windows Terminal、Ghostty、gomi 等目標；WSL fragment 只設定 `PALETTE_PROFILE=wsl`。Windows Terminal 的 canonical template 名為 `wsl.json`，宣告 `profiles = ["wsl"]` 並設定 `omarchy = false`；它的 output 仍是 `~/.local/state/dotfiles/theme/windows-terminal/palette.json`，因此 Windows Terminal 匯入檔名維持 `palette.json`。
 
-`gomi.yaml` 保存完整 gomi 設定並以 Base16 placeholders 管理 UI 色彩；Omarchy target 透過 declarative field mappings 對應到 Omarchy palette tokens，不再使用獨立的 theme hook。`ghostty.conf` template 只產生 `theme = "{{scheme-name}}"`，而 Ghostty 主設定只 include Palette runtime theme 與 Omarchy native theme。
+`gomi.yaml` 保存完整 gomi 設定並以 Base16 placeholders 管理 UI 色彩；Omarchy target 透過 declarative field mappings 對應到 Omarchy palette tokens，不再使用獨立的 theme hook。`ghostty.conf` template 只產生 `theme = "{{scheme-name}}"`。在 Palette 尚未實作 runtime output materialization 前，bootstrap 仍保留既有的 gomi concrete config copy 與 Ghostty 的 `Catppuccin Macchiato` 預設 theme 作為 fallback；Palette runtime theme include 與 Omarchy native theme include 也仍保留。
 
 ## 常用指令
 
