@@ -4,6 +4,9 @@
 [env]
 SHELDON_PROFILE = "wsl"
 
+[dotfiles]
+"~/.config/palette/template/palette.json" = { mode = "track" }
+
 [tasks."bootstrap:windows"]
 description = "Configure Windows packages and register the Palette import in Windows Terminal"
 hide = false
