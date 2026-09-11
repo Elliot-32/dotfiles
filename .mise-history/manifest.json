@@ -68,6 +68,12 @@
       "variants": []
     },
     {
+      "path": "home/.config/palette/config.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/palette/template/palette.json",
       "autosave": true,
       "encrypt": false,
