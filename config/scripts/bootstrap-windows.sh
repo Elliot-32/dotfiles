@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 
+jsonc_parser_version=3.3.1
+palette_import=palette.json
+
 gum_available=false
 if command -v gum >/dev/null 2>&1; then
   gum_available=true
@@ -51,9 +54,9 @@ show_header() {
       --border-foreground 212 \
       --padding "0 1" \
       --bold \
-      "Windows Terminal setup" >&2 || :
+      "Windows bootstrap" >&2 || :
   else
-    printf '%s\n' 'Windows Terminal setup' >&2
+    printf '%s\n' 'Windows bootstrap' >&2
   fi
 }
 
@@ -66,51 +69,7 @@ require_command() {
   return 1
 }
 
-require_interactive_gum() {
-  if [ "$gum_available" != true ]; then
-    show_error "gum is not installed"
-    return 1
-  fi
-
-  if [ ! -t 0 ] || [ ! -t 2 ]; then
-    show_error "An interactive terminal is required to choose a Windows Terminal theme"
-    return 1
-  fi
-}
-
-choose_theme() {
-  require_interactive_gum || return 1
-
-  if ! theme=$(
-    gum choose \
-      --label-delimiter ":" \
-      --header "Choose a Windows Terminal theme:" \
-      "Catppuccin Mocha — darkest Catppuccin flavor:catppuccin-mocha" \
-      "Catppuccin Macchiato — dark Catppuccin flavor:catppuccin-macchiato" \
-      "Catppuccin Frappe — softer dark Catppuccin flavor:catppuccin-frappe" \
-      "Catppuccin Latte — light Catppuccin flavor:catppuccin-latte" \
-      "Tokyo Night — dark blue Tokyo palette:tokyo-night" \
-      "Dracula — classic purple Dracula palette:dracula"
-  ); then
-    show_warning "Windows Terminal theme selection was cancelled"
-    return 1
-  fi
-
-  case "$theme" in
-    catppuccin-mocha) theme_name='Catppuccin Mocha' ;;
-    catppuccin-macchiato) theme_name='Catppuccin Macchiato' ;;
-    catppuccin-frappe) theme_name='Catppuccin Frappe' ;;
-    catppuccin-latte) theme_name='Catppuccin Latte' ;;
-    tokyo-night) theme_name='Tokyo Night' ;;
-    dracula) theme_name='Dracula' ;;
-    *)
-      show_error "gum returned an unexpected Windows Terminal theme"
-      return 1
-      ;;
-  esac
-}
-
-run_windows_bootstrap() {
+run_windows_package_bootstrap() {
   config_dir=${MISE_CONFIG_DIR:-$HOME/.config/mise}
   script="$config_dir/scripts/bootstrap-windows.ps1"
 
@@ -120,24 +79,103 @@ run_windows_bootstrap() {
   fi
 
   windows_script=$(wslpath -w "$script")
+  show_info "Configuring Windows packages..."
 
-  show_info "Selected $theme_name"
-  show_info "Configuring Windows and applying $theme_name..."
-
-  # Do not wrap powershell.exe in `gum spin` here. WSL interop commands can
-  # behave differently when their stdio is captured by gum, and winget may
-  # appear to hang even though the same PowerShell command works normally.
   if ! powershell.exe \
     -NoLogo \
     -NoProfile \
     -ExecutionPolicy Bypass \
-    -File "$windows_script" \
-    -Theme "$theme"; then
-    show_error "Windows bootstrap failed"
+    -File "$windows_script"; then
+    show_error "Windows package bootstrap failed"
+    return 1
+  fi
+}
+
+get_windows_local_appdata() {
+  windows_path=$(
+    powershell.exe \
+      -NoLogo \
+      -NoProfile \
+      -Command '[Environment]::GetFolderPath("LocalApplicationData")' \
+      | tr -d '\r'
+  )
+
+  if [ -z "$windows_path" ]; then
+    show_error "Could not determine Windows LOCALAPPDATA"
     return 1
   fi
 
-  show_success "Windows Terminal now uses $theme_name"
+  wslpath -u "$windows_path"
+}
+
+ensure_jsonc_parser() {
+  cache_root=${XDG_CACHE_HOME:-$HOME/.cache}/elliot-dotfiles/windows-terminal-jsonc
+  package_json="$cache_root/node_modules/jsonc-parser/package.json"
+  jsonc_node_path="$cache_root/node_modules"
+
+  installed_version=''
+  if [ -f "$package_json" ]; then
+    installed_version=$(node -e '
+      const fs = require("node:fs");
+      const pkg = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+      process.stdout.write(pkg.version ?? "");
+    ' "$package_json")
+  fi
+
+  if [ "$installed_version" = "$jsonc_parser_version" ]; then
+    return 0
+  fi
+
+  show_info "Installing jsonc-parser@$jsonc_parser_version in the dotfiles cache..."
+  mkdir -p "$cache_root"
+  npm install \
+    --prefix "$cache_root" \
+    --no-save \
+    --package-lock=false \
+    --ignore-scripts \
+    --no-audit \
+    --no-fund \
+    --no-progress \
+    "jsonc-parser@$jsonc_parser_version" >/dev/null
+}
+
+patch_windows_terminal_settings() {
+  local_appdata=$1
+  config_dir=${MISE_CONFIG_DIR:-$HOME/.config/mise}
+  editor_script="$config_dir/scripts/ensure-windows-terminal-import.cjs"
+  found=false
+
+  if [ ! -f "$editor_script" ]; then
+    show_error "Windows Terminal JSONC editor was not found: $editor_script"
+    return 1
+  fi
+
+  for state_directory in \
+    "$local_appdata/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState" \
+    "$local_appdata/Packages/Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe/LocalState" \
+    "$local_appdata/Packages/Microsoft.WindowsTerminalCanary_8wekyb3d8bbwe/LocalState" \
+    "$local_appdata/Microsoft/Windows Terminal"
+  do
+    settings_path="$state_directory/settings.json"
+    if [ ! -f "$settings_path" ]; then
+      continue
+    fi
+
+    if [ "$found" = false ]; then
+      ensure_jsonc_parser
+      found=true
+    fi
+
+    NODE_PATH="$jsonc_node_path${NODE_PATH:+:$NODE_PATH}" \
+      node "$editor_script" "$settings_path" "$palette_import"
+  done
+
+  if [ "$found" = false ]; then
+    show_warning "Windows Terminal settings.json was not found; skipping palette import"
+    return 0
+  fi
+
+  show_success "Windows Terminal imports $palette_import without replacing existing settings"
 }
 
 main() {
@@ -148,11 +186,13 @@ main() {
     return 0
   fi
 
-  require_command gum || return 1
   require_command wslpath || return 1
+  require_command node || return 1
+  require_command npm || return 1
 
-  choose_theme || return 1
-  run_windows_bootstrap
+  run_windows_package_bootstrap || return 1
+  local_appdata=$(get_windows_local_appdata) || return 1
+  patch_windows_terminal_settings "$local_appdata"
 }
 
 main "$@"

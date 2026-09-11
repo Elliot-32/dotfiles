@@ -24,6 +24,12 @@ mise bootstrap dotfiles sync
 mise bootstrap dotfiles pull
 ```
 
+## Windows Terminal
+
+WSL 環境下的 `bootstrap:windows` 會安裝 Windows 端的 Git 與 JetBrainsMono Nerd Font，並以 Microsoft `jsonc-parser` 對既有 Windows Terminal `settings.json` 做最小 JSONC 修改，確保頂層 `import` 包含 `palette.json`。既有的註解、其他 import 與其餘設定不會被整份重新序列化。
+
+`jsonc-parser` 固定使用 `3.3.1`，只安裝到 `~/.cache/elliot-dotfiles/windows-terminal-jsonc`，不會在 `$MISE_CONFIG_DIR` 產生 `node_modules`。`palette.json` 本身由 Palette 管理，應放在對應的 Windows Terminal `settings.json` 同一目錄。
+
 ## 常用指令
 
 | 用途 | 指令 |

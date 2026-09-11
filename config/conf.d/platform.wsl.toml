@@ -5,7 +5,6 @@
 SHELDON_PROFILE = "wsl"
 
 [tasks."bootstrap:windows"]
-description = "Configure Windows packages and Windows Terminal from WSL"
+description = "Configure Windows packages and register the Palette import in Windows Terminal"
 hide = false
-interactive = true
 run = "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-windows.sh\""
