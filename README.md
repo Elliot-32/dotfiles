@@ -24,7 +24,7 @@ mise bootstrap dotfiles pull
 
 ## Windows / WSL
 
-在 WSL 執行 bootstrap 時，會一併設定 Windows 端需要的工具與字型，並讓 Windows Terminal 載入 `palette.json`，不會覆寫其他既有設定。
+在 WSL 執行 bootstrap 時，會一併設定 Windows 端需要的工具與字型，並在 Windows Terminal 註冊 `palette.json` 匯入，不會覆寫其他既有設定。
 
 目前 Palette 尚未自動把產生的主題輸出安裝到 Windows Terminal；完整的主題同步會在 Palette 支援 runtime output/application 後接上。
 
