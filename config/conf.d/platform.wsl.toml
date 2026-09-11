@@ -5,6 +5,7 @@
 SHELDON_PROFILE = "wsl"
 
 [dotfiles]
+"~/.config/palette/config.toml" = { mode = "track" }
 "~/.config/palette/template/palette.json" = { mode = "track" }
 
 [tasks."bootstrap:windows"]
