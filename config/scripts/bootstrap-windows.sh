@@ -167,6 +167,10 @@ patch_windows_terminal_settings() {
       found=true
     fi
 
+    if [ -f "$state_directory/$legacy_theme_import" ] && [ ! -f "$state_directory/$theme_import" ]; then
+      cp -f -- "$state_directory/$legacy_theme_import" "$state_directory/$theme_import"
+    fi
+
     NODE_PATH="$jsonc_node_path${NODE_PATH:+:$NODE_PATH}" \
       node "$editor_script" \
         "$settings_path" \
