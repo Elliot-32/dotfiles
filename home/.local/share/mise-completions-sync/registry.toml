@@ -6,5 +6,6 @@ dasel = "standard"
 gup = "standard"
 herdr = "standard"
 sheldon = { zsh = "sheldon completions --shell zsh" }
+tinty = { zsh = "tinty generate-completion zsh" }
 topgrade = { zsh = "topgrade --gen-completion zsh" }
 witr = "standard"

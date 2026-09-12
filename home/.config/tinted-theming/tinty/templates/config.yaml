@@ -1,0 +1,15 @@
+gomi-base16:
+  filename: themes/gomi/{{ scheme-system }}-{{ scheme-slug }}.yaml
+  supported-systems: [base16]
+
+gomi-base24:
+  filename: themes/gomi/{{ scheme-system }}-{{ scheme-slug }}.yaml
+  supported-systems: [base24]
+
+windows-terminal-base16:
+  filename: themes/windows-terminal/{{ scheme-system }}-{{ scheme-slug }}.json
+  supported-systems: [base16]
+
+windows-terminal-base24:
+  filename: themes/windows-terminal/{{ scheme-system }}-{{ scheme-slug }}.json
+  supported-systems: [base24]

@@ -1,2 +1,9 @@
 [dotfiles]
-"~/.config/omarchy/hooks/theme-set.d/50-gomi" = { source = "../scripts/omarchy-gomi-theme-sync.sh", mode = "copy" }
+"~/.config/omarchy/themed/gomi.yaml.tpl" = { mode = "track" }
+
+[bootstrap.hooks.post-dotfiles]
+run = '''
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gomi"
+mkdir -p "$config_dir"
+ln -sfn "$HOME/.local/state/omarchy/current/theme/gomi.yaml" "$config_dir/config.yaml"
+'''

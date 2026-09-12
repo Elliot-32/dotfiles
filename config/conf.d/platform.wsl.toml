@@ -3,9 +3,8 @@
 
 [env]
 SHELDON_PROFILE = "wsl"
-PALETTE_PROFILE = "wsl"
 
 [tasks."bootstrap:windows"]
-description = "Configure Windows packages and register the Palette import in Windows Terminal"
+description = "Configure Windows packages and register the Tinty theme import in Windows Terminal"
 hide = false
 run = "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-windows.sh\""

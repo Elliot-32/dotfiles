@@ -22,11 +22,15 @@ mise bootstrap dotfiles sync
 mise bootstrap dotfiles pull
 ```
 
+## 主題
+
+一般環境由 Tinty 統一套用主題：Ghostty 使用 `tinted-terminal`，gomi 與 Windows Terminal 使用這個 repo 維護的 Tinty templates。Bootstrap 會先 `tinty sync`、build 本地 templates，再以 `tinty init` 套用目前或預設主題。
+
+Omarchy 不使用 Tinty 寫入 gomi。`~/.config/omarchy/themed/gomi.yaml.tpl` 由 Omarchy 產生 `~/.local/state/omarchy/current/theme/gomi.yaml`，而 `~/.config/gomi/config.yaml` 會指向該檔案的 symlink。Ghostty 則繼續讓 Omarchy 的 current theme config 覆蓋 Tinty 基底。
+
 ## Windows / WSL
 
-在 WSL 執行 bootstrap 時，會一併設定 Windows 端需要的工具與字型，並在 Windows Terminal 註冊 `palette.json` 匯入，不會覆寫其他既有設定。
-
-目前 Palette 尚未自動把產生的主題輸出安裝到 Windows Terminal；完整的主題同步會在 Palette 支援 runtime output/application 後接上。
+在 WSL 執行 bootstrap 時，會一併設定 Windows 端需要的工具與字型，並在 Windows Terminal 註冊 `palette.json` 匯入，不會覆寫其他既有設定。Tinty 套用主題時會更新這個匯入檔。
 
 ## 常用指令
 
@@ -34,6 +38,7 @@ mise bootstrap dotfiles pull
 | --- | --- |
 | 更新系統與工具 | `topgrade` |
 | 重新套用 bootstrap | `mise bootstrap --yes --force-dotfiles` |
+| 套用主題 | `tinty apply <scheme>` |
 | 重新設定 Windows / Windows Terminal | `mise run bootstrap:windows` |
 | 查看同步狀態 | `mise bootstrap dotfiles status` |
 | 納管檔案 | `mise bootstrap dotfiles track <path>` |
