@@ -49,17 +49,27 @@ restore_original() {
     return 0
   fi
 
-  tinty apply "$original_scheme" --quiet >/dev/null 2>&1 || true
+  if ! tinty apply "$original_scheme" --quiet >/dev/null 2>&1; then
+    show_error "Failed to restore $original_scheme"
+    return 1
+  fi
+
   preview_active=false
+}
+
+cleanup_on_exit() {
+  restore_original || true
 }
 
 handle_signal() {
   local status=$1
-  restore_original
+  if ! restore_original; then
+    exit 1
+  fi
   exit "$status"
 }
 
-trap restore_original EXIT
+trap cleanup_on_exit EXIT
 trap 'handle_signal 129' HUP
 trap 'handle_signal 130' INT
 trap 'handle_signal 143' TERM
@@ -87,7 +97,9 @@ while true; do
         --header "$header" \
         --placeholder "Search schemes..."
   )"; then
-    restore_original
+    if ! restore_original; then
+      exit 1
+    fi
     show_info "Theme selection cancelled"
     exit 0
   fi
@@ -100,7 +112,7 @@ while true; do
     --title "Previewing $selected_scheme..." \
     -- tinty apply "$selected_scheme" --quiet; then
     show_error "Failed to apply $selected_scheme"
-    restore_original
+    restore_original || true
     exit 1
   fi
 
@@ -117,8 +129,14 @@ while true; do
       "Choose another:again" \
       "$restore_label:restore"
   )"; then
-    restore_original
-    show_info "Restored ${original_scheme:-previous state}"
+    if ! restore_original; then
+      exit 1
+    fi
+    if [[ -n "$original_scheme" ]]; then
+      show_info "Restored $original_scheme"
+    else
+      show_info "Theme selection cancelled"
+    fi
     exit 0
   fi
 
@@ -131,7 +149,9 @@ while true; do
     again)
       ;;
     restore)
-      restore_original
+      if ! restore_original; then
+        exit 1
+      fi
       if [[ -n "$original_scheme" ]]; then
         show_info "Restored $original_scheme"
       else
@@ -141,7 +161,7 @@ while true; do
       ;;
     *)
       show_error "gum returned an unexpected action: $action"
-      restore_original
+      restore_original || true
       exit 1
       ;;
   esac
