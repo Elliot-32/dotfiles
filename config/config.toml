@@ -196,6 +196,12 @@ run = [
   "tinty init",
 ]
 
+[tasks."theme:select"]
+description = "Interactively preview and apply Tinty themes"
+hide = false
+interactive = true
+run = "bash \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/tinty-theme-picker.sh\""
+
 [tasks."bootstrap:github"]
 hide = true
 interactive = true
