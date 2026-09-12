@@ -60,9 +60,13 @@ handle_signal() {
 
 trap handle_signal INT TERM
 
-mapfile -t schemes < <(tinty list | LC_ALL=C sort -u)
+mapfile -t schemes < <(
+  tinty list |
+    grep -E '^(base16|base24)-' |
+    LC_ALL=C sort -u
+)
 if (( ${#schemes[@]} == 0 )); then
-  show_error "Tinty returned no schemes. Run 'tinty sync' first."
+  show_error "Tinty returned no Base16/Base24 schemes. Run 'tinty sync' first."
   exit 1
 fi
 
