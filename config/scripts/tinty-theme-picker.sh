@@ -90,6 +90,7 @@ while true; do
 
   [[ -n "$selected_scheme" ]] || continue
 
+  preview_active=true
   if ! gum spin \
     --spinner dot \
     --title "Previewing $selected_scheme..." \
@@ -98,7 +99,6 @@ while true; do
     restore_original
     exit 1
   fi
-  preview_active=true
 
   restore_label="Exit"
   if [[ -n "$original_scheme" ]]; then
