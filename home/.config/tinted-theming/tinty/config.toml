@@ -18,7 +18,10 @@ path = "~/.config/tinted-theming/tinty"
 themes-dir = "themes/gomi"
 supported-systems = ["base16", "base24"]
 hook = '''
-if [ ! -x /usr/bin/omarchy ] && [ ! -d /usr/share/omarchy ]; then
+if ! command -v omarchy >/dev/null 2>&1 \
+  && ! command -v omarchy-theme-set >/dev/null 2>&1 \
+  && [ ! -d /usr/share/omarchy ] \
+  && [ ! -d "$HOME/.local/share/omarchy" ]; then
   config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gomi"
   mkdir -p "$config_dir"
   rm -f "$config_dir/config.yaml"
