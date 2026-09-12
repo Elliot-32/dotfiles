@@ -28,23 +28,11 @@ run_font_install() {
 
   windows_script=$(wslpath -w "$script")
 
-  if command -v gum >/dev/null 2>&1 && [ -t 1 ] && [ -t 2 ]; then
-    gum spin \
-      --spinner dot \
-      --title "Installing Windows JetBrainsMono Nerd Font..." \
-      --show-error \
-      -- powershell.exe \
-        -NoLogo \
-        -NoProfile \
-        -ExecutionPolicy Bypass \
-        -File "$windows_script"
-  else
-    powershell.exe \
-      -NoLogo \
-      -NoProfile \
-      -ExecutionPolicy Bypass \
-      -File "$windows_script"
-  fi
+  powershell.exe \
+    -NoLogo \
+    -NoProfile \
+    -ExecutionPolicy Bypass \
+    -File "$windows_script"
 }
 
 if ! command -v powershell.exe >/dev/null 2>&1; then
