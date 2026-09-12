@@ -6,9 +6,11 @@ path = "https://github.com/tinted-theming/tinted-terminal"
 themes-dir = "themes/ghostty"
 supported-systems = ["base16", "base24"]
 hook = '''
-config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/themes"
-mkdir -p "$config_dir"
-cp -f "$TINTY_THEME_FILE_PATH" "$config_dir/tinted-theming"
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/ghostty"
+theme_dir="$config_dir/themes"
+mkdir -p "$theme_dir"
+cp -f "$TINTY_THEME_FILE_PATH" "$theme_dir/tinted-theming"
+printf '%s\n' 'theme = tinted-theming' > "$config_dir/tinty.conf"
 killall -SIGUSR2 ghostty 2>/dev/null || true
 '''
 
@@ -18,15 +20,10 @@ path = "~/.config/tinted-theming/tinty"
 themes-dir = "themes/gomi"
 supported-systems = ["base16", "base24"]
 hook = '''
-if ! command -v omarchy >/dev/null 2>&1 \
-  && ! command -v omarchy-theme-set >/dev/null 2>&1 \
-  && [ ! -d /usr/share/omarchy ] \
-  && [ ! -d "$HOME/.local/share/omarchy" ]; then
-  config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gomi"
-  mkdir -p "$config_dir"
-  rm -f "$config_dir/config.yaml"
-  cp -f "$TINTY_THEME_FILE_PATH" "$config_dir/config.yaml"
-fi
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gomi"
+mkdir -p "$config_dir"
+rm -f "$config_dir/config.yaml"
+cp -f "$TINTY_THEME_FILE_PATH" "$config_dir/config.yaml"
 '''
 
 [[items]]
