@@ -21,7 +21,7 @@ zsh -n home/.zshrc home/.p10k.zsh
 
 ### PowerShell
 
-Parse `config/scripts/bootstrap-windows.ps1` without executing WinGet or Windows Terminal mutations:
+Parse `config/scripts/bootstrap-windows.ps1` without executing WinGet:
 
 ```sh
 pwsh -NoLogo -NoProfile -Command '$tokens=$null; $errors=$null; [System.Management.Automation.Language.Parser]::ParseFile("config/scripts/bootstrap-windows.ps1", [ref]$tokens, [ref]$errors) | Out-Null; if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }'
@@ -36,7 +36,7 @@ MISE_CONFIG_DIR="$PWD/config" MISE_TRUSTED_CONFIG_PATHS="$PWD/config" mise tasks
 MISE_CONFIG_DIR="$PWD/config" MISE_TRUSTED_CONFIG_PATHS="$PWD/config" mise --locked bootstrap --dry-run
 ```
 
-A real bootstrap can mutate packages, login-shell settings, systemd units, credentials, Windows packages, or Windows Terminal settings, so prefer dry-run for validation.
+A real bootstrap can mutate packages, login-shell settings, systemd units, credentials, and the Windows font installation. Tinty apply/init can additionally mutate Windows Terminal settings on WSL, so prefer dry-run and targeted tests for validation.
 
 ## Setup/history validation
 
