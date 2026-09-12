@@ -68,6 +68,12 @@
       "variants": []
     },
     {
+      "path": "home/.config/omarchy/themed-links.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/omarchy/themed/gomi.yaml.tpl",
       "autosave": true,
       "encrypt": false,
