@@ -68,13 +68,31 @@
       "variants": []
     },
     {
-      "path": "home/.config/palette",
+      "path": "home/.config/omarchy/themed-links.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/.config/omarchy/themed/gomi.yaml.tpl",
       "autosave": true,
       "encrypt": false,
       "variants": []
     },
     {
       "path": "home/.config/sheldon",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/.config/tinted-theming/tinty/config.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/.config/tinted-theming/tinty/templates",
       "autosave": true,
       "encrypt": false,
       "variants": []

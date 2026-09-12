@@ -606,6 +606,11 @@ version = "2.4.1"
 backend = "cargo:rustscan"
 specifiers = ["latest"]
 
+[[tools."cargo:tinty"]]
+version = "0.34.1"
+backend = "cargo:tinty"
+specifiers = ["0.34.1"]
+
 [[tools.codex]]
 version = "0.152.0"
 backend = "aqua:openai/codex"

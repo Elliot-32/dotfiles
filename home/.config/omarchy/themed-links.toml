@@ -1,0 +1,3 @@
+[[links]]
+template = "gomi.yaml"
+output = "~/.config/gomi/config.yaml"

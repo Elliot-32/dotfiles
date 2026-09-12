@@ -1,2 +1,17 @@
+[settings]
+disable_tools = ["cargo:tinty"]
+
 [dotfiles]
-"~/.config/omarchy/hooks/theme-set.d/50-gomi" = { source = "../scripts/omarchy-gomi-theme-sync.sh", mode = "copy" }
+"~/.config/omarchy/themed/gomi.yaml.tpl" = { mode = "track" }
+"~/.config/omarchy/themed-links.toml" = { mode = "track" }
+"~/.config/omarchy/hooks/theme-set.d/50-themed-links" = { source = "../scripts/omarchy-themed-links.sh", mode = "copy" }
+
+[bootstrap.hooks.post-tools]
+run = '''
+rm -f "${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/tinty.conf"
+bash "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/omarchy-themed-links.sh" --ensure-rendered
+'''
+
+[tasks."bootstrap:theme"]
+hide = true
+run = ":"

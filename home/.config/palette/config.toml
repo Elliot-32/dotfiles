@@ -1,9 +1,0 @@
-[theme]
-backend = "auto"
-
-[template."wsl.json"]
-output = "~/.local/state/dotfiles/theme/windows-terminal/palette.json"
-profiles = ["wsl"]
-
-[template."wsl.json".targets]
-omarchy = false

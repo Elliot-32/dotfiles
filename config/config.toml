@@ -72,6 +72,7 @@ witr = "latest"
 yazi = "latest"
 zoxide = "latest"
 "cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
+"cargo:tinty" = { version = "0.34.1", depends = ["rust", "cargo-binstall"] }
 "github:Giammarco-Ferranti/deja" = "latest"
 "pipx:isd-tui" = "latest"
 codex = "latest"
@@ -113,9 +114,9 @@ fc-cache -f "$font_dir"
 "~/.zprofile" = { mode = "track" }
 "~/.p10k.zsh" = { mode = "track" }
 "~/.config/sheldon" = { mode = "track" }
-"~/.config/palette" = { mode = "track" }
+"~/.config/tinted-theming/tinty/config.toml" = { mode = "track" }
+"~/.config/tinted-theming/tinty/templates" = { mode = "track" }
 "~/.config/yazi" = { mode = "track" }
-"~/.config/gomi/config.yaml" = { source = "assets/gomi/config.yaml", mode = "copy" }
 "~/.config/topgrade.toml" = { mode = "track" }
 "~/.config/topgrade.systemd.toml" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }
@@ -183,7 +184,16 @@ run = [
   "sheldon --non-interactive lock",
   "ya pkg install",
   { task = "bootstrap:windows" },
+  { task = "bootstrap:theme" },
   { task = "bootstrap:github" },
+]
+
+[tasks."bootstrap:theme"]
+hide = true
+run = [
+  "tinty sync",
+  "tinty build \"$HOME/.config/tinted-theming/tinty\" --quiet",
+  "tinty init",
 ]
 
 [tasks."bootstrap:github"]

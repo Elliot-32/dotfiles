@@ -1,0 +1,51 @@
+{
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "theme": "Tinty",
+  "profiles": {
+    "defaults": {
+      "colorScheme": "Tinty"
+    }
+  },
+  "schemes": [
+    {
+      "name": "Tinty",
+      "cursorColor": "#{{ base05-hex }}",
+      "selectionBackground": "#{{ base02-hex }}",
+      "background": "#{{ base00-hex }}",
+      "foreground": "#{{ base05-hex }}",
+      "black": "#{{ base00-hex }}",
+      "red": "#{{ base08-hex }}",
+      "green": "#{{ base0B-hex }}",
+      "yellow": "#{{ base0A-hex }}",
+      "blue": "#{{ base0D-hex }}",
+      "purple": "#{{ base0E-hex }}",
+      "cyan": "#{{ base0C-hex }}",
+      "white": "#{{ base05-hex }}",
+      "brightBlack": "#{{ base03-hex }}",
+      "brightRed": "#{{ base12-hex }}",
+      "brightGreen": "#{{ base14-hex }}",
+      "brightYellow": "#{{ base13-hex }}",
+      "brightBlue": "#{{ base16-hex }}",
+      "brightPurple": "#{{ base17-hex }}",
+      "brightCyan": "#{{ base15-hex }}",
+      "brightWhite": "#{{ base07-hex }}"
+    }
+  ],
+  "themes": [
+    {
+      "name": "Tinty",
+      "tab": {
+        "background": "#{{ base00-hex }}FF",
+        "unfocusedBackground": "#{{ base01-hex }}FF",
+        "showCloseButton": "always"
+      },
+      "tabRow": {
+        "background": "#{{ base01-hex }}FF",
+        "unfocusedBackground": "#{{ base00-hex }}FF"
+      },
+      "window": {
+        "applicationTheme": "{{ scheme-variant }}"
+      }
+    }
+  ]
+}

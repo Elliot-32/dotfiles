@@ -105,6 +105,21 @@ jobs:
           grep -Fq 'scripts/bootstrap-windows.sh' <<<"$task_json"
           grep -Fq '"hide": false' <<<"$task_json"
 
+      - name: Validate theme backend selection
+        shell: bash
+        run: |
+          tinty_task="$(MISE_ENV=ubuntu,apt mise tasks info bootstrap:theme --json)"
+          printf '%s\n' "$tinty_task"
+          jq -e 'any(.run[]; . == "tinty sync") and any(.run[]; . == "tinty init")' <<<"$tinty_task" >/dev/null
+
+          omarchy_task="$(MISE_ENV=arch,pacman,omarchy mise tasks info bootstrap:theme --json)"
+          printf '%s\n' "$omarchy_task"
+          jq -e '.run == [":"]' <<<"$omarchy_task" >/dev/null
+          if grep -Fq 'tinty' <<<"$omarchy_task"; then
+            echo '::error::Omarchy bootstrap:theme must not run Tinty'
+            exit 1
+          fi
+
       - name: Validate Windows bootstrap skips without interop
         shell: bash
         run: |
@@ -271,3 +286,7 @@ jobs:
 
           check_config "wsl" \
             "conf.d/platform.wsl.toml"
+
+          check_config "arch,pacman,omarchy" \
+            "conf.d/packages.pacman.toml" \
+            "conf.d/platform.omarchy.toml"

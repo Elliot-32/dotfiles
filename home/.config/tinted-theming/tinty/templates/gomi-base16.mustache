@@ -34,29 +34,29 @@ ui:
     directory_command: eza -la --icons=always --color=always
   style:
     list_view:
-      cursor: "#AD58B4"
-      selected: "#5FB458"
-      filter_match: "#F39C12"
-      filter_prompt: "#7AA2F7"
+      cursor: "#{{ base0D-hex }}"
+      selected: "#{{ base0B-hex }}"
+      filter_match: "#{{ base09-hex }}"
+      filter_prompt: "#{{ base0D-hex }}"
       indent_on_select: false
     detail_view:
-      border: "#FFFFFF"
+      border: "#{{ base05-hex }}"
       info_pane:
         deleted_from:
-          fg: "#EEEEEE"
-          bg: "#1C1C1C"
+          fg: "#{{ base06-hex }}"
+          bg: "#{{ base01-hex }}"
         deleted_at:
-          fg: "#EEEEEE"
-          bg: "#1C1C1C"
+          fg: "#{{ base06-hex }}"
+          bg: "#{{ base01-hex }}"
       preview_pane:
-        border: "#3C3C3C"
+        border: "#{{ base03-hex }}"
         size:
-          fg: "#EEEEDD"
-          bg: "#3C3C3C"
+          fg: "#{{ base06-hex }}"
+          bg: "#{{ base02-hex }}"
         scroll:
-          fg: "#EEEEDD"
-          bg: "#3C3C3C"
-    deletion_dialog: "#FF007F"
+          fg: "#{{ base06-hex }}"
+          bg: "#{{ base02-hex }}"
+    deletion_dialog: "#{{ base08-hex }}"
 
 logging:
   enabled: true
