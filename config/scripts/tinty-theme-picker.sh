@@ -54,11 +54,15 @@ restore_original() {
 }
 
 handle_signal() {
+  local status=$1
   restore_original
-  exit 130
+  exit "$status"
 }
 
-trap handle_signal INT TERM
+trap restore_original EXIT
+trap 'handle_signal 129' HUP
+trap 'handle_signal 130' INT
+trap 'handle_signal 143' TERM
 
 mapfile -t schemes < <(
   tinty list |
