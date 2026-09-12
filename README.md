@@ -26,7 +26,15 @@ mise bootstrap dotfiles pull
 
 一般環境由 Tinty 統一套用主題：Ghostty 使用 `tinted-terminal`，gomi 與 Windows Terminal 使用這個 repo 維護的 Tinty templates。Bootstrap 會先 `tinty sync`、build 本地 templates，再以 `tinty init` 套用目前或預設主題。
 
-Omarchy 不使用 Tinty 寫入 gomi。`~/.config/omarchy/themed/gomi.yaml.tpl` 由 Omarchy 產生 `~/.local/state/omarchy/current/theme/gomi.yaml`，而 `~/.config/gomi/config.yaml` 會指向該檔案的 symlink。Ghostty 則繼續讓 Omarchy 的 current theme config 覆蓋 Tinty 基底。
+Omarchy 不使用 Tinty 寫入 gomi。`~/.config/omarchy/themed/gomi.yaml.tpl` 由 Omarchy 產生 `~/.local/state/omarchy/current/theme/gomi.yaml`；`~/.config/omarchy/themed-links.toml` 只宣告 template 名稱與設定檔 output，由共用 `theme-set` hook 使用 `dasel` 解析並建立 symlink。目前 gomi 會把 `gomi.yaml` 連到 `~/.config/gomi/config.yaml`。Ghostty 則繼續讓 Omarchy 的 current theme config 覆蓋 Tinty 基底。
+
+新增其他 Omarchy themed config 時，只要增加 template 與一筆 link：
+
+```toml
+[[links]]
+template = "gomi.yaml"
+output = "~/.config/gomi/config.yaml"
+```
 
 ## Windows / WSL
 
