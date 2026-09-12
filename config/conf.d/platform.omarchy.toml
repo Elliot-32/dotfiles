@@ -1,3 +1,6 @@
+[settings]
+disable_tools = ["cargo:tinty"]
+
 [dotfiles]
 "~/.config/omarchy/themed/gomi.yaml.tpl" = { mode = "track" }
 "~/.config/omarchy/themed-links.toml" = { mode = "track" }
