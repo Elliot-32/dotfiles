@@ -44,12 +44,27 @@ fi
 preview_active=false
 keep_preview=false
 
+apply_with_spinner() {
+  local title=$1
+  local scheme=$2
+
+  if [[ -t 1 && -t 2 ]]; then
+    gum spin \
+      --spinner dot \
+      --title "$title" \
+      --show-error \
+      -- tinty apply "$scheme" --quiet
+  else
+    tinty apply "$scheme" --quiet
+  fi
+}
+
 restore_original() {
   if [[ "$preview_active" != true || "$keep_preview" == true || -z "$original_scheme" ]]; then
     return 0
   fi
 
-  if ! tinty apply "$original_scheme" --quiet >/dev/null 2>&1; then
+  if ! apply_with_spinner "Restoring $original_scheme..." "$original_scheme"; then
     show_error "Failed to restore $original_scheme"
     return 1
   fi
@@ -107,10 +122,7 @@ while true; do
   [[ -n "$selected_scheme" ]] || continue
 
   preview_active=true
-  if ! gum spin \
-    --spinner dot \
-    --title "Previewing $selected_scheme..." \
-    -- tinty apply "$selected_scheme" --quiet; then
+  if ! apply_with_spinner "Previewing $selected_scheme..." "$selected_scheme"; then
     show_error "Failed to apply $selected_scheme"
     restore_original || true
     exit 1
