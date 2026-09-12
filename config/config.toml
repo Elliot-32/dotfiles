@@ -184,10 +184,16 @@ run = [
   "sheldon --non-interactive lock",
   "ya pkg install",
   { task = "bootstrap:windows" },
+  { task = "bootstrap:theme" },
+  { task = "bootstrap:github" },
+]
+
+[tasks."bootstrap:theme"]
+hide = true
+run = [
   "tinty sync",
   "tinty build \"$HOME/.config/tinted-theming/tinty\" --quiet",
   "tinty init",
-  { task = "bootstrap:github" },
 ]
 
 [tasks."bootstrap:github"]
