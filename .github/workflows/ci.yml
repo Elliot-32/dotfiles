@@ -110,12 +110,11 @@ jobs:
         run: |
           tinty_task="$(MISE_ENV=ubuntu,apt mise tasks info bootstrap:theme --json)"
           printf '%s\n' "$tinty_task"
-          grep -Fq 'tinty sync' <<<"$tinty_task"
-          grep -Fq 'tinty init' <<<"$tinty_task"
+          jq -e 'any(.run[]; . == "tinty sync") and any(.run[]; . == "tinty init")' <<<"$tinty_task" >/dev/null
 
           omarchy_task="$(MISE_ENV=arch,pacman,omarchy mise tasks info bootstrap:theme --json)"
           printf '%s\n' "$omarchy_task"
-          grep -Fq '"run": ":"' <<<"$omarchy_task"
+          jq -e '.run == [":"]' <<<"$omarchy_task" >/dev/null
           if grep -Fq 'tinty' <<<"$omarchy_task"; then
             echo '::error::Omarchy bootstrap:theme must not run Tinty'
             exit 1
