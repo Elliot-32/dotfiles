@@ -40,7 +40,9 @@ output = "~/.config/gomi/config.yaml"
 
 ## Windows / WSL
 
-在 WSL 執行 bootstrap 時，會一併設定 Windows 端需要的工具與字型，並在 Windows Terminal 註冊 `palette.json` 匯入，不會覆寫其他既有設定。Tinty 套用主題時會更新這個匯入檔。
+在 WSL 執行 bootstrap 時，會一併設定 Windows 端需要的工具與字型，並在 Windows Terminal 註冊 `tinty.json` 匯入，不會覆寫其他既有設定。舊的 `palette.json` import 會在重新執行 Windows bootstrap 時自動遷移並清理。
+
+`mise run theme:select` 會使用 Gum 搜尋 Tinty schemes。選中候選主題後會立即執行 `tinty apply`，因此 Windows Terminal、Ghostty 與其他 Tinty targets 會同步切換作為實際預覽；可以保留主題、繼續選擇，或還原執行選擇器前的主題。
 
 ## 常用指令
 
@@ -49,6 +51,7 @@ output = "~/.config/gomi/config.yaml"
 | 更新系統與工具 | `topgrade` |
 | 重新套用 bootstrap | `mise bootstrap --yes --force-dotfiles` |
 | 套用主題（非 Omarchy） | `tinty apply <scheme>` |
+| 互動選擇 / 預覽主題（WSL） | `mise run theme:select` |
 | 重新設定 Windows / Windows Terminal | `mise run bootstrap:windows` |
 | 查看同步狀態 | `mise bootstrap dotfiles status` |
 | 納管檔案 | `mise bootstrap dotfiles track <path>` |
