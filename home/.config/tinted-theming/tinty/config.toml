@@ -43,7 +43,7 @@ if command -v powershell.exe >/dev/null 2>&1 && command -v wslpath >/dev/null 2>
       "$local_appdata/Microsoft/Windows Terminal"
     do
       [ -f "$state_directory/settings.json" ] || continue
-      cp -f "$TINTY_THEME_FILE_PATH" "$state_directory/palette.json"
+      cp -f "$TINTY_THEME_FILE_PATH" "$state_directory/tinty.json"
     done
   fi
 fi
