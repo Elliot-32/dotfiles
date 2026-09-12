@@ -2,7 +2,8 @@
 set -eu
 
 jsonc_parser_version=3.3.1
-palette_import=palette.json
+theme_import=tinty.json
+legacy_theme_import=palette.json
 
 gum_available=false
 if command -v gum >/dev/null 2>&1; then
@@ -167,15 +168,20 @@ patch_windows_terminal_settings() {
     fi
 
     NODE_PATH="$jsonc_node_path${NODE_PATH:+:$NODE_PATH}" \
-      node "$editor_script" "$settings_path" "$palette_import"
+      node "$editor_script" \
+        "$settings_path" \
+        "$theme_import" \
+        "$legacy_theme_import"
+
+    rm -f -- "$state_directory/$legacy_theme_import"
   done
 
   if [ "$found" = false ]; then
-    show_warning "Windows Terminal settings.json was not found; skipping palette import"
+    show_warning "Windows Terminal settings.json was not found; skipping Tinty import"
     return 0
   fi
 
-  show_success "Windows Terminal imports $palette_import without replacing existing settings"
+  show_success "Windows Terminal imports $theme_import without replacing existing settings"
 }
 
 main() {
