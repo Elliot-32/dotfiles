@@ -36,6 +36,8 @@ template = "gomi.yaml"
 output = "~/.config/gomi/config.yaml"
 ```
 
+`dasel` 已由 mise 全域工具設定安裝；bootstrap 會在 tools 安裝完成後先執行一次 themed-links hook，之後則由 Omarchy 的 `theme-set` hook 在每次換主題後重新建立連結。
+
 ## Windows / WSL
 
 在 WSL 執行 bootstrap 時，會一併設定 Windows 端需要的工具與字型，並在 Windows Terminal 註冊 `palette.json` 匯入，不會覆寫其他既有設定。Tinty 套用主題時會更新這個匯入檔。
