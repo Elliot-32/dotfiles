@@ -11,25 +11,30 @@ if [ -z "$rendered_theme" ] || [ ! -f "$rendered_theme" ]; then
   exit 1
 fi
 
-if ! command -v powershell.exe >/dev/null 2>&1 || ! command -v wslpath >/dev/null 2>&1; then
-  exit 0
+if [ -n "${TINTY_WINDOWS_LOCALAPPDATA:-}" ]; then
+  local_appdata=$TINTY_WINDOWS_LOCALAPPDATA
+else
+  if ! command -v powershell.exe >/dev/null 2>&1 || ! command -v wslpath >/dev/null 2>&1; then
+    exit 0
+  fi
+
+  windows_path=$(
+    powershell.exe \
+      -NoLogo \
+      -NoProfile \
+      -NonInteractive \
+      -Command '[Environment]::GetFolderPath("LocalApplicationData")' \
+      | tr -d '\r'
+  )
+
+  if [ -z "$windows_path" ]; then
+    printf 'tinty windows-terminal: could not determine Windows LOCALAPPDATA\n' >&2
+    exit 1
+  fi
+
+  local_appdata=$(wslpath -u "$windows_path")
 fi
 
-windows_path=$(
-  powershell.exe \
-    -NoLogo \
-    -NoProfile \
-    -NonInteractive \
-    -Command '[Environment]::GetFolderPath("LocalApplicationData")' \
-    | tr -d '\r'
-)
-
-if [ -z "$windows_path" ]; then
-  printf 'tinty windows-terminal: could not determine Windows LOCALAPPDATA\n' >&2
-  exit 1
-fi
-
-local_appdata=$(wslpath -u "$windows_path")
 config_dir=${MISE_CONFIG_DIR:-$HOME/.config/mise}
 editor_script="$config_dir/scripts/ensure-windows-terminal-import.cjs"
 
