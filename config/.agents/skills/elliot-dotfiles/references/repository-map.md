@@ -30,7 +30,7 @@ Environment selector restored to `~/.miserc.toml`. It detects Arch, Fedora, RHEL
 - `config/conf.d/packages.apt.toml`: APT-family packages/settings, including Fcitx5 packages.
 - `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including Fcitx5 packages.
 - `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including Fcitx5 packages.
-- `config/conf.d/platform.wsl.toml`: WSL behavior, Windows bootstrap, and the interactive Tinty theme picker task.
+- `config/conf.d/platform.wsl.toml`: WSL behavior and Windows bootstrap override.
 - `config/conf.d/platform.wslg.toml`: WSLg-specific configuration.
 - `config/config.flatpak.toml`: Flatpak-specific bootstrap/update behavior.
 
@@ -58,7 +58,7 @@ Fcitx5 user configuration is shared across APT, DNF, and Pacman systems; only pa
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side Windows package/bootstrap and Windows Terminal import migration helper.
 - `config/scripts/bootstrap-windows.ps1`: Windows-native WinGet setup.
-- `config/scripts/tinty-theme-picker.sh`: Gum-based Tinty scheme picker with apply/restore preview flow.
+- `config/scripts/tinty-theme-picker.sh`: platform-independent Gum-based Tinty scheme picker with apply/restore preview flow.
 - `config/scripts/login-github.sh`: GitHub login/configuration workflow.
 
 Prefer native mise configuration first; keep scripts focused and idempotent where imperative/platform-native behavior is required.
