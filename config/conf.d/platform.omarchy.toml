@@ -5,5 +5,5 @@
 
 [bootstrap.hooks.post-tools]
 run = '''
-bash "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/omarchy-themed-links.sh"
+bash "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/omarchy-themed-links.sh" --ensure-rendered
 '''
