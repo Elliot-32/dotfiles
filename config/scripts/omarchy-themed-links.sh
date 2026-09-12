@@ -56,7 +56,7 @@ expand_output_path() {
     "~")
       printf '%s\n' "$HOME"
       ;;
-    "~/"*)
+    \~/*)
       printf '%s/%s\n' "$HOME" "${path:2}"
       ;;
     /*)
