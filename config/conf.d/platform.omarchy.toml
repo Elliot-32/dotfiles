@@ -5,5 +5,10 @@
 
 [bootstrap.hooks.post-tools]
 run = '''
+rm -f "${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/tinty.conf"
 bash "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/omarchy-themed-links.sh" --ensure-rendered
 '''
+
+[tasks."bootstrap:theme"]
+hide = true
+run = ":"
