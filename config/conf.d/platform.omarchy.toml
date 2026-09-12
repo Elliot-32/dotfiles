@@ -1,10 +1,9 @@
 [dotfiles]
 "~/.config/omarchy/themed/gomi.yaml.tpl" = { mode = "track" }
+"~/.config/omarchy/themed-links.toml" = { mode = "track" }
+"~/.config/omarchy/hooks/theme-set.d/50-themed-links" = { source = "../scripts/omarchy-themed-links.sh", mode = "copy" }
 
-[bootstrap.hooks.post-dotfiles]
+[bootstrap.hooks.post-tools]
 run = '''
-config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gomi"
-mkdir -p "$config_dir"
-rm -f "$config_dir/config.yaml"
-ln -s "$HOME/.local/state/omarchy/current/theme/gomi.yaml" "$config_dir/config.yaml"
+bash "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/omarchy-themed-links.sh"
 '''
