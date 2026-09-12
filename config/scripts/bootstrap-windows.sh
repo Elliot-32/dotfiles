@@ -48,7 +48,7 @@ run_font_install() {
 }
 
 if ! command -v powershell.exe >/dev/null 2>&1; then
-  show_warning "powershell.exe is unavailable; skipping Windows font bootstrap"
+  show_warning "powershell.exe is unavailable; skipping Windows bootstrap"
   exit 0
 fi
 
