@@ -11,6 +11,8 @@ MISE_ENV_CONF_D=true ~/.local/bin/mise bootstrap --adopt https://github.com/Elli
 
 Bootstrap 會安裝需要的工具與套件、套用設定，並完成目前平台需要的初始化。
 
+Fedora 環境會另外啟用 `dnf5-automatic.timer`，自動下載並安裝一般系統更新；不會自動重新開機。
+
 ## 同步
 
 設定會由 mise history/sync 自動同步。需要手動操作時可使用：
