@@ -1,5 +1,8 @@
 [bootstrap.hooks.pre-packages]
-run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-ghostty-fedora.sh"'
+run = [
+  "if rpm -q dnf-automatic >/dev/null 2>&1; then sudo dnf5 swap -y dnf-automatic dnf5-plugin-automatic; fi",
+  'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-ghostty-fedora.sh"',
+]
 
 [bootstrap.packages]
 "dnf:ghostty" = "latest"
