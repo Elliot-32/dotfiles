@@ -8,7 +8,7 @@ disable_tools = ["cargo:tinty"]
 
 [bootstrap.hooks.post-tools]
 run = '''
-bash "${XDG_CONFIG_HOME:-$HOME/.config}/omarchy/hooks/theme-set.d/50-themed-links" --ensure-rendered
+bash "$HOME/.config/omarchy/hooks/theme-set.d/50-themed-links" --ensure-rendered
 '''
 
 [tasks."bootstrap:theme"]

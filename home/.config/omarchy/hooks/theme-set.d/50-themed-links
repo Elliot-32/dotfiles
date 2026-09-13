@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
-config="$config_home/omarchy/themed-links.toml"
+config="$HOME/.config/omarchy/themed-links.toml"
 theme_dir="$HOME/.local/state/omarchy/current/theme"
 ensure_rendered=false
 
