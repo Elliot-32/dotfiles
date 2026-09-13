@@ -1,0 +1,48 @@
+name: Refresh Tinty lock targeted
+
+on:
+  push:
+    branches: [chore/use-github-tinty-backend]
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-24.04
+    env:
+      MISE_ENV_CONF_D: "true"
+      MISE_GITHUB_TOKEN: ${{ github.token }}
+      MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}/config
+      MISE_YES: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: chore/use-github-tinty-backend
+          fetch-depth: 0
+
+      - name: Restore clean pre-latest lockfile
+        run: git checkout 0485b27a1f7e5e350bbefc88525b6bd86ac54c14 -- config/mise.lock
+
+      - name: Prepare global mise config
+        run: |
+          mkdir -p "$HOME/.config"
+          ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
+
+      - name: Install mise
+        run: |
+          curl -fsSL https://mise.run | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Refresh only Tinty lock entry
+        run: "$HOME/.local/bin/mise lock --global --bump github:tinted-theming/tinty"
+
+      - name: Commit generated lockfile and remove generator
+        run: |
+          rm .github/workflows/refresh-tinty-lock-targeted.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/mise.lock .github/workflows/refresh-tinty-lock-targeted.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: regenerate latest Tinty lock entry"
+          git push
