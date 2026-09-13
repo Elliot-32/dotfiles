@@ -52,7 +52,6 @@ Fcitx5 user configuration is shared across APT, DNF, and Pacman systems; only pa
 
 ## Bundled assets and scripts
 
-- `config/assets/windows-terminal/`: vendored Windows Terminal color schemes/UI themes.
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
