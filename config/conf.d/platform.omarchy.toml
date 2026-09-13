@@ -1,5 +1,8 @@
 [settings]
-disable_tools = ["github:tinted-theming/tinty"]
+disable_tools = [
+  "github:ryanoasis/nerd-fonts",
+  "github:tinted-theming/tinty",
+]
 
 [dotfiles]
 "~/.config/omarchy/themed/gomi.yaml.tpl" = { mode = "track" }
