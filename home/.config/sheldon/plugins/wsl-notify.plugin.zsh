@@ -56,7 +56,21 @@ function bgnotify {
 
   if [[ -n ${WT_SESSION:-} ]]; then
     # bgnotify_end already verified that Windows Terminal is in the background.
-    # Let Windows Terminal translate BEL according to its bellStyle setting.
+    # Send a real Windows toast; its default audio replaces the terminal BEL.
+    local toast_script="${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/wsl-toast.ps1"
+    local windows_toast_script
+
+    if [[ -r $toast_script ]] && (( ${+commands[powershell.exe]} )) && (( ${+commands[wslpath]} )); then
+      windows_toast_script=$(command wslpath -w "$toast_script") || windows_toast_script=
+      if [[ -n $windows_toast_script ]] && powershell.exe -NoLogo -NoProfile -NonInteractive \
+        -ExecutionPolicy Bypass -File "$windows_toast_script" \
+        -Title "$title" -Message "$message" >/dev/null 2>&1; then
+        return
+      fi
+    fi
+
+    # Keep the old audible notification as a fallback if native toast delivery
+    # is unavailable or fails unexpectedly.
     print -rn -- $'\a'
   elif (( ${+commands[notify-send]} )); then
     command notify-send "$title" "$message" \
