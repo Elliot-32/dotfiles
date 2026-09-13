@@ -1,0 +1,50 @@
+name: Regenerate Tinty lock cleanly
+
+on:
+  push:
+    branches: [chore/use-github-tinty-backend]
+    paths: [.github/workflows/regenerate-tinty-lock-clean.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-24.04
+    env:
+      MISE_ENV_CONF_D: "true"
+      MISE_GITHUB_TOKEN: ${{ github.token }}
+      MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}/config
+      MISE_YES: "1"
+      MISE_AQUA_COSIGN: "false"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: chore/use-github-tinty-backend
+          fetch-depth: 0
+
+      - name: Restore the clean base lockfile
+        run: git show origin/master:config/mise.lock > config/mise.lock
+
+      - name: Prepare global mise config
+        run: |
+          mkdir -p "$HOME/.config"
+          ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
+
+      - name: Install mise
+        run: |
+          curl -fsSL https://mise.run | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Regenerate lockfile
+        run: "$HOME/.local/bin/mise lock --global"
+
+      - name: Commit generated lockfile and remove generator
+        run: |
+          rm .github/workflows/regenerate-tinty-lock-clean.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/mise.lock .github/workflows/regenerate-tinty-lock-clean.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: regenerate Tinty lockfile cleanly"
+          git push
