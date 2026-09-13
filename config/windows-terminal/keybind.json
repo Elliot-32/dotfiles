@@ -1,0 +1,18 @@
+{
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "actions": [
+    {
+      "command": {
+        "action": "sendInput",
+        "input": "\u001b[122;6u"
+      },
+      "id": "User.ZshRedo"
+    }
+  ],
+  "keybindings": [
+    {
+      "id": "User.ZshRedo",
+      "keys": "ctrl+shift+z"
+    }
+  ]
+}

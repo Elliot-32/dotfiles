@@ -5,6 +5,9 @@
 SHELDON_PROFILE = "wsl"
 
 [tasks."bootstrap:windows"]
-description = "Install the Windows JetBrainsMono Nerd Font"
+description = "Configure Windows font and Terminal keybinds"
 hide = false
-run = "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-windows.sh\""
+run = [
+  "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-windows.sh\"",
+  "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-windows-terminal.sh\"",
+]

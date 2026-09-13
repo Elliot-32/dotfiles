@@ -44,6 +44,12 @@
       "variants": []
     },
     {
+      "path": "config/windows-terminal",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/environment.d/90-fcitx5.conf",
       "autosave": true,
       "encrypt": false,
