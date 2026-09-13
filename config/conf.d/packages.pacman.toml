@@ -16,7 +16,7 @@ disable_tools = ["github:ryanoasis/nerd-fonts"]
 "pacman:libnotify" = "latest"
 "pacman:wl-clipboard" = "latest"
 
-[bootstrap.hooks.post-packages]
+[bootstrap.hooks.pre-tools]
 run = '''
 font_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fonts/JetBrainsMonoNerdFont"
 if [ -L "$font_dir" ]; then
