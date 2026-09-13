@@ -30,6 +30,7 @@ Environment selector restored to `~/.miserc.toml`. It detects Arch, Fedora, RHEL
 - `config/conf.d/packages.apt.toml`: APT-family packages/settings, including Fcitx5 packages.
 - `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including Fcitx5 packages.
 - `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including Fcitx5 packages.
+- `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked theme files and theme bootstrap behavior.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font bootstrap override.
 - `config/conf.d/platform.wslg.toml`: WSLg-specific configuration.
 - `config/config.flatpak.toml`: Flatpak-specific bootstrap/update behavior.
@@ -43,6 +44,7 @@ These files are restored directly to their application paths and use `mode = "tr
 - `home/.config/yazi/`;
 - `home/.config/topgrade.toml` and `home/.config/topgrade.systemd.toml`;
 - `home/.config/ghostty/config`;
+- `home/.config/omarchy/themed/gomi.yaml.tpl`, `home/.config/omarchy/themed-links.toml`, and `home/.config/omarchy/hooks/theme-set.d/50-themed-links`;
 - `home/.config/xdg-terminals.list`;
 - `home/.config/fcitx5/profile`;
 - `home/.config/environment.d/90-fcitx5.conf`;
@@ -67,7 +69,7 @@ Prefer native mise configuration first; keep scripts focused and idempotent wher
 ## Quality and CI
 
 ### `config/hk.pkl`
-Static checks run with `config/` as the hk working directory. Shell scripts live under `config/scripts/`; Zsh files are checked through `../home/.zshrc` and `../home/.p10k.zsh`.
+Static checks run with `config/` as the hk working directory. Most helper shell scripts live under `config/scripts/`; native tracked application hooks may live under `home/` at the path the application actually executes. Zsh files are checked through `../home/.zshrc` and `../home/.p10k.zsh`.
 
 ### `.github/workflows/ci.yml`
 Ubuntu CI validates hk/static checks, PowerShell syntax, mise settings/tasks, locked bootstrap dry-run, setup-repository onboarding into an empty user with a custom `MISE_CONFIG_DIR`, native tracked paths including Fcitx5, and distro/environment selection.

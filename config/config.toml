@@ -194,6 +194,7 @@ run = [
   "tinty sync",
   "tinty build \"$HOME/.config/tinted-theming/tinty\" --quiet",
   "tinty init",
+  { task = "theme:select" },
 ]
 
 [tasks."theme:select"]

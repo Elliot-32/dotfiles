@@ -62,6 +62,12 @@
       "variants": []
     },
     {
+      "path": "home/.config/omarchy/hooks/theme-set.d/50-themed-links",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/omarchy/themed-links.toml",
       "autosave": true,
       "encrypt": false,
