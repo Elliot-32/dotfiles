@@ -13,6 +13,7 @@ local checks = new Mapping<String, Step> {
   ["mise-tool-disables"] {
     glob = List("conf.d/packages.pacman.toml", "conf.d/platform.omarchy.toml")
     check = """
+      set -e
       test "$(MISE_ENV=arch,pacman mise settings get disable_tools)" = '["github:ryanoasis/nerd-fonts"]'
       test "$(MISE_ENV=arch,pacman,omarchy mise settings get disable_tools)" = '["github:ryanoasis/nerd-fonts", "github:tinted-theming/tinty"]'
     """
