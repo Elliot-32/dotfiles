@@ -26,9 +26,10 @@ Environment selector restored to `~/.miserc.toml`. It detects Arch, Fedora, RHEL
 ## Conditional configuration
 
 - `config/conf.d/distro.ubuntu.toml`: Ubuntu-specific Ghostty package/repository bootstrap.
-- `config/conf.d/distro.fedora.toml`: Fedora-specific Ghostty package/repository bootstrap.
+- `config/conf.d/distro.fedora.toml`: Fedora-specific Ghostty setup and DNF5 automatic updates.
+- `config/conf.d/distro.rhel.toml`: RHEL-specific DNF4 automatic-update package.
 - `config/conf.d/packages.apt.toml`: APT-family packages/settings, including Fcitx5 packages.
-- `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including Fcitx5 packages.
+- `config/conf.d/packages.dnf.toml`: Shared DNF-family packages, including Fcitx5 packages.
 - `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including Fcitx5 packages.
 - `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked theme files and theme bootstrap behavior.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font bootstrap override.
