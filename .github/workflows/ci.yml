@@ -80,6 +80,7 @@ jobs:
             .format == 1 and
             any(.enrollment[]; .path == "config/config.toml") and
             any(.enrollment[]; .path == "config/mise.lock") and
+            any(.enrollment[]; .path == "config/windows-terminal") and
             any(.enrollment[]; .path == "home/.miserc.toml") and
             any(.enrollment[]; .path == "home/.zshrc") and
             any(.enrollment[]; .path == "home/.config/sheldon") and
@@ -103,7 +104,12 @@ jobs:
           task_json="$(MISE_ENV=wsl mise tasks info bootstrap:windows --json)"
           printf '%s\n' "$task_json"
           grep -Fq 'scripts/bootstrap-windows.sh' <<<"$task_json"
+          grep -Fq 'scripts/bootstrap-windows-terminal.sh' <<<"$task_json"
           grep -Fq '"hide": false' <<<"$task_json"
+          jq -e '
+            any(.actions[]; .id == "User.ZshRedo" and .command.action == "sendInput" and .command.input == "\u001b[122;6u") and
+            any(.keybindings[]; .id == "User.ZshRedo" and .keys == "ctrl+shift+z")
+          ' config/windows-terminal/keybind.json >/dev/null
 
       - name: Validate theme backend selection
         shell: bash
@@ -205,6 +211,7 @@ jobs:
           sudo test -f "$fresh_home/.miserc.toml"
           sudo test -f "$fresh_config/config.toml"
           sudo test -f "$fresh_config/mise.lock"
+          sudo test -f "$fresh_config/windows-terminal/keybind.json"
           sudo test -f "$fresh_config/config.local.toml"
           sudo test ! -e "$fresh_home/.config/mise/config.toml"
 
@@ -230,6 +237,7 @@ jobs:
           sudo cmp "$fresh_home/.config/fcitx5/profile" "$GITHUB_WORKSPACE/home/.config/fcitx5/profile"
           sudo cmp "$fresh_home/.config/environment.d/90-fcitx5.conf" "$GITHUB_WORKSPACE/home/.config/environment.d/90-fcitx5.conf"
           sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+          sudo cmp "$fresh_config/windows-terminal/keybind.json" "$GITHUB_WORKSPACE/config/windows-terminal/keybind.json"
 
           paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
           printf '%s\n' "$paths_json"
