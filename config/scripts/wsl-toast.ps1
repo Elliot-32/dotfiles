@@ -12,14 +12,20 @@ $null = [Windows.UI.Notifications.ToastNotification, Windows.UI.Notifications, C
 $null = [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime]
 
 $startApps = @(Get-StartApps)
-$appId = ($startApps | Where-Object { $_.AppID -eq 'Microsoft.WindowsTerminal_8wekyb3d8bbwe!App' } | Select-Object -First 1).AppID
+$appId = $startApps |
+    Where-Object { $_.AppID -eq 'Microsoft.WindowsTerminal_8wekyb3d8bbwe!App' } |
+    Select-Object -First 1 -ExpandProperty AppID
 
 if ([string]::IsNullOrWhiteSpace($appId)) {
-    $appId = ($startApps | Where-Object { $_.AppID -match '^Microsoft\.WindowsTerminal.*!App$' } | Select-Object -First 1).AppID
+    $appId = $startApps |
+        Where-Object { $_.AppID -match '^Microsoft\.WindowsTerminal.*!App$' } |
+        Select-Object -First 1 -ExpandProperty AppID
 }
 
 if ([string]::IsNullOrWhiteSpace($appId)) {
-    $appId = ($startApps | Where-Object { $_.AppID -match 'PowerShell' } | Select-Object -First 1).AppID
+    $appId = $startApps |
+        Where-Object { $_.AppID -match 'PowerShell' } |
+        Select-Object -First 1 -ExpandProperty AppID
 }
 
 if ([string]::IsNullOrWhiteSpace($appId)) {
