@@ -15,3 +15,12 @@ disable_tools = ["github:ryanoasis/nerd-fonts"]
 "pacman:fcitx5-qt" = "latest"
 "pacman:libnotify" = "latest"
 "pacman:wl-clipboard" = "latest"
+
+[bootstrap.hooks.post-packages]
+run = '''
+font_dir="${XDG_DATA_HOME:-$HOME/.local/share}/fonts/JetBrainsMonoNerdFont"
+if [ -L "$font_dir" ]; then
+  rm -f -- "$font_dir"
+  fc-cache -f
+fi
+'''
