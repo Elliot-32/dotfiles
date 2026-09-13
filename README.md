@@ -37,7 +37,7 @@ Omarchy 環境則直接使用 Omarchy 的主題系統，不需要另外使用 Ti
 
 ## Windows / WSL
 
-在 WSL bootstrap 時會一併安裝 Windows 端的 JetBrainsMono Nerd Font。需要重新安裝或設定字體時可執行：
+在 WSL bootstrap 時會一併安裝 Windows 端的 JetBrainsMono Nerd Font。需要再次執行 Windows 字體 bootstrap 時可使用：
 
 ```bash
 mise run bootstrap:windows
@@ -51,7 +51,7 @@ mise run bootstrap:windows
 | 重新套用 bootstrap | `mise bootstrap --yes --force-dotfiles` |
 | 套用主題（非 Omarchy） | `tinty apply <scheme>` |
 | 互動選擇 / 預覽 Tinty 主題 | `mise run theme:select` |
-| 重新安裝 / 設定 Windows 字體 | `mise run bootstrap:windows` |
+| 執行 Windows 字體 bootstrap | `mise run bootstrap:windows` |
 | 查看同步狀態 | `mise bootstrap dotfiles status` |
 | 納管檔案 | `mise bootstrap dotfiles track <path>` |
 | 解除納管 | `mise bootstrap dotfiles untrack <path>` |
