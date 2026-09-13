@@ -5,7 +5,7 @@ license: MIT
 compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, shellcheck, and PowerShell.
 metadata:
   author: Elliot-32
-  version: "1.6"
+  version: "1.7"
 ---
 
 # Elliot dotfiles maintenance
@@ -38,8 +38,41 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
 - Linux Nerd Font download/version ownership belongs to the `github:ryanoasis/nerd-fonts` tool declaration in `config/config.toml`. Its inline tool-level `postinstall` symlinks the mise-managed install into the user font directory and refreshes fontconfig on Linux hosts, including WSL. Windows font installation remains separately owned by `config/scripts/bootstrap-windows.ps1`.
 - Keep Zsh plugin and completion ordering in `home/.config/sheldon/plugins.toml` deliberate: completion directories on `fpath`, then `compinit`, integrations that require it, `fzf-tab` before widget-wrapping plugins, and syntax highlighting last.
 - Prefer `nvim` for editor commands and examples; do not introduce `nano`.
-- If a user-visible command, bootstrap behavior, installation flow, or maintenance workflow changes, update `README.md` in the same change.
+- If a user-visible command, bootstrap behavior, installation flow, or maintenance workflow changes, update `README.md` in the same change, but keep the README within the scope rules below.
 - Treat `config/mise.lock` as generated state. Never hand-edit it. Only refresh it when the requested change requires lockfile changes, and review the diff for unrelated churn.
+
+## README scope
+
+`README.md` is user documentation for someone installing and operating these dotfiles. It is not the repository's maintainer manual, architecture specification, change log, or implementation diary.
+
+Write the README from the user's point of view. A detail belongs there only when it helps a user decide whether to use the repository, install it, invoke a supported command, understand a user-visible effect, or recover from a likely user-facing problem.
+
+Include, when relevant:
+
+- A short statement of what the repository provides and which environments it is intended for.
+- The canonical installation/onboarding command and any prerequisite the user must satisfy before running it.
+- Supported commands and workflows that users are expected to invoke directly, such as update, sync, theme selection, bootstrap reruns, tracking, or platform-specific setup.
+- User-visible behavior that changes the meaning or consequences of those commands, stated at the highest useful level of abstraction.
+- Important platform differences, limitations, or opt-in behavior that affect how a user should operate the setup.
+- Short troubleshooting or recovery instructions only when the user can act on them and the failure is plausible enough to document permanently.
+
+Do not put the following in README unless the user explicitly needs it to operate the repository:
+
+- Internal ownership boundaries such as which config fragment, hook, helper script, or implementation layer owns a feature.
+- Internal file/state paths, generated-file locations, cache paths, symlink topology, template rendering paths, or intermediate artifacts.
+- Hook names, helper-tool dependencies, parser libraries, environment-selector plumbing, package-manager fragment design, or task implementation details that users never invoke directly.
+- Migration mechanics, legacy filenames, cleanup behavior, compatibility shims, or historical architecture after migration is automatic and no user action is required.
+- Explanations of why an implementation is structured a certain way, unless that structure imposes a user-visible constraint.
+- Maintenance instructions for contributors or agents. Put those in this skill, `references/repository-map.md`, validation docs, comments, or other maintainer-facing documentation instead.
+- Exhaustive descriptions of what bootstrap does internally. Summarize the user-visible result rather than narrating the execution pipeline.
+
+Use these tests when deciding whether a README sentence should exist:
+
+1. Would a normal user need this before running a command or interpreting its result?
+2. Can the user do something differently because of this information?
+3. Would removing it make installation, daily use, or recovery materially harder?
+
+If all three answers are no, leave it out of README. Prefer concise commands plus short behavioral notes over implementation narratives. When a change only alters internals while preserving the user-facing interface, do not expand README merely to document that refactor.
 
 ## Route common changes
 
