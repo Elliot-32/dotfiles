@@ -1,5 +1,5 @@
 [settings]
-disable_tools = ["cargo:tinty"]
+disable_tools = ["github:tinted-theming/tinty"]
 
 [dotfiles]
 "~/.config/omarchy/themed/gomi.yaml.tpl" = { mode = "track" }
