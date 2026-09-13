@@ -3,3 +3,19 @@ run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-ghostty-fedo
 
 [bootstrap.packages]
 "dnf:ghostty" = "latest"
+
+[bootstrap.files."/etc/dnf/automatic.conf"]
+content = '''
+[commands]
+upgrade_type = default
+download_updates = true
+apply_updates = true
+reboot = never
+'''
+owner = "root"
+group = "root"
+mode = "0644"
+
+[bootstrap.services."dnf5-automatic.timer"]
+enabled = true
+state = "running"
