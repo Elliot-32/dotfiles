@@ -1,7 +1,6 @@
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
-$gitPackage = 'Git.Git'
 $fontPackage = 'DEVCOM.JetBrainsMonoNerdFont'
 $wingetPackageAlreadyInstalled = -1978335135 # 0x8A150061 APPINSTALLER_CLI_ERROR_PACKAGE_ALREADY_INSTALLED
 
@@ -40,7 +39,6 @@ if ($null -eq $winget) {
 }
 
 $script:WinGetCommand = $winget.Source
-Invoke-WinGetInstall -Id $gitPackage
 Invoke-WinGetInstall -Id $fontPackage
 
-Write-Host 'Windows packages are configured.'
+Write-Host 'Windows JetBrainsMono Nerd Font is configured.'

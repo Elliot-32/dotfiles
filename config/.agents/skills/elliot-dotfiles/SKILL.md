@@ -1,11 +1,11 @@
 ---
 name: elliot-dotfiles
-description: Maintain, review, and evolve Elliot-32/dotfiles, a mise-centric Linux/WSL setup repository. Use for work involving config.toml, miserc.toml, conf.d environment selection, mise tools/bootstrap/tasks, native tracked dotfiles, package managers, Flatpak, Zsh/Sheldon plugins and completions, Yazi, Topgrade, Ghostty, Fcitx5, Nerd Fonts, WSL/WSLg and Windows bootstrap, hk/CI, mise.lock, README updates, or repository refactors.
+description: Maintain, review, and evolve Elliot-32/dotfiles, a mise-centric Linux/WSL setup repository. Use for work involving config.toml, miserc.toml, conf.d environment selection, mise tools/bootstrap/tasks, native tracked dotfiles, package managers, Flatpak, Zsh/Sheldon plugins and completions, Yazi, Topgrade, Ghostty, Fcitx5, Nerd Fonts, WSL/WSLg and Windows bootstrap, Tinty/Omarchy theming, hk/CI, mise.lock, README updates, or repository refactors.
 license: MIT
 compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, shellcheck, and PowerShell.
 metadata:
   author: Elliot-32
-  version: "1.5"
+  version: "1.6"
 ---
 
 # Elliot dotfiles maintenance
@@ -33,7 +33,8 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
 - Prefer native `mode = "track"` for ordinary user dotfiles. Keep them at the path applications actually read (`home/...` in the setup repository) instead of introducing source-to-target symlinks. Fcitx5 user configuration is shared this way across APT, DNF, and Pacman systems; use package-manager fragments only for installing the distro-specific packages. Use declarative copy/symlink/template/edit modes only when deployment semantics are genuinely needed, such as the managed `.gitconfig` block.
 - Treat Topgrade as the user-session update orchestrator, while mise history/sync is the synchronization authority for tracked configuration and `mise.lock`. Do not add Git pull/push behavior that competes with history sync.
 - Treat `home/.config/yazi/package.toml` as Yazi's plugin manifest. Bootstrap installs declared plugins with `ya pkg install`; change plugin declarations there rather than adding ad-hoc plugin install commands elsewhere.
-- Treat `config/conf.d/platform.wsl.toml` plus `config/scripts/bootstrap-windows.ps1` as the WSL-to-Windows bootstrap path. Keep Windows-native WinGet/package/Windows Terminal behavior in PowerShell instead of moving it into Linux package configuration.
+- Treat `config/conf.d/platform.wsl.toml` plus `config/scripts/bootstrap-windows.sh` / `.ps1` as the WSL-to-Windows font bootstrap path. Windows bootstrap owns only the Windows JetBrainsMono Nerd Font; do not put Windows Terminal theming or unrelated Windows packages back into it.
+- Treat Windows Terminal theming as part of the Tinty target. `home/.config/tinted-theming/tinty/config.toml` invokes `config/scripts/tinty-windows-terminal.sh`, which writes `tinty.json`, ensures the JSONC import, and removes legacy `palette.json` state whenever Tinty applies a scheme.
 - Linux Nerd Font download/version ownership belongs to the `github:ryanoasis/nerd-fonts` tool declaration in `config/config.toml`. Its inline tool-level `postinstall` symlinks the mise-managed install into the user font directory and refreshes fontconfig on Linux hosts, including WSL. Windows font installation remains separately owned by `config/scripts/bootstrap-windows.ps1`.
 - Keep Zsh plugin and completion ordering in `home/.config/sheldon/plugins.toml` deliberate: completion directories on `fpath`, then `compinit`, integrations that require it, `fzf-tab` before widget-wrapping plugins, and syntax highlighting last.
 - Prefer `nvim` for editor commands and examples; do not introduce `nano`.
@@ -56,8 +57,9 @@ Use [references/repository-map.md](references/repository-map.md) for details. In
 - Change Fcitx5 configuration: edit `home/.config/fcitx5/profile` or `home/.config/environment.d/90-fcitx5.conf`; change package availability separately in the APT, DNF, and Pacman package fragments.
 - Change unattended/user-session update behavior: inspect `home/.config/topgrade.toml`, `home/.config/topgrade.systemd.toml`, and the `update` / `update-timer` systemd units in `config/config.toml` before adding another updater.
 - Change Linux Nerd Font installation/update behavior: edit the `github:ryanoasis/nerd-fonts` tool declaration and its inline tool-level `postinstall` in `config/config.toml`. Keep Linux and WSL registration behavior aligned unless the user explicitly requests a platform-specific split.
-- Change Windows packages, Windows Terminal defaults, or other WSL-triggered Windows setup: inspect `config/conf.d/platform.wsl.toml`, `tasks.bootstrap:windows`, and `config/scripts/bootstrap-windows.ps1`.
-- Change bootstrap behavior: prefer existing `[bootstrap.*]`, `[tasks.*]`, and `[hooks]` in `config/config.toml`, including completion sync, Sheldon locking, Yazi package install, Windows bootstrap, and GitHub login flow. Nerd Font installation is tool-owned and should not be reintroduced as a bootstrap task.
+- Change the Windows font bootstrap: inspect `config/conf.d/platform.wsl.toml`, `tasks.bootstrap:windows`, `config/scripts/bootstrap-windows.sh`, and `config/scripts/bootstrap-windows.ps1`.
+- Change Windows Terminal Tinty behavior: inspect `home/.config/tinted-theming/tinty/config.toml`, `config/scripts/tinty-windows-terminal.sh`, and `config/scripts/ensure-windows-terminal-import.cjs`; do not route theme mutations through `bootstrap:windows`.
+- Change bootstrap behavior: prefer existing `[bootstrap.*]`, `[tasks.*]`, and `[hooks]` in `config/config.toml`, including completion sync, Sheldon locking, Yazi package install, Windows font bootstrap, theme bootstrap, and GitHub login flow. Nerd Font installation is tool-owned on Linux and should not be duplicated in another Linux bootstrap task.
 - Change validation checks: edit `config/hk.pkl` and, when necessary, `.github/workflows/ci.yml`.
 
 ## Completion registry rules
@@ -83,7 +85,7 @@ Current repository custom entries are intentionally minimal: `codex`, `dasel`, `
 - Do not move distro/package-manager logic into scripts merely for convenience.
 - Do not broaden environment detection without checking how the new condition interacts with existing Ubuntu/Debian, Fedora/RHEL, Arch, Flatpak, WSL, and WSLg selection.
 - When changing plugin order, reason about `fpath`, `compinit`, widget wrapping, and syntax-highlighting order before editing.
-- When changing bootstrap actions, distinguish validation/dry-run behavior from actions that mutate the host system, login shell, package repositories, user services, credentials, Windows packages, or Windows Terminal settings.
+- When changing bootstrap actions, distinguish validation/dry-run behavior from actions that mutate the host system, login shell, package repositories, user services, credentials, Windows fonts, or Windows Terminal settings through the theme path.
 - When changing update behavior, distinguish mise-managed tool/runtime upgrades from Topgrade-managed plugin/data/system steps so the same ecosystem is not upgraded twice.
 - When adding a mise-managed CLI that can generate completions, also decide whether `mise-completions-sync` already supports it upstream, can use a built-in pattern in the local registry, or genuinely requires an explicit command.
 

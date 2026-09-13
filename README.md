@@ -26,6 +26,8 @@ mise bootstrap dotfiles pull
 
 一般環境由 Tinty 統一套用主題：Ghostty 使用 `tinted-terminal`，gomi 與 Windows Terminal 使用這個 repo 維護的 Tinty templates。Bootstrap 的 `bootstrap:theme` task 會執行 `tinty sync`、build 本地 templates，再以 `tinty init` 套用目前或預設主題。
 
+Windows Terminal 也完全屬於 Tinty 流程。每次 `tinty apply` 時，Tinty hook 都會更新 `tinty.json`、確保 Windows Terminal 的 `settings.json` 匯入它，並清理舊的 `palette.json` import/file；因此不需要另外執行 Windows bootstrap 來套用或修復主題。
+
 `mise run theme:select` 是 Tinty 的互動式主題選擇器。它會用 Gum 搜尋 Base16/Base24 schemes；選中候選主題後立即執行 `tinty apply`，讓所有 Tinty targets 同步切換作為實際預覽，接著可以保留主題、繼續選擇，或還原執行選擇器前的主題。
 
 Omarchy 環境則完全交給 Omarchy 管理主題。平台設定會用 `disable_tools` 排除 `cargo:tinty`，因此 bootstrap 不會安裝 Tinty；`bootstrap:theme` 也會覆寫成 no-op。Ghostty 直接讀取 Omarchy 的 current theme config；gomi 的 `~/.config/omarchy/themed/gomi.yaml.tpl` 會產生 `~/.local/state/omarchy/current/theme/gomi.yaml`，再由共用 `theme-set` hook 依 `~/.config/omarchy/themed-links.toml` 建立 symlink 到 `~/.config/gomi/config.yaml`。
@@ -42,7 +44,7 @@ output = "~/.config/gomi/config.yaml"
 
 ## Windows / WSL
 
-在 WSL 執行 bootstrap 時，會一併設定 Windows 端需要的工具與字型，並在 Windows Terminal 註冊 `tinty.json` 匯入，不會覆寫其他既有設定。舊的 `palette.json` import 會在重新執行 Windows bootstrap 時自動遷移並清理。
+在 WSL 執行 bootstrap 時，`bootstrap:windows` 只負責透過 WinGet 安裝 Windows 端的 JetBrainsMono Nerd Font。Windows Terminal 主題由 Tinty/theme task 負責，不再由 Windows bootstrap 修改。
 
 ## 常用指令
 
@@ -52,7 +54,7 @@ output = "~/.config/gomi/config.yaml"
 | 重新套用 bootstrap | `mise bootstrap --yes --force-dotfiles` |
 | 套用主題（非 Omarchy） | `tinty apply <scheme>` |
 | 互動選擇 / 預覽 Tinty 主題 | `mise run theme:select` |
-| 重新設定 Windows / Windows Terminal | `mise run bootstrap:windows` |
+| 重新安裝 / 設定 Windows 字體 | `mise run bootstrap:windows` |
 | 查看同步狀態 | `mise bootstrap dotfiles status` |
 | 納管檔案 | `mise bootstrap dotfiles track <path>` |
 | 解除納管 | `mise bootstrap dotfiles untrack <path>` |

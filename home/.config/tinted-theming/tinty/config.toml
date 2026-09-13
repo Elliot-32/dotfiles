@@ -32,19 +32,8 @@ path = "~/.config/tinted-theming/tinty"
 themes-dir = "themes/windows-terminal"
 supported-systems = ["base16", "base24"]
 hook = '''
-if command -v powershell.exe >/dev/null 2>&1 && command -v wslpath >/dev/null 2>&1; then
-  windows_path="$(powershell.exe -NoLogo -NoProfile -Command '[Environment]::GetFolderPath("LocalApplicationData")' | tr -d '\r')"
-  if [ -n "$windows_path" ]; then
-    local_appdata="$(wslpath -u "$windows_path")"
-    for state_directory in \
-      "$local_appdata/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState" \
-      "$local_appdata/Packages/Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe/LocalState" \
-      "$local_appdata/Packages/Microsoft.WindowsTerminalCanary_8wekyb3d8bbwe/LocalState" \
-      "$local_appdata/Microsoft/Windows Terminal"
-    do
-      [ -f "$state_directory/settings.json" ] || continue
-      cp -f "$TINTY_THEME_FILE_PATH" "$state_directory/tinty.json"
-    done
-  fi
+script="${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/tinty-windows-terminal.sh"
+if [ -f "$script" ]; then
+  sh "$script" "$TINTY_THEME_FILE_PATH"
 fi
 '''

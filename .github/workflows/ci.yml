@@ -120,6 +120,25 @@ jobs:
             exit 1
           fi
 
+      - name: Validate Tinty Windows Terminal path override
+        shell: bash
+        run: |
+          test_root="$(mktemp -d)"
+          trap 'rm -rf "$test_root"' EXIT
+          mkdir -p "$test_root/bin" "$test_root/localappdata"
+
+          cat >"$test_root/bin/powershell.exe" <<'EOF'
+          #!/bin/sh
+          echo '::error::Tinty hook called powershell.exe despite pre-resolved LOCALAPPDATA' >&2
+          exit 99
+          EOF
+          chmod +x "$test_root/bin/powershell.exe"
+
+          printf '{}\n' >"$test_root/rendered.json"
+          PATH="$test_root/bin:$PATH" \
+            TINTY_WINDOWS_LOCALAPPDATA="$test_root/localappdata" \
+            sh config/scripts/tinty-windows-terminal.sh "$test_root/rendered.json"
+
       - name: Validate Windows bootstrap skips without interop
         shell: bash
         run: |

@@ -26,6 +26,37 @@ require_command() {
   return 1
 }
 
+resolve_windows_localappdata() {
+  [[ -n "${TINTY_WINDOWS_LOCALAPPDATA:-}" ]] && return 0
+  command -v powershell.exe >/dev/null 2>&1 || return 0
+  command -v wslpath >/dev/null 2>&1 || return 0
+
+  local windows_path
+  if ! windows_path="$(
+    powershell.exe \
+      -NoLogo \
+      -NoProfile \
+      -NonInteractive \
+      -Command '[Environment]::GetFolderPath("LocalApplicationData")' \
+      | tr -d '\r'
+  )"; then
+    show_error "Failed to determine Windows LOCALAPPDATA"
+    return 1
+  fi
+
+  if [[ -z "$windows_path" ]]; then
+    show_error "Windows LOCALAPPDATA is empty"
+    return 1
+  fi
+
+  if ! TINTY_WINDOWS_LOCALAPPDATA="$(wslpath -u "$windows_path")"; then
+    show_error "Failed to convert Windows LOCALAPPDATA"
+    return 1
+  fi
+
+  export TINTY_WINDOWS_LOCALAPPDATA
+}
+
 require_command gum
 require_command tinty
 
@@ -33,6 +64,8 @@ if [[ ! -t 0 || ! -t 1 || ! -t 2 ]]; then
   show_error "An interactive terminal is required"
   exit 1
 fi
+
+resolve_windows_localappdata
 
 original_scheme=""
 if original_scheme="$(tinty current 2>/dev/null)"; then
