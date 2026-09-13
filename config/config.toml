@@ -72,7 +72,7 @@ witr = "latest"
 yazi = "latest"
 zoxide = "latest"
 "cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
-"github:tinted-theming/tinty" = "0.34.1"
+"github:tinted-theming/tinty" = "latest"
 "github:Giammarco-Ferranti/deja" = "latest"
 "pipx:isd-tui" = "latest"
 codex = "latest"
