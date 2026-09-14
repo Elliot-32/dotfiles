@@ -9,7 +9,7 @@ trap 'rm -rf "$test_root"' EXIT
 # Windows Terminal uses OSC 777 and delegates focused-pane suppression to the
 # terminal itself rather than probing Windows from WSL.
 (
-  unset TERM_PROGRAM KITTY_WINDOW_ID TMUX ZELLIJ ZELLIJ_SESSION_NAME
+  unset TERM_PROGRAM TMUX ZELLIJ ZELLIJ_SESSION_NAME
   export TERM=xterm-256color
   export WT_SESSION=ci
   bgnotify_appid() { print -r -- fallback; }
@@ -23,10 +23,9 @@ trap 'rm -rf "$test_root"' EXIT
   [[ $output == $'\e]777;notify;build finished;command completed\e\\' ]]
 )
 
-# tmux receives the same terminal protocol through DCS passthrough with nested
-# ESC bytes escaped as required by tmux.
+# Windows Terminal inside tmux receives OSC 777 through DCS passthrough.
 (
-  unset TERM_PROGRAM KITTY_WINDOW_ID ZELLIJ ZELLIJ_SESSION_NAME
+  unset TERM_PROGRAM ZELLIJ ZELLIJ_SESSION_NAME
   export TERM=xterm-256color
   export WT_SESSION=ci
   export TMUX=/tmp/tmux-test
@@ -38,52 +37,22 @@ trap 'rm -rf "$test_root"' EXIT
   [[ $output == $'\ePtmux;\e\e]777;notify;build finished;command completed\e\e\\\e\\' ]]
 )
 
-# kitty gets its richer OSC 99 protocol with one logical notification split
-# into title and body chunks.
+# Rio uses OSC 777 directly.
 (
-  unset TERM_PROGRAM WT_SESSION TMUX ZELLIJ ZELLIJ_SESSION_NAME
-  export TERM=xterm-kitty
-  export KITTY_WINDOW_ID=1
-  bgnotify() { print -r -- fallback; }
-  source "$plugin"
-
-  [[ $_terminal_notify_protocol == osc99 ]]
-  output=$(bgnotify "build finished" "command completed" "")
-  [[ $output == $'\e]99;i=bgnotify:d=0;build finished\e\\\e]99;i=bgnotify:p=body:d=1;command completed\e\\' ]]
-)
-
-# iTerm2 keeps its native OSC 9 notification path.
-(
-  unset WT_SESSION KITTY_WINDOW_ID TMUX ZELLIJ ZELLIJ_SESSION_NAME
+  unset WT_SESSION TMUX ZELLIJ ZELLIJ_SESSION_NAME
   export TERM=xterm-256color
-  export TERM_PROGRAM=iTerm.app
+  export TERM_PROGRAM=rio
   bgnotify() { print -r -- fallback; }
   source "$plugin"
 
-  [[ $_terminal_notify_protocol == osc9 ]]
+  [[ $_terminal_notify_protocol == osc777 ]]
   output=$(bgnotify "build finished" "command completed" "")
-  [[ $output == $'\e]9;build finished — command completed\e\\' ]]
+  [[ $output == $'\e]777;notify;build finished;command completed\e\\' ]]
 )
 
-# Rio and WezTerm both use OSC 777.
-for terminal_program in rio WezTerm; do
-  (
-    unset WT_SESSION KITTY_WINDOW_ID TMUX ZELLIJ ZELLIJ_SESSION_NAME
-    export TERM=xterm-256color
-    export TERM_PROGRAM=$terminal_program
-    bgnotify() { print -r -- fallback; }
-    source "$plugin"
-
-    [[ $_terminal_notify_protocol == osc777 ]]
-    output=$(bgnotify "build finished" "command completed" "")
-    [[ $output == $'\e]777;notify;build finished;command completed\e\\' ]]
-  )
-done
-
-# Unknown terminals retain upstream bgnotify unchanged, preserving its native
-# OS notification fallback instead of forcing an unsupported escape sequence.
+# Unsupported terminals retain upstream bgnotify unchanged.
 (
-  unset WT_SESSION KITTY_WINDOW_ID TMUX ZELLIJ ZELLIJ_SESSION_NAME
+  unset WT_SESSION TMUX ZELLIJ ZELLIJ_SESSION_NAME
   export TERM=xterm-256color
   export TERM_PROGRAM=unknown-terminal
   bgnotify() { print -r -- fallback; }
@@ -93,8 +62,8 @@ done
   [[ "$(bgnotify one two three)" == fallback ]]
 )
 
-# Exercise direct Ghostty hook removal using a fixture loaded through zsh's
-# normal autoload mechanism. Direct Ghostty owns command completion via OSC 133.
+# Direct Ghostty owns command completion via OSC 133, so bgnotify hooks are
+# removed instead of producing duplicate notifications.
 mkdir -p "$test_root/fpath"
 cat >"$test_root/fpath/add-zsh-hook" <<'EOF'
 local mode=$1 hook=$2 callback=$3
@@ -114,7 +83,7 @@ EOF
   bgnotify_begin() {}
   bgnotify_end() {}
   fpath=("$test_root/fpath" $fpath)
-  unset WT_SESSION KITTY_WINDOW_ID TMUX ZELLIJ ZELLIJ_SESSION_NAME
+  unset WT_SESSION TMUX ZELLIJ ZELLIJ_SESSION_NAME
   export TERM_PROGRAM=ghostty
   source "$plugin"
 
@@ -122,10 +91,10 @@ EOF
   [[ -z ${precmd_functions[(r)bgnotify_end]-} ]]
 )
 
-# Inside tmux Ghostty cannot rely on OSC 133 reaching the outer terminal, so it
-# falls back to an explicit OSC 777 notification through passthrough.
+# Ghostty inside tmux cannot rely on OSC 133 reaching the outer terminal, so it
+# falls back to explicit OSC 777 through passthrough.
 (
-  unset WT_SESSION KITTY_WINDOW_ID ZELLIJ ZELLIJ_SESSION_NAME
+  unset WT_SESSION ZELLIJ ZELLIJ_SESSION_NAME
   export TERM_PROGRAM=ghostty
   export TMUX=/tmp/tmux-test
   bgnotify() { print -r -- fallback; }
@@ -136,10 +105,9 @@ EOF
   [[ $output == $'\ePtmux;\e\e]777;notify;build finished;command completed\e\e\\\e\\' ]]
 )
 
-# Zellij can consume/forward notification OSC directly, so Ghostty sessions
-# inside Zellij use OSC 777 without a tmux DCS envelope.
+# Ghostty inside Zellij emits OSC 777 directly for Zellij to forward.
 (
-  unset WT_SESSION KITTY_WINDOW_ID TMUX ZELLIJ_SESSION_NAME
+  unset WT_SESSION TMUX ZELLIJ_SESSION_NAME
   export TERM_PROGRAM=ghostty
   export ZELLIJ=1
   bgnotify() { print -r -- fallback; }
