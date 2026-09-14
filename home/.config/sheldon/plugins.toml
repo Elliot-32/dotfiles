@@ -85,11 +85,9 @@ use = [
 [plugins.bgnotify]
 github = "ohmyzsh/ohmyzsh"
 use = ["plugins/bgnotify/bgnotify.plugin.zsh"]
-profiles = ["wsl"]
 
-[plugins.wsl-notify]
+[plugins.terminal-notify]
 local = "~/.config/sheldon/plugins"
-profiles = ["wsl"]
 
 # Keep syntax highlighting last among plugins.
 [plugins.zsh-syntax-highlighting]
