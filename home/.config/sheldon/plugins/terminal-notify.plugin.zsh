@@ -101,7 +101,7 @@ else
         # Direct Ghostty sessions have more accurate native OSC 133 command
         # tracking, including focus-aware command-finished notifications.
         _terminal_notify_disable_bgnotify
-        return
+        return 0
       fi
       # Multiplexers can consume OSC 133 before Ghostty sees it. Emit an
       # explicit notification instead; tmux is wrapped by _terminal_notify_write.
@@ -116,13 +116,13 @@ else
     WarpTerminal)
       # Warp already tracks command lifecycle and notifies only when away.
       _terminal_notify_disable_bgnotify
-      return
+      return 0
       ;;
   esac
 fi
 
 # Unknown terminals keep upstream bgnotify's native OS fallbacks unchanged.
-[[ -n $_terminal_notify_protocol ]] || return
+[[ -n $_terminal_notify_protocol ]] || return 0
 
 bgnotify() {
   local title=$1
