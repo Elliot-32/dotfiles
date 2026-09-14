@@ -1,9 +1,6 @@
 # WSL-specific mise configuration.
 # This fragment is loaded only when the `wsl` environment is active.
 
-[env]
-SHELDON_PROFILE = "wsl"
-
 [tasks."bootstrap:windows"]
 description = "Configure Windows font and Terminal integration"
 hide = false
