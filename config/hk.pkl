@@ -73,9 +73,13 @@ local checks = new Mapping<String, Step> {
   ["terminal-notify"] {
     glob = List(
       "../home/.config/sheldon/plugins/terminal-notify.plugin.zsh",
-      "tests/terminal-notify.zsh"
+      "tests/terminal-notify.zsh",
+      "windows-terminal/notification.json"
     )
-    check = "zsh tests/terminal-notify.zsh"
+    check = """
+      zsh tests/terminal-notify.zsh
+      jq -e '.profiles.defaults["compatibility.allowOSC777"] == true' windows-terminal/notification.json >/dev/null
+    """
   }
 }
 
