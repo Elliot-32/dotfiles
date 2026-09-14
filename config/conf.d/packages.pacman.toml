@@ -1,6 +1,10 @@
+[settings]
+disable_tools = ["github:ryanoasis/nerd-fonts"]
+
 [bootstrap.packages]
 "pacman:base-devel" = "latest"
 "pacman:fontconfig" = "latest"
+"pacman:ttf-jetbrains-mono-nerd" = "latest"
 "pacman:xz" = "latest"
 "pacman:nmap" = "latest"
 "pacman:openssh" = "latest"

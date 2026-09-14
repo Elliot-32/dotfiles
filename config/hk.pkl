@@ -10,6 +10,14 @@ local checks = new Mapping<String, Step> {
     glob = List("scripts/*.sh")
     check = "sh -n {{files}}"
   }
+  ["mise-tool-disables"] {
+    glob = List("conf.d/packages.pacman.toml", "conf.d/platform.omarchy.toml")
+    check = """
+      set -e
+      test "$(MISE_ENV=arch,pacman mise settings get disable_tools)" = '["github:ryanoasis/nerd-fonts"]'
+      test "$(MISE_ENV=arch,pacman,omarchy mise settings get disable_tools)" = '["github:ryanoasis/nerd-fonts", "github:tinted-theming/tinty"]'
+    """
+  }
   ["omarchy-hook"] {
     glob = List("../home/.config/omarchy/hooks/theme-set.d/50-themed-links")
     check = "bash -n {{files}} && shellcheck -x {{files}}"
