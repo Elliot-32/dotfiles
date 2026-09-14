@@ -82,7 +82,12 @@ function Get-WslDistroIconPath {
         return $null
     }
 
-    foreach ($root in @(\\"\\wsl.localhost\\$Name\\", \\"\\wsl`$\\$Name\\")) {
+    $roots = @(
+        ('\\wsl.localhost\{0}' -f $Name),
+        ('\\wsl$\{0}' -f $Name)
+    )
+
+    foreach ($root in $roots) {
         $configPath = Join-Path -Path $root -ChildPath 'etc\wsl-distribution.conf'
         if (-not (Test-Path -LiteralPath $configPath -PathType Leaf)) {
             continue
