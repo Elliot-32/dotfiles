@@ -31,7 +31,7 @@ Environment selector restored to `~/.miserc.toml`. It detects Arch, Fedora, RHEL
 - `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including Fcitx5 packages.
 - `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including Fcitx5 packages.
 - `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked theme files and theme bootstrap behavior.
-- `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font bootstrap override.
+- `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font/bootstrap integration override.
 - `config/conf.d/platform.wslg.toml`: WSLg-specific configuration.
 - `config/config.flatpak.toml`: Flatpak-specific bootstrap/update behavior.
 
@@ -44,13 +44,14 @@ These files are restored directly to their application paths and use `mode = "tr
 - `home/.config/yazi/`;
 - `home/.config/topgrade.toml` and `home/.config/topgrade.systemd.toml`;
 - `home/.config/ghostty/config`;
+- `home/.config/herdr/config.toml`;
 - `home/.config/omarchy/themed/gomi.yaml.tpl`, `home/.config/omarchy/themed-links.toml`, and `home/.config/omarchy/hooks/theme-set.d/50-themed-links`;
 - `home/.config/xdg-terminals.list`;
 - `home/.config/fcitx5/profile`;
 - `home/.config/environment.d/90-fcitx5.conf`;
 - `home/.local/share/mise-completions-sync/registry.toml`.
 
-Fcitx5 user configuration is shared across APT, DNF, and Pacman systems; only package installation stays package-manager-specific. `~/.gitconfig` is managed only through a block edit so machine-local identity is not synchronized.
+Herdr's tracked config routes agent completion/input notifications through the outer terminal with `[ui.toast] delivery = "terminal"`. Fcitx5 user configuration is shared across APT, DNF, and Pacman systems; only package installation stays package-manager-specific. `~/.gitconfig` is managed only through a block edit so machine-local identity is not synchronized.
 
 ## Bundled assets and scripts
 
@@ -59,8 +60,9 @@ Fcitx5 user configuration is shared across APT, DNF, and Pacman systems; only pa
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side wrapper that installs the Windows JetBrainsMono Nerd Font only.
 - `config/scripts/bootstrap-windows.ps1`: Windows-native WinGet font installer.
+- `config/scripts/bootstrap-windows-terminal.sh`: WSL-side Windows Terminal integration for keybindings and terminal-native notifications.
 - `config/scripts/tinty-windows-terminal.sh`: Tinty-side Windows Terminal integration; writes `tinty.json`, registers its JSONC import, and removes legacy `palette.json` state.
-- `config/scripts/ensure-windows-terminal-import.cjs`: JSONC editor used by the Tinty Windows Terminal helper.
+- `config/scripts/ensure-windows-terminal-import.cjs`: JSONC editor used by Windows Terminal integration helpers.
 - `config/scripts/tinty-theme-picker.sh`: platform-independent Gum-based Tinty scheme picker with apply/restore preview flow.
 - `config/scripts/login-github.sh`: GitHub login/configuration workflow.
 
