@@ -11,6 +11,7 @@ run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-flatpak.sh"'
 "flatpak-user:com.heroicgameslauncher.hgl" = "latest"
 "flatpak-user:com.obsproject.Studio" = "latest"
 "flatpak-user:com.ranfdev.DistroShelf" = "latest"
+"flatpak-user:com.rioterm.Rio" = "latest"
 "flatpak-user:com.rustdesk.RustDesk" = "latest"
 "flatpak-user:com.usebottles.bottles" = "latest"
 "flatpak-user:com.vysp3r.ProtonPlus" = "latest"
