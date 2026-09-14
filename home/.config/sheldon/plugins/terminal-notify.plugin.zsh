@@ -35,7 +35,7 @@ _terminal_notify_write() {
     # tmux DCS passthrough requires every ESC in the nested sequence to be
     # doubled. `allow-passthrough` must be enabled in tmux for this to pass.
     sequence=${sequence//$'\e'/$'\e\e'}
-    print -rn -- $'\ePtmux;' "$sequence" $'\e\\'
+    print -rn -- $'\ePtmux;'"$sequence"$'\e\\'
   else
     # Zellij understands notification OSC directly, so no extra envelope is
     # needed there.
