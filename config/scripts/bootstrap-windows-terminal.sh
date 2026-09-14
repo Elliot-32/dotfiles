@@ -4,9 +4,8 @@ set -eu
 jsonc_parser_version=3.3.1
 config_dir=${MISE_CONFIG_DIR:-$HOME/.config/mise}
 editor_script="$config_dir/scripts/ensure-windows-terminal-import.cjs"
-import_names='keybind.json notification.json'
 
-for import_name in $import_names; do
+for import_name in keybind.json notification.json; do
   fragment="$config_dir/windows-terminal/$import_name"
   if [ ! -f "$fragment" ]; then
     printf 'windows terminal bootstrap: fragment was not found: %s\n' "$fragment" >&2
@@ -94,7 +93,7 @@ do
     found=true
   fi
 
-  for import_name in $import_names; do
+  for import_name in keybind.json notification.json; do
     fragment="$config_dir/windows-terminal/$import_name"
     cp -f -- "$fragment" "$state_directory/$import_name"
     NODE_PATH="$jsonc_node_path${NODE_PATH:+:$NODE_PATH}" \
