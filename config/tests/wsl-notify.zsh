@@ -70,6 +70,6 @@ zsh -f -c '
   export WSL_DISTRO_NAME=ci
   export TERM_PROGRAM=ghostty
   source "$1"
-  (( ${preexec_functions[(Ie)bgnotify_begin]} == 0 ))
-  (( ${precmd_functions[(Ie)bgnotify_end]} == 0 ))
+  [[ -z ${preexec_functions[(r)bgnotify_begin]-} ]]
+  [[ -z ${precmd_functions[(r)bgnotify_end]-} ]]
 ' zsh "$plugin" "$test_root/fpath"
