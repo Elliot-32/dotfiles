@@ -49,7 +49,8 @@ function bgnotify {
 
     if powershell.exe -NoLogo -NoProfile -NonInteractive \
       -ExecutionPolicy Bypass -File "$windows_notify_script" \
-      -Title "$title" -Message "$message" >/dev/null 2>&1; then
+      -Title "$title" -Message "$message" \
+      -DistroName "${WSL_DISTRO_NAME:-}" >/dev/null 2>&1; then
       notify_status=0
     else
       notify_status=$?
