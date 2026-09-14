@@ -44,6 +44,7 @@ export WSL_NOTIFY_TEST_EXIT=20
 output=$(bgnotify 'build finished' 'command completed' '')
 [[ "$output" == $'\a' ]]
 [[ "$(wc -l <"$WSL_NOTIFY_TEST_LOG")" -eq 4 ]]
+[[ "$(grep -c -- '-DistroName ci' "$WSL_NOTIFY_TEST_LOG")" -eq 4 ]]
 
 # Exercise the Ghostty hook-removal path without depending on the runner's zsh
 # function installation. The fixture is loaded through zsh's real autoload
