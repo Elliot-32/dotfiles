@@ -23,7 +23,12 @@ local checks = new Mapping<String, Step> {
     check = "bash -n {{files}} && shellcheck -x {{files}}"
   }
   ["zsh-syntax"] {
-    glob = List("../home/.zshrc", "../home/.p10k.zsh")
+    glob = List(
+      "../home/.zshrc",
+      "../home/.p10k.zsh",
+      "../home/.config/sheldon/plugins/*.zsh",
+      "tests/*.zsh"
+    )
     check = "zsh -n {{files}}"
   }
 }
