@@ -68,6 +68,12 @@
       "variants": []
     },
     {
+      "path": "home/.config/herdr/config.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/omarchy/hooks/theme-set.d/50-themed-links",
       "autosave": true,
       "encrypt": false,
