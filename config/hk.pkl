@@ -10,6 +10,45 @@ local checks = new Mapping<String, Step> {
     glob = List("scripts/*.sh")
     check = "sh -n {{files}}"
   }
+  ["powershell-syntax"] {
+    glob = List("scripts/*.ps1")
+    check = """
+      set -e
+
+      if command -v pwsh >/dev/null 2>&1; then
+        ps_cmd=pwsh
+        scripts_dir="$PWD/scripts"
+      elif command -v powershell.exe >/dev/null 2>&1 && command -v wslpath >/dev/null 2>&1; then
+        ps_cmd=powershell.exe
+        scripts_dir="$(wslpath -w "$PWD/scripts")"
+      else
+        echo 'warning: PowerShell unavailable; skipping PowerShell syntax validation' >&2
+        exit 0
+      fi
+
+      "$ps_cmd" -NoLogo -NoProfile -NonInteractive -Command '
+        param([string] $ScriptsDir)
+        $failed = $false
+
+        Get-ChildItem -LiteralPath $ScriptsDir -Filter "*.ps1" | ForEach-Object {
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            $_.FullName,
+            [ref] $tokens,
+            [ref] $errors
+          ) | Out-Null
+
+          if ($errors.Count -gt 0) {
+            $failed = $true
+            $errors | ForEach-Object { Write-Error "$($_.Extent.File): $_" }
+          }
+        }
+
+        if ($failed) { exit 1 }
+      ' "$scripts_dir"
+    """
+  }
   ["mise-tool-disables"] {
     glob = List("conf.d/packages.pacman.toml", "conf.d/platform.omarchy.toml")
     check = """
