@@ -5,7 +5,7 @@
 SHELDON_PROFILE = "wsl"
 
 [tasks."bootstrap:windows"]
-description = "Configure Windows font and Terminal keybinds"
+description = "Configure Windows font and Terminal integration"
 hide = false
 run = [
   "sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-windows.sh\"",
