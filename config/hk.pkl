@@ -70,13 +70,12 @@ local checks = new Mapping<String, Step> {
     )
     check = "zsh -n {{files}}"
   }
-  ["wsl-notify"] {
+  ["terminal-notify"] {
     glob = List(
-      "../home/.config/sheldon/plugins/wsl-notify.plugin.zsh",
-      "scripts/wsl-notify.ps1",
-      "tests/wsl-notify.zsh"
+      "../home/.config/sheldon/plugins/terminal-notify.plugin.zsh",
+      "tests/terminal-notify.zsh"
     )
-    check = "zsh tests/wsl-notify.zsh"
+    check = "zsh tests/terminal-notify.zsh"
   }
 }
 
