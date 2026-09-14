@@ -43,7 +43,7 @@ Omarchy 環境則直接使用 Omarchy 的主題系統，不需要另外使用 Ti
 mise run bootstrap:windows
 ```
 
-長時間 command 的通知針對 Ghostty、Windows Terminal 與 Rio 使用 terminal-native 路徑。Ghostty 直連時使用 OSC 133 command-finished notifications；Windows Terminal 與 Rio 使用 OSC 777。Ghostty 或 Windows Terminal 位於 tmux 內時會使用 DCS passthrough（需啟用 `allow-passthrough`），Zellij 則直接接收 notification OSC；其他 terminal 保留 bgnotify 原本的 OS notification fallback。
+長時間 command 的通知只針對 Ghostty 與 Windows Terminal 使用 terminal-native 路徑：Ghostty 直接使用 OSC 133 command-finished notifications；Windows Terminal 使用 OSC 777。其他 terminal 保留 bgnotify 原本的 OS notification fallback。Herdr 則使用 `delivery = "terminal"`，由 Herdr 自己在 agent 完成或等待輸入時請外層 terminal 顯示通知，不經 shell command-completion hook。
 
 ## 常用指令
 
