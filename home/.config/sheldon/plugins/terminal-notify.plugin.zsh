@@ -1,4 +1,4 @@
-# Route long-running command notifications through the hosting terminal when possible.
+# Route long-running command notifications through supported terminals.
 # bgnotify remains the command-lifecycle source; this file only chooses delivery.
 
 bgnotify_bell=false
@@ -55,34 +55,6 @@ _terminal_notify_osc777() {
   _terminal_notify_write $'\e]777;notify;'"$title;$message"$'\e\\'
 }
 
-_terminal_notify_osc9() {
-  local title=$1
-  local message=$2
-
-  _terminal_notify_clean "$title"
-  title=$REPLY
-  _terminal_notify_clean "$message"
-  message=$REPLY
-
-  _terminal_notify_write $'\e]9;'"$title — $message"$'\e\\'
-}
-
-_terminal_notify_osc99() {
-  local title=$1
-  local message=$2
-  local id=bgnotify
-
-  _terminal_notify_clean "$title"
-  title=$REPLY
-  _terminal_notify_clean "$message"
-  message=$REPLY
-
-  # OSC 99 is chunked: hold the notification after the title, then complete it
-  # with the body. Reusing the id updates the previous command notification.
-  _terminal_notify_write $'\e]99;i='"$id"$':d=0;'"$title"$'\e\\'
-  _terminal_notify_write $'\e]99;i='"$id"$':p=body:d=1;'"$message"$'\e\\'
-}
-
 if [[ -n ${WT_SESSION:-} ]]; then
   _terminal_notify_protocol=osc777
 
@@ -92,8 +64,6 @@ if [[ -n ${WT_SESSION:-} ]]; then
     print -r -- '__terminal_notify_dispatch__'
   }
   bgnotify_termid='__terminal_notify_host_focus__'
-elif [[ -n ${KITTY_WINDOW_ID:-} || ${TERM:-} == xterm-kitty ]]; then
-  _terminal_notify_protocol=osc99
 else
   case ${TERM_PROGRAM:-} in
     ghostty)
@@ -104,33 +74,18 @@ else
         return 0
       fi
       # Multiplexers can consume OSC 133 before Ghostty sees it. Emit an
-      # explicit notification instead; tmux is wrapped by _terminal_notify_write.
+      # explicit OSC 777 notification instead; tmux is wrapped above.
       _terminal_notify_protocol=osc777
       ;;
-    WezTerm|rio)
+    rio)
       _terminal_notify_protocol=osc777
-      ;;
-    iTerm.app)
-      _terminal_notify_protocol=osc9
-      ;;
-    WarpTerminal)
-      # Warp already tracks command lifecycle and notifies only when away.
-      _terminal_notify_disable_bgnotify
-      return 0
       ;;
   esac
 fi
 
-# Unknown terminals keep upstream bgnotify's native OS fallbacks unchanged.
+# Unsupported terminals keep upstream bgnotify's native OS fallbacks unchanged.
 [[ -n $_terminal_notify_protocol ]] || return 0
 
 bgnotify() {
-  local title=$1
-  local message=$2
-
-  case $_terminal_notify_protocol in
-    osc99) _terminal_notify_osc99 "$title" "$message" ;;
-    osc777) _terminal_notify_osc777 "$title" "$message" ;;
-    osc9) _terminal_notify_osc9 "$title" "$message" ;;
-  esac
+  _terminal_notify_osc777 "$1" "$2"
 }
