@@ -47,10 +47,13 @@ function bgnotify {
     windows_notify_script=$(command wslpath -w "$notify_script") || return 0
     [[ -n $windows_notify_script ]] || return 0
 
-    powershell.exe -NoLogo -NoProfile -NonInteractive \
+    if powershell.exe -NoLogo -NoProfile -NonInteractive \
       -ExecutionPolicy Bypass -File "$windows_notify_script" \
-      -Title "$title" -Message "$message" >/dev/null 2>&1
-    notify_status=$?
+      -Title "$title" -Message "$message" >/dev/null 2>&1; then
+      notify_status=0
+    else
+      notify_status=$?
+    fi
 
     case $notify_status in
       0|10|11)
