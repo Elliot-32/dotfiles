@@ -34,8 +34,8 @@ source "$plugin"
 [[ "$bgnotify_termid" == '__wsl_notify_terminal_foreground__' ]]
 [[ ! -e "$WSL_NOTIFY_TEST_LOG" ]]
 
-for status in 0 10 11; do
-  export WSL_NOTIFY_TEST_EXIT=$status
+for exit_code in 0 10 11; do
+  export WSL_NOTIFY_TEST_EXIT=$exit_code
   output=$(bgnotify 'build finished' 'command completed' '')
   [[ -z $output ]]
 done
