@@ -26,7 +26,7 @@ local checks = new Mapping<String, Step> {
         exit 0
       fi
 
-      "$ps_cmd" -NoLogo -NoProfile -NonInteractive -Command '
+      "$ps_cmd" -NoLogo -NoProfile -NonInteractive -Command '& {
         param([string] $ScriptsDir)
         $failed = $false
 
@@ -46,7 +46,7 @@ local checks = new Mapping<String, Step> {
         }
 
         if ($failed) { exit 1 }
-      ' "$scripts_dir"
+      }' "$scripts_dir"
     """
   }
   ["mise-tool-disables"] {
