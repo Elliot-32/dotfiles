@@ -63,6 +63,18 @@ WT_SESSION=ci TERM_PROGRAM=ghostty TERM=xterm-ghostty zsh -f -i -c '
   [[ -z ${precmd_functions[(r)_terminal_notify_precmd]-} ]]
 ' terminal-notify-test "$plugin"
 
+# tmux passthrough is intentionally unsupported, so an inherited WT_SESSION
+# must not install hooks that would emit a sequence tmux consumes.
+WT_SESSION=ci TMUX=/tmp/tmux-test TERM=xterm-256color zsh -f -i -c '
+  set -eu
+  plugin=$1
+  typeset -ga preexec_functions precmd_functions
+  source "$plugin"
+
+  [[ -z ${preexec_functions[(r)_terminal_notify_preexec]-} ]]
+  [[ -z ${precmd_functions[(r)_terminal_notify_precmd]-} ]]
+' terminal-notify-test "$plugin"
+
 # Unsupported terminals are left untouched when the Windows Terminal marker is absent.
 TERM_PROGRAM=unknown-terminal TERM=xterm-256color zsh -f -i -c '
   set -eu
