@@ -78,6 +78,7 @@ local checks = new Mapping<String, Step> {
       "windows-terminal/notification.json"
     )
     check = """
+      set -e
       zsh tests/terminal-notify.zsh
       jq -e '.profiles.defaults["compatibility.allowOSC777"] == true' windows-terminal/notification.json >/dev/null
       grep -Fxq 'delivery = "terminal"' ../home/.config/herdr/config.toml
