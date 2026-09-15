@@ -3,14 +3,15 @@ set -eu
 
 jsonc_parser_version=3.3.1
 config_dir=${MISE_CONFIG_DIR:-$HOME/.config/mise}
-fragment="$config_dir/windows-terminal/keybind.json"
 editor_script="$config_dir/scripts/ensure-windows-terminal-import.cjs"
-import_name=keybind.json
 
-if [ ! -f "$fragment" ]; then
-  printf 'windows terminal bootstrap: keybind fragment was not found: %s\n' "$fragment" >&2
-  exit 1
-fi
+for import_name in keybind.json notification.json; do
+  fragment="$config_dir/windows-terminal/$import_name"
+  if [ ! -f "$fragment" ]; then
+    printf 'windows terminal bootstrap: fragment was not found: %s\n' "$fragment" >&2
+    exit 1
+  fi
+done
 
 if [ ! -f "$editor_script" ]; then
   printf 'windows terminal bootstrap: JSONC editor was not found: %s\n' "$editor_script" >&2
@@ -85,14 +86,17 @@ do
 
   if [ "$found" = false ]; then
     if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
-      printf 'windows terminal bootstrap: node and npm are required to register %s\n' "$import_name" >&2
+      printf 'windows terminal bootstrap: node and npm are required to register terminal fragments\n' >&2
       exit 1
     fi
     ensure_jsonc_parser
     found=true
   fi
 
-  cp -f -- "$fragment" "$state_directory/$import_name"
-  NODE_PATH="$jsonc_node_path${NODE_PATH:+:$NODE_PATH}" \
-    node "$editor_script" "$settings_path" "$import_name"
+  for import_name in keybind.json notification.json; do
+    fragment="$config_dir/windows-terminal/$import_name"
+    cp -f -- "$fragment" "$state_directory/$import_name"
+    NODE_PATH="$jsonc_node_path${NODE_PATH:+:$NODE_PATH}" \
+      node "$editor_script" "$settings_path" "$import_name"
+  done
 done
