@@ -6,64 +6,62 @@ plugin="$repo_root/home/.config/sheldon/plugins/terminal-notify.plugin.zsh"
 test_root=$(mktemp -d)
 trap 'rm -rf "$test_root"' EXIT
 
-# Windows Terminal uses OSC 777 and delegates focused-pane suppression to the
-# terminal itself rather than probing Windows from WSL.
+# Windows Terminal installs its own command lifecycle hooks.
 (
+  typeset -ga preexec_functions precmd_functions
   unset TERM_PROGRAM
   export TERM=xterm-256color
   export WT_SESSION=ci
-  bgnotify_appid() { print -r -- fallback; }
-  bgnotify_termid=fallback
-  bgnotify_bell=true
   source "$plugin"
 
-  [[ $_terminal_notify_protocol == osc777 ]]
-  [[ $bgnotify_bell == false ]]
-  [[ "$(bgnotify_appid)" == __terminal_notify_dispatch__ ]]
-  [[ $bgnotify_termid == __terminal_notify_host_focus__ ]]
-  output=$(bgnotify "build; finished" $'command\ncompleted' '')
-  [[ $output == $'\e]777;notify;build, finished;command completed\e\\' ]]
+  [[ ${preexec_functions[(r)_terminal_notify_preexec]-} == _terminal_notify_preexec ]]
+  [[ ${precmd_functions[(r)_terminal_notify_precmd]-} == _terminal_notify_precmd ]]
+  [[ $_terminal_notify_threshold == 5 ]]
+
+  # Successful commands use a clean title and preserve the command in the body.
+  _terminal_notify_started=$(( EPOCHSECONDS - 12 ))
+  _terminal_notify_command=$'mise; run\nupdate'
+  true
+  _terminal_notify_precmd >"$test_root/success.out"
+  output=$(<"$test_root/success.out")
+  [[ $output == $'\e]777;notify;Command finished · 12s;mise, run update\e\\' ]]
+
+  # Failed commands use the failure title.
+  _terminal_notify_started=$(( EPOCHSECONDS - 65 ))
+  _terminal_notify_command='cargo build --release'
+  set +e
+  false
+  _terminal_notify_precmd >"$test_root/failure.out"
+  set -e
+  output=$(<"$test_root/failure.out")
+  [[ $output == $'\e]777;notify;Command failed · 1m 5s;cargo build --release\e\\' ]]
+
+  # Short commands stay silent.
+  _terminal_notify_started=$(( EPOCHSECONDS - 4 ))
+  _terminal_notify_command='true'
+  true
+  _terminal_notify_precmd >"$test_root/short.out"
+  [[ ! -s "$test_root/short.out" ]]
 )
 
-# Unsupported terminals retain upstream bgnotify completely unchanged.
-(
-  unset WT_SESSION
-  export TERM=xterm-256color
-  export TERM_PROGRAM=unknown-terminal
-  bgnotify() { print -r -- fallback; }
-  bgnotify_bell=true
-  source "$plugin"
-
-  [[ -z $_terminal_notify_protocol ]]
-  [[ $bgnotify_bell == true ]]
-  [[ "$(bgnotify one two three)" == fallback ]]
-)
-
-# Direct Ghostty owns command completion via OSC 133, so bgnotify hooks are
-# removed instead of producing duplicate notifications.
-mkdir -p "$test_root/fpath"
-cat >"$test_root/fpath/add-zsh-hook" <<'EOF'
-local mode=$1 hook=$2 callback=$3
-[[ $mode == -d ]] || return 2
-
-case $hook in
-  preexec) preexec_functions=(${preexec_functions:#$callback}) ;;
-  precmd) precmd_functions=(${precmd_functions:#$callback}) ;;
-  *) return 2 ;;
-esac
-EOF
-
+# Ghostty handles command completion itself, so this plugin installs no hooks.
 (
   typeset -ga preexec_functions precmd_functions
-  preexec_functions=(bgnotify_begin)
-  precmd_functions=(bgnotify_end)
-  bgnotify_begin() {}
-  bgnotify_end() {}
-  fpath=("$test_root/fpath" $fpath)
   unset WT_SESSION
   export TERM_PROGRAM=ghostty
   source "$plugin"
 
-  [[ -z ${preexec_functions[(r)bgnotify_begin]-} ]]
-  [[ -z ${precmd_functions[(r)bgnotify_end]-} ]]
+  [[ -z ${preexec_functions[(r)_terminal_notify_preexec]-} ]]
+  [[ -z ${precmd_functions[(r)_terminal_notify_precmd]-} ]]
+)
+
+# Unsupported terminals are left untouched.
+(
+  typeset -ga preexec_functions precmd_functions
+  unset WT_SESSION
+  export TERM_PROGRAM=unknown-terminal
+  source "$plugin"
+
+  [[ -z ${preexec_functions[(r)_terminal_notify_preexec]-} ]]
+  [[ -z ${precmd_functions[(r)_terminal_notify_precmd]-} ]]
 )
