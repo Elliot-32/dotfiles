@@ -8,6 +8,9 @@
 # shell. Prefer the actual terminal identity so its native command-finish
 # notifications are not duplicated by the Windows Terminal hook.
 [[ ${TERM_PROGRAM:-} == ghostty ]] && return 0
+
+# tmux notification passthrough is intentionally outside this notifier's scope.
+[[ -n ${TMUX:-} ]] && return 0
 [[ -n ${WT_SESSION:-} ]] || return 0
 
 zmodload zsh/datetime
