@@ -43,7 +43,7 @@ Omarchy 環境則直接使用 Omarchy 的主題系統，不需要另外使用 Ti
 mise run bootstrap:windows
 ```
 
-Ghostty 與 Windows Terminal 會在長時間 command 完成後顯示通知，包含成功或失敗狀態、執行時間與原始 command；其他 terminal 不額外啟用 command-completion 通知。Herdr 會在 agent 完成或等待輸入時使用 terminal notification。
+Ghostty 與 Windows Terminal 會在長時間 command 完成後顯示通知，包含成功或失敗狀態、執行時間與原始 command；Windows Terminal 的 command-completion 通知不支援 tmux session，其他 terminal 也不額外啟用此通知。Herdr 會在 agent 完成或等待輸入時使用 terminal notification。
 
 ## 常用指令
 
