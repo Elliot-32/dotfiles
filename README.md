@@ -37,13 +37,13 @@ Omarchy 環境則直接使用 Omarchy 的主題系統，不需要另外使用 Ti
 
 ## Windows / WSL
 
-在 WSL bootstrap 時會一併安裝 Windows 端的 JetBrainsMono Nerd Font，並套用 Windows Terminal 整合：`Ctrl+Shift+Z` 會送出 Zsh redo 所需的 escape sequence，並啟用 OSC 777 terminal-native desktop notifications。需要再次執行 Windows 整合 bootstrap 時可使用：
+在 WSL bootstrap 時會一併安裝 Windows 端的 JetBrainsMono Nerd Font，並套用 Windows Terminal 整合：`Ctrl+Shift+Z` 會送出 Zsh redo 所需的 escape sequence，也會啟用長時間 command 的原生桌面通知。需要再次執行 Windows 整合 bootstrap 時可使用：
 
 ```bash
 mise run bootstrap:windows
 ```
 
-長時間 command 的通知只針對 Ghostty 與 Windows Terminal 使用 terminal-native 路徑。Ghostty 直接使用 OSC 133 command-finished notifications；Windows Terminal 由一個輕量 Zsh `preexec` / `precmd` hook 偵測執行超過 5 秒的 command，再以 OSC 777 顯示 `Command finished · <duration>` 或 `Command failed · <duration>`，通知內容則是原始 command。其他 terminal 不安裝額外的 command-completion notification hook。Herdr 使用 `delivery = "terminal"`，由 Herdr 自己在 agent 完成或等待輸入時請外層 terminal 顯示通知，不經 shell command-completion hook。
+Ghostty 與 Windows Terminal 會在長時間 command 完成後顯示通知，包含成功或失敗狀態、執行時間與原始 command；其他 terminal 不額外啟用 command-completion 通知。Herdr 會在 agent 完成或等待輸入時使用 terminal notification。
 
 ## 常用指令
 
