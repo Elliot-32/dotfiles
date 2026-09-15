@@ -69,10 +69,10 @@ local checks = new Mapping<String, Step> {
       grep -Fxq 'login_shell = "/usr/bin/bash"' conf.d/platform.omarchy.toml
       grep -Fxq 'command = /usr/bin/zsh' ../home/.config/ghostty/config
       grep -Fxq 'INPUT_METHOD=fcitx' ../home/.config/environment.d/90-fcitx5.conf
+      grep -Fxq 'GTK_IM_MODULE=fcitx' ../home/.config/environment.d/90-fcitx5.conf
       grep -Fxq 'QT_IM_MODULE=fcitx' ../home/.config/environment.d/90-fcitx5.conf
       grep -Fxq 'XMODIFIERS=@im=fcitx' ../home/.config/environment.d/90-fcitx5.conf
       grep -Fxq 'SDL_IM_MODULE=fcitx' ../home/.config/environment.d/90-fcitx5.conf
-      ! grep -Fq 'GTK_IM_MODULE=' ../home/.config/environment.d/90-fcitx5.conf
     """
   }
   ["omarchy-hook"] {
