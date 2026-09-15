@@ -49,7 +49,7 @@ Ghostty 與 Windows Terminal 會在長時間 command 完成後顯示通知，包
 
 | 用途 | 指令 |
 | --- | --- |
-| 更新系統與工具 | `topgrade` |
+| 更新系統與工具 | `update` |
 | 重新套用 bootstrap | `mise bootstrap --yes --force-dotfiles` |
 | 套用主題（非 Omarchy） | `tinty apply <scheme>` |
 | 互動選擇 / 預覽 Tinty 主題 | `mise run theme:select` |
@@ -59,5 +59,7 @@ Ghostty 與 Windows Terminal 會在長時間 command 完成後顯示通知，包
 | 解除納管 | `mise bootstrap dotfiles untrack <path>` |
 | 安裝 / 移除工具 | `mise install <tool>` / `mise uninstall <tool>` |
 | 加入 / 移除全域工具設定 | `mise use -g <tool>` / `mise unuse -g <tool>` |
+
+`update` 在一般環境會執行 Topgrade，在 Omarchy 會改走 `omarchy update`。
 
 `install` / `uninstall` 只改變本機已安裝版本；`use` / `unuse` 會修改 mise 設定。
