@@ -51,16 +51,26 @@ WT_SESSION=ci TERM=xterm-256color zsh -f -i -c '
   [[ ! -s "$test_root/short.out" ]]
 ' terminal-notify-test "$plugin" "$test_root"
 
-# Ghostty and unsupported terminals install no hooks because the WT marker is absent.
-for term_program in ghostty unknown-terminal; do
-  TERM_PROGRAM=$term_program TERM=xterm-256color zsh -f -i -c '
-    set -eu
-    plugin=$1
-    typeset -ga preexec_functions precmd_functions
-    unset WT_SESSION
-    source "$plugin"
+# Ghostty can inherit WT_SESSION from its parent Windows Terminal shell. The
+# actual terminal identity must win so Ghostty keeps only its native notifier.
+WT_SESSION=ci TERM_PROGRAM=ghostty TERM=xterm-ghostty zsh -f -i -c '
+  set -eu
+  plugin=$1
+  typeset -ga preexec_functions precmd_functions
+  source "$plugin"
 
-    [[ -z ${preexec_functions[(r)_terminal_notify_preexec]-} ]]
-    [[ -z ${precmd_functions[(r)_terminal_notify_precmd]-} ]]
-  ' terminal-notify-test "$plugin"
-done
+  [[ -z ${preexec_functions[(r)_terminal_notify_preexec]-} ]]
+  [[ -z ${precmd_functions[(r)_terminal_notify_precmd]-} ]]
+' terminal-notify-test "$plugin"
+
+# Unsupported terminals are left untouched when the Windows Terminal marker is absent.
+TERM_PROGRAM=unknown-terminal TERM=xterm-256color zsh -f -i -c '
+  set -eu
+  plugin=$1
+  typeset -ga preexec_functions precmd_functions
+  unset WT_SESSION
+  source "$plugin"
+
+  [[ -z ${preexec_functions[(r)_terminal_notify_preexec]-} ]]
+  [[ -z ${precmd_functions[(r)_terminal_notify_precmd]-} ]]
+' terminal-notify-test "$plugin"
