@@ -1,18 +1,16 @@
-# Route long-running command notifications through supported terminals.
-# bgnotify remains the command-lifecycle source; this file only chooses delivery.
+# Notify on long-running commands in Windows Terminal using OSC 777.
+# Ghostty handles command completion itself through OSC 133 shell integration,
+# while Herdr emits its own terminal notifications.
 
-typeset -g _terminal_notify_protocol=''
+[[ -o interactive ]] || return 0
+[[ -n ${WT_SESSION:-} ]] || return 0
 
-_terminal_notify_disable_bgnotify() {
-  autoload -Uz add-zsh-hook
+zmodload zsh/datetime
+autoload -Uz add-zsh-hook
 
-  if (( ${+functions[bgnotify_begin]} )); then
-    add-zsh-hook -d preexec bgnotify_begin
-  fi
-  if (( ${+functions[bgnotify_end]} )); then
-    add-zsh-hook -d precmd bgnotify_end
-  fi
-}
+typeset -g _terminal_notify_threshold=5
+typeset -g _terminal_notify_started=0
+typeset -g _terminal_notify_command=''
 
 _terminal_notify_clean() {
   local value=$1
@@ -23,6 +21,18 @@ _terminal_notify_clean() {
   value=${value//$'\t'/ }
   value=${value//;/,}
   REPLY=$value
+}
+
+_terminal_notify_elapsed() {
+  local elapsed=$1
+
+  if (( elapsed < 60 )); then
+    REPLY="${elapsed}s"
+  elif (( elapsed < 3600 )); then
+    REPLY="$(( elapsed / 60 ))m $(( elapsed % 60 ))s"
+  else
+    REPLY="$(( elapsed / 3600 ))h $(( (elapsed % 3600) / 60 ))m $(( elapsed % 60 ))s"
+  fi
 }
 
 _terminal_notify_osc777() {
@@ -37,25 +47,36 @@ _terminal_notify_osc777() {
   print -rn -- $'\e]777;notify;'"$title;$message"$'\e\\'
 }
 
-if [[ -n ${WT_SESSION:-} ]]; then
-  _terminal_notify_protocol=osc777
-  bgnotify_bell=false
-
-  # Windows Terminal suppresses OSC 777 from its focused active pane, so let
-  # the terminal make the focus decision instead of probing Windows from WSL.
-  bgnotify_appid() {
-    print -r -- '__terminal_notify_dispatch__'
-  }
-  bgnotify_termid='__terminal_notify_host_focus__'
-elif [[ ${TERM_PROGRAM:-} == ghostty ]]; then
-  # Ghostty owns command completion through its OSC 133 shell integration.
-  _terminal_notify_disable_bgnotify
-  return 0
-else
-  # Unsupported terminals keep upstream bgnotify unchanged.
-  return 0
-fi
-
-bgnotify() {
-  _terminal_notify_osc777 "$1" "$2"
+_terminal_notify_preexec() {
+  _terminal_notify_started=$EPOCHSECONDS
+  _terminal_notify_command=${1:-$2}
 }
+
+_terminal_notify_precmd() {
+  local exit_status=$?
+  local started=$_terminal_notify_started
+  local command=$_terminal_notify_command
+
+  _terminal_notify_started=0
+  _terminal_notify_command=''
+
+  (( started > 0 )) || return 0
+
+  local elapsed=$(( EPOCHSECONDS - started ))
+  (( elapsed >= _terminal_notify_threshold )) || return 0
+
+  _terminal_notify_elapsed "$elapsed"
+  local duration=$REPLY
+  local title
+
+  if (( exit_status == 0 )); then
+    title="Command finished · $duration"
+  else
+    title="Command failed · $duration"
+  fi
+
+  _terminal_notify_osc777 "$title" "$command"
+}
+
+add-zsh-hook preexec _terminal_notify_preexec
+add-zsh-hook precmd _terminal_notify_precmd
