@@ -82,10 +82,6 @@ use = [
   "plugins/copypath/copypath.plugin.zsh",
 ]
 
-[plugins.bgnotify]
-github = "ohmyzsh/ohmyzsh"
-use = ["plugins/bgnotify/bgnotify.plugin.zsh"]
-
 [plugins.terminal-notify]
 local = "~/.config/sheldon/plugins"
 
