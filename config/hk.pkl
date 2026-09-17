@@ -61,7 +61,10 @@ local checks = new Mapping<String, Step> {
     glob = List(
       "conf.d/platform.omarchy.toml",
       "../home/.config/ghostty/config",
-      "../home/.config/environment.d/90-fcitx5.conf"
+      "../home/.config/environment.d/90-fcitx5.conf",
+      "../home/.gtkrc-2.0",
+      "../home/.config/gtk-3.0/settings.ini",
+      "../home/.config/gtk-4.0/settings.ini"
     )
     check = """
       set -e
@@ -69,10 +72,16 @@ local checks = new Mapping<String, Step> {
       grep -Fxq 'login_shell = "/usr/bin/bash"' conf.d/platform.omarchy.toml
       grep -Fxq 'command = /usr/bin/zsh' ../home/.config/ghostty/config
       grep -Fxq 'INPUT_METHOD=fcitx' ../home/.config/environment.d/90-fcitx5.conf
-      grep -Fxq 'GTK_IM_MODULE=fcitx' ../home/.config/environment.d/90-fcitx5.conf
       grep -Fxq 'QT_IM_MODULE=fcitx' ../home/.config/environment.d/90-fcitx5.conf
       grep -Fxq 'XMODIFIERS=@im=fcitx' ../home/.config/environment.d/90-fcitx5.conf
       grep -Fxq 'SDL_IM_MODULE=fcitx' ../home/.config/environment.d/90-fcitx5.conf
+      if grep -Eq '^GTK_IM_MODULE=' ../home/.config/environment.d/90-fcitx5.conf; then
+        echo 'GTK_IM_MODULE must remain unset so native Wayland GTK can use text-input-v3' >&2
+        exit 1
+      fi
+      grep -Fxq 'gtk-im-module="fcitx"' ../home/.gtkrc-2.0
+      grep -Fxq 'gtk-im-module=fcitx' ../home/.config/gtk-3.0/settings.ini
+      grep -Fxq 'gtk-im-module=fcitx' ../home/.config/gtk-4.0/settings.ini
     """
   }
   ["omarchy-hook"] {

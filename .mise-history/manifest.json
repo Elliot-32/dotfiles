@@ -68,6 +68,18 @@
       "variants": []
     },
     {
+      "path": "home/.config/gtk-3.0/settings.ini",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/.config/gtk-4.0/settings.ini",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/herdr/config.toml",
       "autosave": true,
       "encrypt": false,
@@ -135,6 +147,12 @@
     },
     {
       "path": "home/.local/share/mise-completions-sync/registry.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/.gtkrc-2.0",
       "autosave": true,
       "encrypt": false,
       "variants": []
