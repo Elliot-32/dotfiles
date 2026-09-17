@@ -158,13 +158,13 @@
       "variants": []
     },
     {
-      "path": "home/.local/share/mise-completions-sync/registry.toml",
+      "path": "home/.gtkrc-2.0",
       "autosave": true,
       "encrypt": false,
       "variants": []
     },
     {
-      "path": "home/.gtkrc-2.0",
+      "path": "home/.local/share/mise-completions-sync/registry.toml",
       "autosave": true,
       "encrypt": false,
       "variants": []
