@@ -22,6 +22,10 @@ mise bootstrap dotfiles sync
 mise bootstrap dotfiles pull
 ```
 
+## 輸入法
+
+中英文使用左右 Shift 切換。Omarchy 停用雙 Shift 切換 Caps Lock，避免干擾輸入法切換。
+
 ## 主題
 
 一般環境使用 Tinty 統一切換主題；可直接套用 scheme，或使用互動式選擇器搜尋、預覽並決定是否保留主題：

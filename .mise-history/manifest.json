@@ -56,6 +56,12 @@
       "variants": []
     },
     {
+      "path": "home/.config/fcitx5/config",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/fcitx5/profile",
       "autosave": true,
       "encrypt": false,
@@ -81,6 +87,12 @@
     },
     {
       "path": "home/.config/herdr/config.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/.config/hypr/input.lua",
       "autosave": true,
       "encrypt": false,
       "variants": []
