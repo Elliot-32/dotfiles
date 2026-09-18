@@ -20,7 +20,7 @@ Bootstrap 會依目前平台安裝套件、工具並套用設定。
 | 查看 dotfiles 狀態 | `mise bootstrap dotfiles status` |
 | 納管檔案 | `mise bootstrap dotfiles track <path>` |
 | 解除納管 | `mise bootstrap dotfiles untrack <path>` |
-| 選擇主題（非 Omarchy） | `mise run theme:select` |
+| 選擇主題（非 Omarchy） | `mise run theme` |
 | 重新套用 WSL / Windows 整合 | `mise run bootstrap:windows` |
 | 套用 Laptop 鍵盤設定 | `mise -E laptop run laptop:apply` |
 

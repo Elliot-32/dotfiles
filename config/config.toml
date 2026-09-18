@@ -201,6 +201,7 @@ run = [
 ]
 
 [tasks."theme:select"]
+alias = "theme"
 description = "Interactively preview and apply Tinty themes"
 hide = false
 interactive = true
