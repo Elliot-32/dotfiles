@@ -19,9 +19,18 @@ Explicit user instructions take precedence. If a request intentionally changes t
 - Do not introduce a second synchronization or update mechanism that competes with mise history/sync or Topgrade.
 - Do not hand-edit generated `config/mise.lock`.
 - Keep `README.md` user-facing. Do not put maintainer architecture, migration internals, or implementation diaries there.
-- Update README only when a user-facing command, prerequisite, limitation, or behavior changes.
 - Prefer `nvim` in editor commands and examples; do not use `nano`.
 - Do not discard, reset, overwrite, or reformat unrelated changes.
+
+## Documentation maintenance
+
+Keep documentation aligned with the layer it describes:
+
+- Update `README.md` only when user-visible installation, commands, prerequisites, limitations, recovery steps, or behavior change.
+- Update `spec.md` when the stable repository contract, architecture, or invariants intentionally change.
+- Update `AGENTS.md` when repository-wide agent workflow, mandatory working rules, review policy, or documentation responsibilities change.
+- Update `.agents/skills/elliot-dotfiles/SKILL.md` or its references when detailed maintenance guidance, ownership/routing, repository-specific procedures, or validation guidance change.
+- Do not update documentation merely because implementation details changed when the contract described by that document remains accurate.
 
 ## Validation
 
