@@ -1,3 +1,8 @@
+# mise history preflight parses config TOML before early-init rendering; keep the selector body inert until Tera unwraps it.
+# {% if false %}
+_ = """
+# {% endif %}
+# mise-history-preflight body begin
 env_conf_d = true
 
 {% set flatpak = "/usr/share/wayland-sessions" is dir or "/usr/share/xsessions" is dir %}
@@ -49,3 +54,7 @@ env = ["wsl"{% if wslg %}, "wslg"{% endif %}{% if omarchy %}, "omarchy"{% endif 
 {% elif omarchy %}
 env = ["omarchy"]
 {% endif %}
+# mise-history-preflight body end
+# {% if false %}
+"""
+# {% endif %}
