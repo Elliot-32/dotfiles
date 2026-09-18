@@ -26,7 +26,6 @@ jobs:
         run: |
           mkdir -p "$HOME/.config"
           ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
-          ln -s "$GITHUB_WORKSPACE/home/.miserc.toml" "$HOME/.miserc.toml"
           curl -fsSL https://mise.run | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           sudo apt-get update
@@ -85,14 +84,18 @@ jobs:
           grep -Fxq 'DefaultIM=mcbopomofo' home/.config/fcitx5/profile
           grep -Fxq 'Name=mcbopomofo' home/.config/fcitx5/profile
           ! grep -Fxq 'Name=chewing' home/.config/fcitx5/profile
+
+          grep -Fq '"flatpak-user:org.fcitx.Fcitx5" = "latest"' config/config.flatpak.toml
+          grep -Fq '"flatpak-user:org.fcitx.Fcitx5.Addon.McBopomofo" = "latest"' config/config.flatpak.toml
+          grep -Fq 'Exec=flatpak run --user org.fcitx.Fcitx5' config/config.flatpak.toml
+
           grep -Fq '"pacman:fcitx5-chewing" = { state = "absent" }' config/conf.d/packages.pacman.toml
-          grep -Fq '[bootstrap.hooks.pre-packages]' config/conf.d/packages.pacman.toml
-          grep -Fq 'scripts/bootstrap-paru.sh' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:git" = "latest"' config/conf.d/packages.pacman.toml
-          ! grep -Fq '"aur:paru"' config/conf.d/packages.pacman.toml
-          grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
-          ! grep -Fq '"apt:fcitx5-chewing"' config/conf.d/packages.apt.toml
-          ! grep -Fq '"dnf:fcitx5-chewing"' config/conf.d/packages.dnf.toml
+          ! grep -Fq '"aur:' config/conf.d/packages.pacman.toml
+          test ! -e config/scripts/bootstrap-paru.sh
+
+          ! grep -Fq 'mcbopomofo' config/conf.d/packages.apt.toml
+          ! grep -Fq 'mcbopomofo' config/conf.d/packages.dnf.toml
+          test ! -e config/scripts/install-mcbopomofo.sh
 
       - name: Validate config selection
         shell: bash
@@ -117,6 +120,12 @@ jobs:
           check_config "wsl" "conf.d/platform.wsl.toml"
           check_config "laptop" "conf.d/platform.laptop.toml"
           check_config "arch,pacman,omarchy" "conf.d/platform.omarchy.toml"
+
+
+          outside_home_output="$(cd "$RUNNER_TEMP" && mise config ls 2>&1)"
+          grep -Fq "conf.d/distro.ubuntu.toml" <<<"$outside_home_output"
+          grep -Fq "conf.d/packages.apt.toml" <<<"$outside_home_output"
+          ! grep -Fq "dotted_conf_d_filename" <<<"$outside_home_output"
 
       - name: Validate custom service paths
         shell: bash
@@ -184,7 +193,8 @@ jobs:
             --only dotfiles \
             --yes
 
-          sudo test -f "$fresh_home/.miserc.toml"
+          sudo test -f "$fresh_config/miserc.toml"
+          sudo test ! -e "$fresh_home/.miserc.toml"
           sudo test -f "$fresh_config/config.toml"
           sudo test -f "$fresh_config/mise.lock"
           sudo test -f "$fresh_config/windows-terminal/keybind.json"
@@ -200,6 +210,7 @@ jobs:
           sudo cmp "$fresh_home/.zshrc" "$GITHUB_WORKSPACE/home/.zshrc"
           sudo cmp "$fresh_home/.config/topgrade.toml" "$GITHUB_WORKSPACE/config/assets/topgrade.toml"
           sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+          sudo cmp "$fresh_config/miserc.toml" "$GITHUB_WORKSPACE/config/miserc.toml"
 
           paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
           jq -e 'any(.entries[]; .path == "~/.zshrc" and .mode == "track")' <<<"$paths_json" >/dev/null

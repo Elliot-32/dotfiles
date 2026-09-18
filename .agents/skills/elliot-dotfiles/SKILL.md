@@ -5,7 +5,7 @@ license: MIT
 compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, shellcheck, and PowerShell.
 metadata:
   author: Elliot-32
-  version: "1.7"
+  version: "1.8"
 ---
 
 # Elliot dotfiles maintenance
@@ -26,11 +26,11 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
 
 - Treat setup-repository `config/` as the portable representation of the active mise global config directory; it is restored to `$MISE_CONFIG_DIR`, not checked out there as a Git working tree.
 - Treat `config/config.toml` as the main mise global configuration. Keep generic settings, environment variables, tool declarations, tracking declarations, bootstrap definitions, systemd units, tasks, and hooks there unless they are conditional.
-- Treat `home/.miserc.toml` as the environment selector restored to `~/.miserc.toml`. It detects distro/package-manager/platform capabilities and selects named mise environments.
+- Treat `config/miserc.toml` as the global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml`. It detects distro/package-manager/platform capabilities, enables environment-specific `conf.d` filenames, and selects named mise environments independently of the current working directory. Keep its selector body inside the existing Tera-unwrapped inert `_` string: mise 2026.9.11 setup-history preflight parses incoming `miserc.toml` as ordinary `MiseToml` before early-init rendering, so removing that wrapper breaks fresh `--adopt` onboarding.
 - Route conditional mise configuration through `config/conf.d/`: `distro.*.toml` for distro behavior, `packages.*.toml` for package-manager behavior, and `platform.*.toml` for WSL/WSLg or other platform behavior.
 - Keep Flatpak-specific configuration in `config/config.flatpak.toml`.
 - Prefer declarative mise configuration over shell scripts. Add or extend a script only when the operation is inherently imperative, interactive, platform-native, or cannot be represented safely in mise configuration.
-- Prefer native `mode = "track"` for ordinary user dotfiles. Keep them at the path applications actually read (`home/...` in the setup repository) instead of introducing source-to-target symlinks. Fcitx5 user configuration is shared this way across APT, DNF, and Pacman systems; use package-manager fragments only for installing the distro-specific packages. Use declarative copy/symlink/template/edit modes only when deployment semantics are genuinely needed, such as the managed `.gitconfig` block.
+- Prefer native `mode = "track"` for ordinary user dotfiles. Keep them at the path applications actually read (`home/...` in the setup repository) instead of introducing source-to-target symlinks. Fcitx5 user configuration is shared this way across Linux systems. Keep the Fcitx 5 daemon and input-method engines in Flatpak configuration, and use distro package fragments only for native host IM modules or other platform integration. Use declarative copy/symlink/template/edit modes only when deployment semantics are genuinely needed, such as the managed `.gitconfig` block.
 - Treat Topgrade as the user-session update orchestrator, while mise history/sync is the synchronization authority for tracked configuration and `mise.lock`. Do not add Git pull/push behavior that competes with history sync.
 - Treat `home/.config/yazi/package.toml` as Yazi's plugin manifest. Bootstrap installs declared plugins with `ya pkg install`; change plugin declarations there rather than adding ad-hoc plugin install commands elsewhere.
 - Treat `config/conf.d/platform.wsl.toml` plus `config/scripts/bootstrap-windows.sh` / `.ps1` as the WSL-to-Windows font bootstrap path. Windows bootstrap owns only the Windows JetBrainsMono Nerd Font; do not put Windows Terminal theming or unrelated Windows packages back into it.
@@ -82,12 +82,12 @@ Use [references/repository-map.md](references/repository-map.md) for details. In
 - Add a distro package: edit the matching `config/conf.d/packages.<manager>.toml`.
 - Add a distro-only repository or bootstrap prerequisite: edit the matching `config/conf.d/distro.<distro>.toml`.
 - Add a Flatpak app/remote/bootstrap change: edit `config/config.flatpak.toml` and its existing bootstrap path.
-- Change distro/platform detection: edit `home/.miserc.toml`, then extend CI selection checks.
+- Change distro/platform detection: edit `config/miserc.toml`, then extend CI selection checks.
 - Change Zsh plugin loading, `fpath`, completion, widgets, or zstyle setup: inspect `home/.config/sheldon/plugins.toml` and `home/.zshrc`; place behavior in the layer that owns it rather than duplicating initialization.
 - Change generated CLI completions: inspect `config/config.toml` hooks/tasks, `home/.local/share/mise-completions-sync/registry.toml`, and the current upstream `mise-completions-sync` registry before editing.
 - Change shell startup environment: inspect `home/.zshenv`, `home/.zprofile`, `home/.zshrc`, Sheldon config, and mise shell activation before adding another initialization path.
 - Add, remove, or configure a Yazi plugin: inspect `home/.config/yazi/package.toml`, `init.lua`, `keymap.toml`, and `yazi.toml`; keep plugin installation delegated to `ya pkg install`.
-- Change Fcitx5 configuration: edit `home/.config/fcitx5/profile` or `home/.config/environment.d/90-fcitx5.conf`; change package availability separately in the APT, DNF, and Pacman package fragments.
+- Change Fcitx5 configuration: edit `home/.config/fcitx5/profile` or `home/.config/environment.d/90-fcitx5.conf`; manage the Fcitx daemon/input engines in `config/config.flatpak.toml` and keep only native host integration in the APT, DNF, and Pacman package fragments.
 - Change unattended/user-session update behavior: inspect `home/.config/topgrade.toml`, `home/.config/topgrade.systemd.toml`, and the `update` / `update-timer` systemd units in `config/config.toml` before adding another updater.
 - Change Linux Nerd Font installation/update behavior: edit the `github:ryanoasis/nerd-fonts` tool declaration and its inline tool-level `postinstall` in `config/config.toml`. Keep Linux and WSL registration behavior aligned unless the user explicitly requests a platform-specific split.
 - Change the Windows font bootstrap: inspect `config/conf.d/platform.wsl.toml`, `tasks.bootstrap:windows`, `config/scripts/bootstrap-windows.sh`, and `config/scripts/bootstrap-windows.ps1`.

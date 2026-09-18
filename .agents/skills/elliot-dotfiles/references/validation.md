@@ -42,11 +42,11 @@ A real bootstrap can mutate packages, login-shell settings, systemd units, crede
 
 When tracking, setup layout, or sync behavior changes, verify `.mise-history/manifest.json` matches the portable roots and that a fresh user can onboard from the setup repository. Native tracked files should resolve under `$HOME`; portable `config/*` entries must resolve against the active `MISE_CONFIG_DIR`, including a non-default one. Do not accept a test that merely checks the default `~/.config/mise` path.
 
-For direct-tracked files such as `~/.zshrc`, verify the restored path is a regular native file rather than a symlink to `$MISE_CONFIG_DIR`. Declarative exceptions such as the APT/Fcitx5 files may still use deployment modes intentionally.
+For direct-tracked files such as `~/.zshrc`, verify the restored path is a regular native file rather than a symlink to `$MISE_CONFIG_DIR`. Declarative exceptions such as privileged APT files may still use deployment modes intentionally.
 
 ## Environment selection
 
-When changing `home/.miserc.toml`, `config/conf.d/`, or environment naming, verify expected config selection. Current relationships include Ubuntu/APT, Debian/APT, Fedora/DNF, RHEL/DNF, Arch/Pacman, Flatpak, WSL, and WSLg. CI should be updated whenever this architecture changes.
+When changing `config/miserc.toml`, `config/conf.d/`, or environment naming, verify expected config selection. Current relationships include Ubuntu/APT, Debian/APT, Fedora/DNF, RHEL/DNF, Arch/Pacman, Flatpak, WSL, and WSLg. CI should be updated whenever this architecture changes, including a check from outside `$HOME` so the global early-init selector is not accidentally made cwd-dependent. Fresh setup adoption must also remain green because history preflight sees the raw, pre-Tera `miserc.toml` body.
 
 ## Tool or lockfile changes
 
