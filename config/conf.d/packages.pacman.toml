@@ -6,7 +6,6 @@ disable_tools = ["github:ryanoasis/nerd-fonts"]
 "pacman:fontconfig" = "latest"
 "pacman:ttf-jetbrains-mono-nerd" = "latest"
 "pacman:xz" = "latest"
-"pacman:nmap" = "latest"
 "pacman:openssh" = "latest"
 "pacman:zsh" = "latest"
 "pacman:fcitx5" = "latest"
