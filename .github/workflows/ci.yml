@@ -91,13 +91,8 @@ jobs:
           grep -Fq 'Exec=flatpak run --user org.fcitx.Fcitx5' config/config.flatpak.toml
 
           grep -Fq '"pacman:fcitx5-chewing" = { state = "absent" }' config/conf.d/packages.pacman.toml
-          grep -Fq '[bootstrap.hooks.pre-packages]' config/conf.d/packages.pacman.toml
-          grep -Fq 'scripts/bootstrap-paru.sh' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:git" = "latest"' config/conf.d/packages.pacman.toml
-          grep -Fq '"aur:paru" = "latest"' config/conf.d/packages.pacman.toml
-          ! grep -Fq '"aur:fcitx5-mcbopomofo-git"' config/conf.d/packages.pacman.toml
-          grep -Fq 'command -v yay' config/scripts/bootstrap-paru.sh
-          grep -Fq 'command -v paru' config/scripts/bootstrap-paru.sh
+          ! grep -Fq '"aur:' config/conf.d/packages.pacman.toml
+          test ! -e config/scripts/bootstrap-paru.sh
 
           ! grep -Fq 'mcbopomofo' config/conf.d/packages.apt.toml
           ! grep -Fq 'mcbopomofo' config/conf.d/packages.dnf.toml
