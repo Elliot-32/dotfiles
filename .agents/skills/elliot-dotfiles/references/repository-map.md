@@ -75,10 +75,10 @@ Prefer native mise configuration first; keep scripts focused and idempotent wher
 ## Quality and CI
 
 ### `config/hk.pkl`
-Static checks run with `config/` as the hk working directory. Most helper shell scripts live under `config/scripts/`; native tracked application hooks may live under `home/` at the path the application actually executes. Zsh files are checked through `../home/.zshrc` and `../home/.p10k.zsh`.
+Fast local/static validation only: shellcheck plus shell, PowerShell, Zsh, and extensionless Omarchy-hook syntax checks.
 
 ### `.github/workflows/ci.yml`
-Ubuntu CI validates hk/static checks, PowerShell syntax, mise settings/tasks, locked bootstrap dry-run, setup-repository onboarding into an empty user with a custom `MISE_CONFIG_DIR`, native tracked paths including Fcitx5, and distro/environment selection.
+CI runs hk, validates mise parsing and the locked bootstrap plan, checks the small set of platform/profile contracts that materially change behavior, verifies environment selection, and performs fresh-user onboarding with a non-default `MISE_CONFIG_DIR`.
 
 ### `config/mise.lock`
 Generated mise lockfile. Do not hand edit.
