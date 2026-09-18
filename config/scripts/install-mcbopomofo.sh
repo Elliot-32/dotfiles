@@ -29,10 +29,15 @@ trap 'rm -rf "$tmp_dir"' EXIT HUP INT TERM
 archive="$tmp_dir/fcitx5-mcbopomofo.tar.gz"
 src_dir="$tmp_dir/fcitx5-mcbopomofo-$version"
 
-curl -fsSL   "https://github.com/openvanilla/fcitx5-mcbopomofo/archive/refs/tags/$version.tar.gz"   -o "$archive"
+curl -fsSL \
+  "https://github.com/openvanilla/fcitx5-mcbopomofo/archive/refs/tags/$version.tar.gz" \
+  -o "$archive"
 tar -xzf "$archive" -C "$tmp_dir"
 
-cmake -S "$src_dir" -B "$src_dir/build"   -DCMAKE_INSTALL_PREFIX=/usr   -DCMAKE_BUILD_TYPE=Release   -DENABLE_TEST=Off
+cmake -S "$src_dir" -B "$src_dir/build" \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DENABLE_TEST=Off
 cmake --build "$src_dir/build"
 sudo cmake --install "$src_dir/build"
 
