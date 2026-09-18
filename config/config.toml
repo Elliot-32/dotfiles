@@ -144,8 +144,18 @@ fi
 run = '''
 legacy="$HOME/.miserc.toml"
 current="{{ config_root }}/miserc.toml"
-if [ -f "$legacy" ] && [ -f "$current" ] && cmp -s "$legacy" "$current"; then
-  rm -f -- "$legacy"
+if [ -f "$legacy" ] && [ -f "$current" ]; then
+  unwrapped="$(mktemp)"
+  awk '
+    /^# mise-history-preflight body begin$/ { copy = 1; next }
+    /^# mise-history-preflight body end$/ { copy = 0; next }
+    copy
+  ' "$current" >"$unwrapped"
+
+  if cmp -s "$legacy" "$unwrapped"; then
+    rm -f -- "$legacy"
+  fi
+  rm -f -- "$unwrapped"
 fi
 '''
 
