@@ -13,8 +13,9 @@ The repository should keep one coherent configuration model rather than separate
 - mise is the primary tool, package, bootstrap, task, and dotfile orchestration layer.
 - `config/` is the portable representation of the active `MISE_CONFIG_DIR`.
 - `home/` is the portable representation of files restored under `$HOME`.
-- `home/.miserc.toml` selects named environments; conditional configuration belongs in `config/conf.d/`.
-- Generic behavior belongs in `config/config.toml`; distro, package-manager, and platform differences stay isolated in their matching conditional fragments.
+- `home/.miserc.toml` selects named environments.
+- Conditional distro, package-manager, and platform configuration belongs in `config/conf.d/`; Flatpak is the intentional exception and remains in `config/config.flatpak.toml`.
+- Generic behavior belongs in `config/config.toml`; conditional behavior stays isolated in its existing ownership layer.
 - Prefer declarative mise configuration. Use scripts only for inherently imperative, interactive, or platform-native work.
 - Ordinary user configuration should be tracked at the native path applications read instead of introducing an extra symlink source tree.
 - mise history/sync is the authority for synchronized configuration state. Do not add a competing Git-based sync mechanism.
