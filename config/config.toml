@@ -86,7 +86,6 @@ zoxide = "latest"
 kubectl = "latest"
 gh = "latest"
 codex = "latest"
-zellij = "latest"
 
 [tools."github:ryanoasis/nerd-fonts"]
 version = "latest"
