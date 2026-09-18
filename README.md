@@ -60,6 +60,6 @@ Ghostty 與 Windows Terminal 會在長時間 command 完成後顯示通知，包
 | 安裝 / 移除工具 | `mise install <tool>` / `mise uninstall <tool>` |
 | 加入 / 移除全域工具設定 | `mise use -g <tool>` / `mise unuse -g <tool>` |
 
-`update` 在一般環境會執行 Topgrade，在 Omarchy 會改走 `omarchy update`。
+`update` 在所有環境都執行 Topgrade；Omarchy 會套用專用 Topgrade 設定，停用 Topgrade 的 Arch system step，並改由 `omarchy update` 處理系統更新，其餘 Topgrade 更新照常執行。
 
 `install` / `uninstall` 只改變本機已安裝版本；`use` / `unuse` 會修改 mise 設定。

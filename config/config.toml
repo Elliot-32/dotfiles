@@ -115,7 +115,7 @@ fc-cache -f "$font_dir"
 "~/.config/tinted-theming/tinty/config.toml" = { mode = "track" }
 "~/.config/tinted-theming/tinty/templates" = { mode = "track" }
 "~/.config/yazi" = { mode = "track" }
-"~/.config/topgrade.toml" = { mode = "track" }
+"~/.config/topgrade.toml" = { source = "assets/topgrade.toml", mode = "copy" }
 "~/.config/topgrade.systemd.toml" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }
 "~/.config/herdr/config.toml" = { mode = "track" }
