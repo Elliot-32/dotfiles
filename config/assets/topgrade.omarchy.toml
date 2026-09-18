@@ -1,0 +1,35 @@
+[misc]
+assume_yes = true
+ask_retry = false
+notify_end = "never"
+sudo_loop = true
+disable = [
+  # Managed by mise; keep Topgrade steps that only update plugins/data.
+  "atuin",
+  "bun",
+  "bun_packages",
+  "cargo",
+  "codex",
+  "go",
+  "node",
+  "opencode",
+  "pipx",
+  "rustup",
+  "self_update",
+  "uv",
+
+  # Omarchy must own Arch system updates so snapshots and migrations are preserved.
+  "system",
+]
+
+[git]
+pull_predefined = false
+
+[flatpak]
+use_sudo = false
+
+[commands]
+"Omarchy" = "omarchy update"
+
+[post_commands]
+"Refresh completions" = 'mise completion zsh --install && misecompsync --shell zsh'
