@@ -86,7 +86,7 @@ jobs:
             any(.enrollment[]; .path == "home/.config/sheldon") and
             any(.enrollment[]; .path == "home/.config/yazi") and
             any(.enrollment[]; .path == "home/.config/ghostty/config") and
-            any(.enrollment[]; .path == "home/.config/topgrade.toml") and
+            all(.enrollment[]; .path != "home/.config/topgrade.toml") and
             any(.enrollment[]; .path == "home/.config/fcitx5/profile") and
             any(.enrollment[]; .path == "home/.config/environment.d/90-fcitx5.conf") and
             any(.enrollment[]; .path == "home/.local/share/mise-completions-sync/registry.toml") and
@@ -234,6 +234,7 @@ jobs:
 
           sudo cmp "$fresh_home/.zshrc" "$GITHUB_WORKSPACE/home/.zshrc"
           sudo cmp "$fresh_home/.config/yazi/package.toml" "$GITHUB_WORKSPACE/home/.config/yazi/package.toml"
+          sudo cmp "$fresh_home/.config/topgrade.toml" "$GITHUB_WORKSPACE/config/assets/topgrade.toml"
           sudo cmp "$fresh_home/.config/fcitx5/profile" "$GITHUB_WORKSPACE/home/.config/fcitx5/profile"
           sudo cmp "$fresh_home/.config/environment.d/90-fcitx5.conf" "$GITHUB_WORKSPACE/home/.config/environment.d/90-fcitx5.conf"
           sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
