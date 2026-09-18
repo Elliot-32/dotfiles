@@ -18,10 +18,14 @@ login_shell = "/usr/bin/bash"
 [bootstrap.mise_shell_activate]
 bash = false
 
+[bootstrap.hooks.pre-tools]
+run = '''
+bash "$HOME/.config/omarchy/hooks/post-update.d/90-remove-mise-wrappers"
+'''
+
 [bootstrap.hooks.post-tools]
 run = '''
 bash "$HOME/.config/omarchy/hooks/theme-set.d/50-themed-links" --ensure-rendered
-bash "$HOME/.config/omarchy/hooks/post-update.d/90-remove-mise-wrappers"
 '''
 
 [tasks."bootstrap:theme"]
