@@ -1,16 +1,7 @@
 [bootstrap.packages]
 "dnf:gcc" = "latest"
-"dnf:gcc-c++" = "latest"
 "dnf:fontconfig" = "latest"
 "dnf:xz" = "latest"
-"dnf:cmake" = "latest"
-"dnf:extra-cmake-modules" = "latest"
-"dnf:gettext" = "latest"
-"dnf:fcitx5-devel" = "latest"
-"dnf:fmt-devel" = "latest"
-"dnf:libicu-devel" = "latest"
-"dnf:json-c-devel" = "latest"
-"dnf:curl" = "latest"
 "dnf:nmap" = "latest"
 "dnf:openssh-clients" = "latest"
 "dnf:zsh" = "latest"
@@ -24,6 +15,3 @@
 "dnf:libnotify" = "latest"
 "dnf:wl-clipboard" = "latest"
 "dnf:xdg-terminal-exec" = "latest"
-
-[bootstrap.hooks.post-packages]
-run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/install-mcbopomofo.sh"'
