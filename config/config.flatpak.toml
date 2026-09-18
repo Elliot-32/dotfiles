@@ -3,7 +3,6 @@ run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-flatpak.sh"'
 
 [bootstrap.packages]
 "flatpak-user:com.bitwarden.desktop" = "latest"
-"flatpak-user:com.borgbase.Vorta" = "latest"
 "flatpak-user:com.dec05eba.gpu_screen_recorder" = "latest"
 "flatpak-user:com.github.Matoking.protontricks" = "latest"
 "flatpak-user:com.github.marhkb.Pods" = "latest"
