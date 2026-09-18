@@ -184,23 +184,10 @@ jobs:
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
           }
 
-          if ! run_fresh "$mise_bin" bootstrap \
+          run_fresh "$mise_bin" bootstrap \
             --adopt "file://$setup_bare" \
             --only dotfiles \
-            --yes; then
-            echo "fresh onboarding failed; inspecting miserc state" >&2
-            sudo find "$fresh_home" -maxdepth 4 -name 'miserc.toml' -ls >&2 || true
-            echo "--- mise dot status ---" >&2
-            run_fresh "$mise_bin" dot status --json >&2 || true
-            if sudo test -f "$fresh_config/miserc.toml"; then
-              sudo sha256sum "$fresh_config/miserc.toml" "$GITHUB_WORKSPACE/config/miserc.toml" >&2
-              echo "--- live miserc ---" >&2
-              sudo cat "$fresh_config/miserc.toml" >&2
-              echo "--- repository miserc ---" >&2
-              cat "$GITHUB_WORKSPACE/config/miserc.toml" >&2
-            fi
-            exit 1
-          fi
+            --yes
 
           sudo test -f "$fresh_config/miserc.toml"
           sudo test ! -e "$fresh_home/.miserc.toml"
@@ -219,6 +206,7 @@ jobs:
           sudo cmp "$fresh_home/.zshrc" "$GITHUB_WORKSPACE/home/.zshrc"
           sudo cmp "$fresh_home/.config/topgrade.toml" "$GITHUB_WORKSPACE/config/assets/topgrade.toml"
           sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+          sudo cmp "$fresh_config/miserc.toml" "$GITHUB_WORKSPACE/config/miserc.toml"
 
           paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
           jq -e 'any(.entries[]; .path == "~/.zshrc" and .mode == "track")' <<<"$paths_json" >/dev/null
