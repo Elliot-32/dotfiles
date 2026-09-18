@@ -11,7 +11,7 @@ curl https://mise.run | sh
 
 Bootstrap 會依目前平台安裝套件、工具並套用設定。
 
-中文輸入預設使用 Flathub 的 Fcitx 5 + 小麥注音；各發行版仍保留原生 IM module 供 host 應用使用。Arch 會自動準備 Paru。
+中文輸入預設使用 Flathub 的 Fcitx 5 + 小麥注音；各發行版仍保留原生 IM module 供 host 應用使用。
 
 ## 常用指令
 
