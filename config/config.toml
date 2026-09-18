@@ -140,6 +140,15 @@ if command -v ghostty >/dev/null 2>&1; then
 fi
 '''
 
+[bootstrap.hooks.final]
+run = '''
+legacy="$HOME/.miserc.toml"
+current="{{ config_root }}/miserc.toml"
+if [ -f "$legacy" ] && [ -f "$current" ] && cmp -s "$legacy" "$current"; then
+  rm -f -- "$legacy"
+fi
+'''
+
 [bootstrap.mise_shell_activate]
 bash = true
 

@@ -20,8 +20,8 @@ JetBrainsMono Nerd Font is declared as a mise-managed GitHub release tool. Its i
 
 `tasks.bootstrap` coordinates Atuin setup, completion installation/sync, Sheldon locking, Yazi plugin installation, Windows font bootstrap dispatch, Tinty/Omarchy theme bootstrap, and GitHub setup. It does not install a Git hook into `$MISE_CONFIG_DIR` because that directory is no longer a Git working tree.
 
-### `home/.miserc.toml`
-Environment selector restored to `~/.miserc.toml`. It detects Arch, Fedora, RHEL-family, Ubuntu, Debian, graphical-session/Flatpak capability, WSL, and WSLg, then selects environments such as `ubuntu,apt,flatpak,wsl,wslg`.
+### `config/miserc.toml`
+Global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml`. It enables environment-specific `conf.d` filenames, detects Arch, Fedora, RHEL-family, Ubuntu, Debian, graphical-session/Flatpak capability, WSL, and WSLg, then selects environments such as `ubuntu,apt,flatpak,wsl,wslg` regardless of the current working directory.
 
 ## Conditional configuration
 

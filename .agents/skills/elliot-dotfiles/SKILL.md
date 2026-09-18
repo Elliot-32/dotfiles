@@ -5,7 +5,7 @@ license: MIT
 compatibility: Intended for Agent Skills-compatible coding agents working in a checkout of Elliot-32/dotfiles. Validation assumes git and mise; some checks additionally use zsh, hk, shellcheck, and PowerShell.
 metadata:
   author: Elliot-32
-  version: "1.7"
+  version: "1.8"
 ---
 
 # Elliot dotfiles maintenance
@@ -26,7 +26,7 @@ The user's explicit instructions take precedence over this skill. Do not turn a 
 
 - Treat setup-repository `config/` as the portable representation of the active mise global config directory; it is restored to `$MISE_CONFIG_DIR`, not checked out there as a Git working tree.
 - Treat `config/config.toml` as the main mise global configuration. Keep generic settings, environment variables, tool declarations, tracking declarations, bootstrap definitions, systemd units, tasks, and hooks there unless they are conditional.
-- Treat `home/.miserc.toml` as the environment selector restored to `~/.miserc.toml`. It detects distro/package-manager/platform capabilities and selects named mise environments.
+- Treat `config/miserc.toml` as the global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml`. It detects distro/package-manager/platform capabilities, enables environment-specific `conf.d` filenames, and selects named mise environments independently of the current working directory.
 - Route conditional mise configuration through `config/conf.d/`: `distro.*.toml` for distro behavior, `packages.*.toml` for package-manager behavior, and `platform.*.toml` for WSL/WSLg or other platform behavior.
 - Keep Flatpak-specific configuration in `config/config.flatpak.toml`.
 - Prefer declarative mise configuration over shell scripts. Add or extend a script only when the operation is inherently imperative, interactive, platform-native, or cannot be represented safely in mise configuration.
@@ -82,7 +82,7 @@ Use [references/repository-map.md](references/repository-map.md) for details. In
 - Add a distro package: edit the matching `config/conf.d/packages.<manager>.toml`.
 - Add a distro-only repository or bootstrap prerequisite: edit the matching `config/conf.d/distro.<distro>.toml`.
 - Add a Flatpak app/remote/bootstrap change: edit `config/config.flatpak.toml` and its existing bootstrap path.
-- Change distro/platform detection: edit `home/.miserc.toml`, then extend CI selection checks.
+- Change distro/platform detection: edit `config/miserc.toml`, then extend CI selection checks.
 - Change Zsh plugin loading, `fpath`, completion, widgets, or zstyle setup: inspect `home/.config/sheldon/plugins.toml` and `home/.zshrc`; place behavior in the layer that owns it rather than duplicating initialization.
 - Change generated CLI completions: inspect `config/config.toml` hooks/tasks, `home/.local/share/mise-completions-sync/registry.toml`, and the current upstream `mise-completions-sync` registry before editing.
 - Change shell startup environment: inspect `home/.zshenv`, `home/.zprofile`, `home/.zshrc`, Sheldon config, and mise shell activation before adding another initialization path.
