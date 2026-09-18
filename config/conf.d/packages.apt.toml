@@ -4,17 +4,6 @@
 "apt:xz-utils" = "latest"
 "apt:pkg-config" = "latest"
 "apt:libdbus-1-dev" = "latest"
-"apt:cmake" = "latest"
-"apt:extra-cmake-modules" = "latest"
-"apt:gettext" = "latest"
-"apt:libfcitx5core-dev" = "latest"
-"apt:libfcitx5config-dev" = "latest"
-"apt:libfcitx5utils-dev" = "latest"
-"apt:fcitx5-modules-dev" = "latest"
-"apt:libfmt-dev" = "latest"
-"apt:libicu-dev" = "latest"
-"apt:libjson-c-dev" = "latest"
-"apt:curl" = "latest"
 "apt:nmap" = "latest"
 "apt:openssh-client" = "latest"
 "apt:zsh" = "latest"
@@ -25,9 +14,6 @@
 "apt:wl-clipboard" = "latest"
 "apt:xdg-terminal-exec" = "latest"
 "apt:nala" = "latest"
-
-[bootstrap.hooks.post-packages]
-run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/install-mcbopomofo.sh"'
 
 [bootstrap.files."/etc/apt/apt.conf.d/20auto-upgrades"]
 content = '''
