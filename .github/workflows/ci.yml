@@ -61,6 +61,18 @@ jobs:
           grep -Fq 'scripts/bootstrap-windows-terminal.sh' <<<"$wsl_task"
           grep -Fq '"hide": false' <<<"$wsl_task"
 
+          output="$(sh config/scripts/bootstrap-windows.sh 2>&1)"
+          grep -Fq 'powershell.exe is unavailable; skipping Windows bootstrap' <<<"$output"
+
+          test_root="$(mktemp -d)"
+          mkdir -p "$test_root/bin" "$test_root/localappdata"
+          printf '#!/bin/sh\nexit 99\n' >"$test_root/bin/powershell.exe"
+          chmod +x "$test_root/bin/powershell.exe"
+          printf '{}\n' >"$test_root/rendered.json"
+          PATH="$test_root/bin:$PATH" TINTY_WINDOWS_LOCALAPPDATA="$test_root/localappdata" \
+            sh config/scripts/tinty-windows-terminal.sh "$test_root/rendered.json"
+          rm -rf "$test_root"
+
           laptop_task="$(MISE_ENV=laptop mise tasks info laptop:apply --json)"
           grep -Fq 'keyd is required' <<<"$laptop_task"
           grep -Fxq 'sysrq = layer(meta)' config/assets/keyd/laptop.conf
@@ -93,6 +105,28 @@ jobs:
           check_config "wsl" "conf.d/platform.wsl.toml"
           check_config "laptop" "conf.d/platform.laptop.toml"
           check_config "arch,pacman,omarchy" "conf.d/platform.omarchy.toml"
+
+      - name: Validate custom service paths
+        shell: bash
+        run: |
+          custom_config="$RUNNER_TEMP/custom-mise"
+          cp -a config "$custom_config"
+
+          fake_bin="$RUNNER_TEMP/fake-systemctl"
+          mkdir -p "$fake_bin"
+          printf '#!/bin/sh\nexit 0\n' >"$fake_bin/systemctl"
+          chmod +x "$fake_bin/systemctl"
+
+          MISE_CONFIG_DIR="$custom_config" \
+            MISE_TRUSTED_CONFIG_PATHS="$custom_config" \
+            DBUS_SESSION_BUS_ADDRESS="unix:path=$RUNNER_TEMP/fake-systemd-bus" \
+            PATH="$fake_bin:$PATH" \
+            mise bootstrap linux systemd-units apply --yes
+
+          for unit in gomi-prune update; do
+            grep -Fq "Environment=\"MISE_CONFIG_DIR=$custom_config\"" \
+              "$HOME/.config/systemd/user/dev.mise.$unit.service"
+          done
 
       - name: Validate fresh onboarding
         shell: bash
