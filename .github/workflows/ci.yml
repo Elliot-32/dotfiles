@@ -26,7 +26,6 @@ jobs:
         run: |
           mkdir -p "$HOME/.config"
           ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
-          ln -s "$GITHUB_WORKSPACE/home/.miserc.toml" "$HOME/.miserc.toml"
           curl -fsSL https://mise.run | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           sudo apt-get update
@@ -118,6 +117,12 @@ jobs:
           check_config "laptop" "conf.d/platform.laptop.toml"
           check_config "arch,pacman,omarchy" "conf.d/platform.omarchy.toml"
 
+
+          outside_home_output="$(cd "$RUNNER_TEMP" && mise config ls 2>&1)"
+          grep -Fq "conf.d/distro.ubuntu.toml" <<<"$outside_home_output"
+          grep -Fq "conf.d/packages.apt.toml" <<<"$outside_home_output"
+          ! grep -Fq "dotted_conf_d_filename" <<<"$outside_home_output"
+
       - name: Validate custom service paths
         shell: bash
         run: |
@@ -184,7 +189,8 @@ jobs:
             --only dotfiles \
             --yes
 
-          sudo test -f "$fresh_home/.miserc.toml"
+          sudo test -f "$fresh_config/miserc.toml"
+          sudo test ! -e "$fresh_home/.miserc.toml"
           sudo test -f "$fresh_config/config.toml"
           sudo test -f "$fresh_config/mise.lock"
           sudo test -f "$fresh_config/windows-terminal/keybind.json"
@@ -200,6 +206,7 @@ jobs:
           sudo cmp "$fresh_home/.zshrc" "$GITHUB_WORKSPACE/home/.zshrc"
           sudo cmp "$fresh_home/.config/topgrade.toml" "$GITHUB_WORKSPACE/config/assets/topgrade.toml"
           sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
+          sudo cmp "$fresh_config/miserc.toml" "$GITHUB_WORKSPACE/config/miserc.toml"
 
           paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
           jq -e 'any(.entries[]; .path == "~/.zshrc" and .mode == "track")' <<<"$paths_json" >/dev/null

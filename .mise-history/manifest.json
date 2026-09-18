@@ -26,6 +26,12 @@
       "variants": []
     },
     {
+      "path": "config/miserc.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "config/hk.pkl",
       "autosave": true,
       "encrypt": false,
@@ -165,12 +171,6 @@
     },
     {
       "path": "home/.local/share/mise-completions-sync/registry.toml",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
-    },
-    {
-      "path": "home/.miserc.toml",
       "autosave": true,
       "encrypt": false,
       "variants": []
