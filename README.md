@@ -11,6 +11,8 @@ curl https://mise.run | sh
 
 Bootstrap 會依目前平台安裝套件、工具並套用設定。
 
+中文輸入預設使用 Fcitx5 + 小麥注音。Arch bootstrap 會先安裝 Paru，再用它處理 AUR 套件。
+
 ## 常用指令
 
 | 用途 | 指令 |
