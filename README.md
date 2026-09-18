@@ -11,7 +11,7 @@ curl https://mise.run | sh
 
 Bootstrap 會依目前平台安裝套件、工具並套用設定。
 
-中文輸入預設使用 Fcitx5 + 小麥注音。Arch 透過 AUR 安裝，因此非 Omarchy 環境需先準備 `yay` 或 `paru`。
+中文輸入預設使用 Fcitx5 + 小麥注音。Arch bootstrap 會先安裝 Paru，再用它處理 AUR 套件。
 
 ## 常用指令
 
