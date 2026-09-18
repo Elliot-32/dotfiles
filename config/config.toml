@@ -155,6 +155,7 @@ builtin = "history-watch"
 description = "Prune gomi trash older than 30 days"
 type = "oneshot"
 exec_start = "~/.local/bin/mise exec -- gomi --force --prune=30d"
+environment = { MISE_CONFIG_DIR = "{{ config_root }}" }
 wanted_by = []
 start = false
 
@@ -168,6 +169,7 @@ unit = "gomi-prune"
 description = "Run unattended user-session updates with Topgrade"
 type = "oneshot"
 exec_start = "%h/.local/bin/mise exec -- topgrade --config %h/.config/topgrade.systemd.toml"
+environment = { MISE_CONFIG_DIR = "{{ config_root }}" }
 wanted_by = []
 start = false
 
