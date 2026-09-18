@@ -59,8 +59,11 @@ local checks = new Mapping<String, Step> {
   }
   ["omarchy-compat"] {
     glob = List(
+      "config.toml",
       "conf.d/platform.omarchy.toml",
+      "assets/topgrade.toml",
       "assets/topgrade.omarchy.toml",
+      "../.mise-history/manifest.json",
       "../home/.config/ghostty/config",
       "../home/.config/environment.d/90-fcitx5.conf",
       "../home/.gtkrc-2.0",
@@ -69,6 +72,11 @@ local checks = new Mapping<String, Step> {
     )
     check = """
       set -e
+      grep -Fxq '"~/.config/topgrade.toml" = { source = "assets/topgrade.toml", mode = "copy" }' config.toml
+      if grep -Fq '"path": "home/.config/topgrade.toml"' ../.mise-history/manifest.json; then
+        echo 'Topgrade deployment target must not be enrolled in history' >&2
+        exit 1
+      fi
       if grep -Fq 'update = "omarchy update"' conf.d/platform.omarchy.toml; then
         echo 'Omarchy must keep the shared Topgrade update alias' >&2
         exit 1
