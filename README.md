@@ -6,7 +6,7 @@
 
 ```bash
 curl https://mise.run | sh
-MISE_ENV_CONF_D=true ~/.local/bin/mise bootstrap --adopt https://github.com/Elliot-32/dotfiles.git --yes --force-dotfiles && exec zsh -l
+~/.local/bin/mise bootstrap --adopt https://github.com/Elliot-32/dotfiles.git --yes --force-dotfiles && exec zsh -l
 ```
 
 Bootstrap 會依目前平台安裝套件、工具並套用設定。

@@ -14,7 +14,6 @@ jobs:
   validate:
     runs-on: ubuntu-24.04
     env:
-      MISE_ENV_CONF_D: "true"
       MISE_GITHUB_TOKEN: ${{ github.token }}
       MISE_TRUSTED_CONFIG_PATHS: ${{ github.workspace }}/config
       MISE_YES: "1"
@@ -27,6 +26,7 @@ jobs:
         run: |
           mkdir -p "$HOME/.config"
           ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
+          ln -s "$GITHUB_WORKSPACE/home/.miserc.toml" "$HOME/.miserc.toml"
           curl -fsSL https://mise.run | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           sudo apt-get update
@@ -162,7 +162,6 @@ jobs:
               MISE_CACHE_DIR="$fresh_home/.cache/mise" \
               MISE_GLOBAL_CONFIG_ROOT="$fresh_home" \
               MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
-              MISE_ENV_CONF_D=true \
               MISE_YES=1 \
               PATH="/usr/local/bin:/usr/bin:/bin" \
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
