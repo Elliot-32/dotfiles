@@ -98,6 +98,12 @@
       "variants": []
     },
     {
+      "path": "home/.config/omarchy/hooks/post-update.d/90-remove-mise-wrappers",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/omarchy/hooks/theme-set.d/50-themed-links",
       "autosave": true,
       "encrypt": false,
@@ -135,12 +141,6 @@
     },
     {
       "path": "home/.config/topgrade.systemd.toml",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
-    },
-    {
-      "path": "home/.config/topgrade.toml",
       "autosave": true,
       "encrypt": false,
       "variants": []

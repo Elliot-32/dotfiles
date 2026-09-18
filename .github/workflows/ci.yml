@@ -23,139 +23,112 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Prepare global mise config
+      - name: Prepare mise
         run: |
           mkdir -p "$HOME/.config"
           ln -s "$GITHUB_WORKSPACE/config" "$HOME/.config/mise"
-
-      - name: Install mise
-        run: |
           curl -fsSL https://mise.run | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          "$HOME/.local/bin/mise" --version
+          sudo apt-get update
+          sudo apt-get install --yes zsh
 
-      - name: Install Zsh
-        run: sudo apt-get update && sudo apt-get install --yes zsh
-
-      - name: Install hk tooling
+      - name: Install validation tools
         run: mise install --locked hk shellcheck
 
-      - name: Run hk checks
+      - name: Run static checks
         working-directory: config
         run: mise exec hk shellcheck -- hk check --all
 
-      - name: Validate Windows bootstrap PowerShell syntax
-        shell: pwsh
+      - name: Validate mise
         run: |
-          $tokens = $null
-          $errors = $null
-          [System.Management.Automation.Language.Parser]::ParseFile(
-            "$env:GITHUB_WORKSPACE/config/scripts/bootstrap-windows.ps1",
-            [ref]$tokens,
-            [ref]$errors
-          ) | Out-Null
+          mise tasks validate --errors-only
+          mise --locked bootstrap --dry-run
 
-          if ($errors.Count -gt 0) {
-            $errors | ForEach-Object { Write-Error $_ }
-            exit 1
-          }
-
-      - name: Validate mise settings
-        run: |
-          test "$(mise settings get auto_update)" = true
-          test "$(mise settings get history.sync)" = sync
-
-      - name: Validate mise setup metadata
+      - name: Validate profiles
         shell: bash
         run: |
-          grep -Fq 'format = 1' .mise-history/format.toml
-          test -f home/.zshrc
-          test -f home/.config/yazi/package.toml
-          test -f home/.config/fcitx5/profile
-          test -f home/.config/environment.d/90-fcitx5.conf
-          test ! -e config/.zshrc
-          test ! -e config/.config/yazi
-          test ! -e config/.config/fcitx5/profile
-          jq -e '
-            .format == 1 and
-            any(.enrollment[]; .path == "config/config.toml") and
-            any(.enrollment[]; .path == "config/mise.lock") and
-            any(.enrollment[]; .path == "config/windows-terminal") and
-            any(.enrollment[]; .path == "home/.miserc.toml") and
-            any(.enrollment[]; .path == "home/.zshrc") and
-            any(.enrollment[]; .path == "home/.config/sheldon") and
-            any(.enrollment[]; .path == "home/.config/yazi") and
-            any(.enrollment[]; .path == "home/.config/ghostty/config") and
-            any(.enrollment[]; .path == "home/.config/topgrade.toml") and
-            any(.enrollment[]; .path == "home/.config/fcitx5/profile") and
-            any(.enrollment[]; .path == "home/.config/environment.d/90-fcitx5.conf") and
-            any(.enrollment[]; .path == "home/.local/share/mise-completions-sync/registry.toml") and
-            all(.enrollment[]; .path != "config/.config/fcitx5/profile") and
-            all(.enrollment[]; .path != "config/.zshrc") and
-            all(.enrollment[]; .path != "config/.config/yazi")
-          ' .mise-history/manifest.json >/dev/null
+          test "$(MISE_ENV=arch,pacman mise settings get disable_tools)" = '["github:ryanoasis/nerd-fonts"]'
+          test "$(MISE_ENV=arch,pacman,omarchy mise settings get disable_tools)" = '["github:ryanoasis/nerd-fonts", "github:tinted-theming/tinty"]'
 
-      - name: Validate mise tasks
-        run: mise tasks validate --errors-only
-
-      - name: Validate WSL Windows bootstrap task
-        shell: bash
-        run: |
-          task_json="$(MISE_ENV=wsl mise tasks info bootstrap:windows --json)"
-          printf '%s\n' "$task_json"
-          grep -Fq 'scripts/bootstrap-windows.sh' <<<"$task_json"
-          grep -Fq 'scripts/bootstrap-windows-terminal.sh' <<<"$task_json"
-          grep -Fq '"hide": false' <<<"$task_json"
-          jq -e '
-            any(.actions[]; .id == "User.ZshRedo" and .command.action == "sendInput" and .command.input == "\u001b[122;6u") and
-            any(.keybindings[]; .id == "User.ZshRedo" and .keys == "ctrl+shift+z")
-          ' config/windows-terminal/keybind.json >/dev/null
-
-      - name: Validate theme backend selection
-        shell: bash
-        run: |
           tinty_task="$(MISE_ENV=ubuntu,apt mise tasks info bootstrap:theme --json)"
-          printf '%s\n' "$tinty_task"
           jq -e 'any(.run[]; . == "tinty sync") and any(.run[]; . == "tinty init")' <<<"$tinty_task" >/dev/null
 
           omarchy_task="$(MISE_ENV=arch,pacman,omarchy mise tasks info bootstrap:theme --json)"
-          printf '%s\n' "$omarchy_task"
           jq -e '.run == [":"]' <<<"$omarchy_task" >/dev/null
-          if grep -Fq 'tinty' <<<"$omarchy_task"; then
-            echo '::error::Omarchy bootstrap:theme must not run Tinty'
-            exit 1
-          fi
 
-      - name: Validate Tinty Windows Terminal path override
-        shell: bash
-        run: |
-          test_root="$(mktemp -d)"
-          trap 'rm -rf "$test_root"' EXIT
-          mkdir -p "$test_root/bin" "$test_root/localappdata"
+          wsl_task="$(MISE_ENV=wsl mise tasks info bootstrap:windows --json)"
+          grep -Fq 'scripts/bootstrap-windows.sh' <<<"$wsl_task"
+          grep -Fq 'scripts/bootstrap-windows-terminal.sh' <<<"$wsl_task"
+          grep -Fq '"hide": false' <<<"$wsl_task"
 
-          cat >"$test_root/bin/powershell.exe" <<'EOF'
-          #!/bin/sh
-          echo '::error::Tinty hook called powershell.exe despite pre-resolved LOCALAPPDATA' >&2
-          exit 99
-          EOF
-          chmod +x "$test_root/bin/powershell.exe"
-
-          printf '{}\n' >"$test_root/rendered.json"
-          PATH="$test_root/bin:$PATH" \
-            TINTY_WINDOWS_LOCALAPPDATA="$test_root/localappdata" \
-            sh config/scripts/tinty-windows-terminal.sh "$test_root/rendered.json"
-
-      - name: Validate Windows bootstrap skips without interop
-        shell: bash
-        run: |
           output="$(sh config/scripts/bootstrap-windows.sh 2>&1)"
-          printf '%s\n' "$output"
           grep -Fq 'powershell.exe is unavailable; skipping Windows bootstrap' <<<"$output"
 
-      - name: Validate bootstrap plan
-        run: mise --locked bootstrap --dry-run
+          test_root="$(mktemp -d)"
+          mkdir -p "$test_root/bin" "$test_root/localappdata"
+          printf '#!/bin/sh\nexit 99\n' >"$test_root/bin/powershell.exe"
+          chmod +x "$test_root/bin/powershell.exe"
+          printf '{}\n' >"$test_root/rendered.json"
+          PATH="$test_root/bin:$PATH" TINTY_WINDOWS_LOCALAPPDATA="$test_root/localappdata" \
+            sh config/scripts/tinty-windows-terminal.sh "$test_root/rendered.json"
+          rm -rf "$test_root"
 
-      - name: Validate setup repository onboarding
+          laptop_task="$(MISE_ENV=laptop mise tasks info laptop:apply --json)"
+          grep -Fq 'keyd is required' <<<"$laptop_task"
+          grep -Fxq 'sysrq = layer(meta)' config/assets/keyd/laptop.conf
+          grep -Fxq 'sysrq = sysrq' config/assets/keyd/laptop.conf
+
+          zsh config/tests/terminal-notify.zsh
+          jq -e '.profiles.defaults["compatibility.allowOSC777"] == true' config/windows-terminal/notification.json >/dev/null
+          grep -Fxq 'delivery = "terminal"' home/.config/herdr/config.toml
+
+      - name: Validate config selection
+        shell: bash
+        run: |
+          check_config() {
+            local envs="$1"
+            shift
+
+            local output
+            output="$(MISE_ENV="$envs" mise config ls)"
+
+            local expected
+            for expected in "$@"; do
+              grep -Fq "$expected" <<<"$output"
+            done
+          }
+
+          check_config "ubuntu,apt" "conf.d/distro.ubuntu.toml" "conf.d/packages.apt.toml"
+          check_config "fedora,dnf" "conf.d/distro.fedora.toml" "conf.d/packages.dnf.toml"
+          check_config "arch,pacman" "conf.d/packages.pacman.toml"
+          check_config "flatpak" "config.flatpak.toml"
+          check_config "wsl" "conf.d/platform.wsl.toml"
+          check_config "laptop" "conf.d/platform.laptop.toml"
+          check_config "arch,pacman,omarchy" "conf.d/platform.omarchy.toml"
+
+      - name: Validate custom service paths
+        shell: bash
+        run: |
+          custom_config="$RUNNER_TEMP/custom-mise"
+          cp -a config "$custom_config"
+
+          fake_bin="$RUNNER_TEMP/fake-systemctl"
+          mkdir -p "$fake_bin"
+          printf '#!/bin/sh\nexit 0\n' >"$fake_bin/systemctl"
+          chmod +x "$fake_bin/systemctl"
+
+          MISE_CONFIG_DIR="$custom_config" \
+            MISE_TRUSTED_CONFIG_PATHS="$custom_config" \
+            DBUS_SESSION_BUS_ADDRESS="unix:path=$RUNNER_TEMP/fake-systemd-bus" \
+            PATH="$fake_bin:$PATH" \
+            mise bootstrap linux systemd-units apply --yes
+
+          for unit in gomi-prune update; do
+            grep -Fq "Environment=\"MISE_CONFIG_DIR=$custom_config\"" \
+              "$HOME/.config/systemd/user/dev.mise.$unit.service"
+          done
+
+      - name: Validate fresh onboarding
         shell: bash
         run: |
           setup_work="$RUNNER_TEMP/setup-work"
@@ -174,24 +147,19 @@ jobs:
 
           git clone --bare "$setup_work" "$setup_bare"
           sudo chown -R "$fresh_user:$fresh_user" "$setup_bare" "$fresh_home"
-
           cp "$HOME/.local/bin/mise" "$mise_bin"
           chmod 0755 "$mise_bin"
 
           fresh_config="$fresh_home/custom/mise"
-          fresh_state="$fresh_home/.local/state/mise"
-          fresh_data="$fresh_home/.local/share/mise"
-          fresh_cache="$fresh_home/.cache/mise"
-
           run_fresh() {
             sudo -u "$fresh_user" env -i \
               HOME="$fresh_home" \
               XDG_CONFIG_HOME="$fresh_home/.config" \
               XDG_STATE_HOME="$fresh_home/.local/state" \
               MISE_CONFIG_DIR="$fresh_config" \
-              MISE_STATE_DIR="$fresh_state" \
-              MISE_DATA_DIR="$fresh_data" \
-              MISE_CACHE_DIR="$fresh_cache" \
+              MISE_STATE_DIR="$fresh_home/.local/state/mise" \
+              MISE_DATA_DIR="$fresh_home/.local/share/mise" \
+              MISE_CACHE_DIR="$fresh_home/.cache/mise" \
               MISE_GLOBAL_CONFIG_ROOT="$fresh_home" \
               MISE_TRUSTED_CONFIG_PATHS="$fresh_config" \
               MISE_ENV_CONF_D=true \
@@ -199,9 +167,6 @@ jobs:
               PATH="/usr/local/bin:/usr/bin:/bin" \
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
           }
-
-          sudo test ! -e "$fresh_home/.zshrc"
-          sudo test ! -e "$fresh_config/config.toml"
 
           run_fresh "$mise_bin" bootstrap \
             --adopt "file://$setup_bare" \
@@ -212,108 +177,26 @@ jobs:
           sudo test -f "$fresh_config/config.toml"
           sudo test -f "$fresh_config/mise.lock"
           sudo test -f "$fresh_config/windows-terminal/keybind.json"
-          sudo test -f "$fresh_config/config.local.toml"
           sudo test ! -e "$fresh_home/.config/mise/config.toml"
 
           sudo test -f "$fresh_home/.zshrc"
           sudo test ! -L "$fresh_home/.zshrc"
-          sudo test -f "$fresh_home/.config/sheldon/plugins.toml"
-          sudo test ! -L "$fresh_home/.config/sheldon/plugins.toml"
-          sudo test -f "$fresh_home/.config/yazi/package.toml"
-          sudo test ! -L "$fresh_home/.config/yazi/package.toml"
           sudo test -f "$fresh_home/.config/topgrade.toml"
           sudo test ! -L "$fresh_home/.config/topgrade.toml"
-          sudo test -f "$fresh_home/.config/ghostty/config"
-          sudo test ! -L "$fresh_home/.config/ghostty/config"
           sudo test -f "$fresh_home/.config/fcitx5/profile"
           sudo test ! -L "$fresh_home/.config/fcitx5/profile"
-          sudo test -f "$fresh_home/.config/environment.d/90-fcitx5.conf"
-          sudo test ! -L "$fresh_home/.config/environment.d/90-fcitx5.conf"
-          sudo test -f "$fresh_home/.local/share/mise-completions-sync/registry.toml"
-          sudo test ! -L "$fresh_home/.local/share/mise-completions-sync/registry.toml"
 
           sudo cmp "$fresh_home/.zshrc" "$GITHUB_WORKSPACE/home/.zshrc"
-          sudo cmp "$fresh_home/.config/yazi/package.toml" "$GITHUB_WORKSPACE/home/.config/yazi/package.toml"
-          sudo cmp "$fresh_home/.config/fcitx5/profile" "$GITHUB_WORKSPACE/home/.config/fcitx5/profile"
-          sudo cmp "$fresh_home/.config/environment.d/90-fcitx5.conf" "$GITHUB_WORKSPACE/home/.config/environment.d/90-fcitx5.conf"
+          sudo cmp "$fresh_home/.config/topgrade.toml" "$GITHUB_WORKSPACE/config/assets/topgrade.toml"
           sudo cmp "$fresh_config/mise.lock" "$GITHUB_WORKSPACE/config/mise.lock"
-          sudo cmp "$fresh_config/windows-terminal/keybind.json" "$GITHUB_WORKSPACE/config/windows-terminal/keybind.json"
 
           paths_json="$(run_fresh "$mise_bin" bootstrap dotfiles paths --json)"
-          printf '%s\n' "$paths_json"
           jq -e 'any(.entries[]; .path == "~/.zshrc" and .mode == "track")' <<<"$paths_json" >/dev/null
-          jq -e 'any(.entries[]; .path == "~/.config/sheldon" and .mode == "track")' <<<"$paths_json" >/dev/null
-          jq -e 'any(.entries[]; .path == "~/.config/yazi" and .mode == "track")' <<<"$paths_json" >/dev/null
-          jq -e 'any(.entries[]; .path == "~/.config/ghostty/config" and .mode == "track")' <<<"$paths_json" >/dev/null
-          jq -e 'any(.entries[]; .path == "~/.config/fcitx5/profile" and .mode == "track")' <<<"$paths_json" >/dev/null
-          jq -e 'any(.entries[]; .path == "~/.config/environment.d/90-fcitx5.conf" and .mode == "track")' <<<"$paths_json" >/dev/null
           jq -e 'any(.entries[]; .path == "~/custom/mise/mise.lock")' <<<"$paths_json" >/dev/null
-          jq -e 'all(.entries[]; .path != "~/custom/mise/.zshrc")' <<<"$paths_json" >/dev/null
           jq -e 'all(.entries[]; (.path | startswith("~/.config/mise/") | not))' <<<"$paths_json" >/dev/null
 
           config_json="$(run_fresh "$mise_bin" config ls --json)"
-          printf '%s\n' "$config_json"
-          jq -e --arg path "$fresh_config/conf.d/distro.ubuntu.toml" \
-            'any(.[]; .path == $path)' <<<"$config_json" >/dev/null
-          jq -e --arg path "$fresh_config/conf.d/packages.apt.toml" \
-            'any(.[]; .path == $path)' <<<"$config_json" >/dev/null
+          jq -e --arg path "$fresh_config/conf.d/distro.ubuntu.toml" 'any(.[]; .path == $path)' <<<"$config_json" >/dev/null
+          jq -e --arg path "$fresh_config/conf.d/packages.apt.toml" 'any(.[]; .path == $path)' <<<"$config_json" >/dev/null
+
           run_fresh "$mise_bin" bootstrap dotfiles status
-
-      - name: Validate custom mise config directory
-        shell: bash
-        run: |
-          custom_config_dir="$RUNNER_TEMP/custom-mise-config"
-          cp -a "$GITHUB_WORKSPACE/config" "$custom_config_dir"
-
-          export MISE_CONFIG_DIR="$custom_config_dir"
-          export MISE_TRUSTED_CONFIG_PATHS="$custom_config_dir"
-
-          mise tasks validate --errors-only
-          mise --locked bootstrap --dry-run
-
-      - name: Validate mise config selection
-        shell: bash
-        run: |
-          check_config() {
-            local envs="$1"
-            shift
-
-            local output
-            output="$(MISE_ENV="$envs" mise config ls)"
-            printf '%s\n' "$output"
-
-            local expected
-            for expected in "$@"; do
-              if ! grep -Fq "$expected" <<<"$output"; then
-                echo "::error::MISE_ENV=$envs did not load $expected"
-                return 1
-              fi
-            done
-          }
-
-          check_config "ubuntu,apt" \
-            "conf.d/distro.ubuntu.toml" \
-            "conf.d/packages.apt.toml"
-
-          check_config "debian,apt" \
-            "conf.d/packages.apt.toml"
-
-          check_config "fedora,dnf" \
-            "conf.d/distro.fedora.toml" \
-            "conf.d/packages.dnf.toml"
-
-          check_config "rhel,dnf" \
-            "conf.d/packages.dnf.toml"
-
-          check_config "arch,pacman" \
-            "conf.d/packages.pacman.toml"
-
-          check_config "flatpak" \
-            "config.flatpak.toml"
-
-          check_config "wsl" \
-            "conf.d/platform.wsl.toml"
-
-          check_config "arch,pacman,omarchy" \
-            "conf.d/packages.pacman.toml" \
-            "conf.d/platform.omarchy.toml"

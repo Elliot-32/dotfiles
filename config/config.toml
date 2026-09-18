@@ -1,4 +1,4 @@
-min_version = "2026.9.2"
+min_version = "2026.9.10"
 
 [settings]
 auto_update = true
@@ -38,7 +38,6 @@ atuin = "latest"
 bat = "latest"
 btop = "latest"
 bun = "latest"
-cargo-binstall = "latest"
 cowsay = "latest"
 dasel = "latest"
 doggo = "latest"
@@ -70,7 +69,6 @@ uv = "latest"
 witr = "latest"
 yazi = "latest"
 zoxide = "latest"
-"cargo:rustscan" = { version = "latest", depends = ["rust", "cargo-binstall"] }
 "github:tinted-theming/tinty" = "latest"
 "github:Giammarco-Ferranti/deja" = "latest"
 "pipx:isd-tui" = "latest"
@@ -117,7 +115,7 @@ fc-cache -f "$font_dir"
 "~/.config/tinted-theming/tinty/config.toml" = { mode = "track" }
 "~/.config/tinted-theming/tinty/templates" = { mode = "track" }
 "~/.config/yazi" = { mode = "track" }
-"~/.config/topgrade.toml" = { mode = "track" }
+"~/.config/topgrade.toml" = { source = "assets/topgrade.toml", mode = "copy" }
 "~/.config/topgrade.systemd.toml" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }
 "~/.config/herdr/config.toml" = { mode = "track" }
@@ -155,6 +153,7 @@ builtin = "history-watch"
 description = "Prune gomi trash older than 30 days"
 type = "oneshot"
 exec_start = "~/.local/bin/mise exec -- gomi --force --prune=30d"
+environment = { MISE_CONFIG_DIR = "{{ env.MISE_CONFIG_DIR | default(value=xdg_config_home ~ '/mise') }}" }
 wanted_by = []
 start = false
 
@@ -168,6 +167,7 @@ unit = "gomi-prune"
 description = "Run unattended user-session updates with Topgrade"
 type = "oneshot"
 exec_start = "%h/.local/bin/mise exec -- topgrade --config %h/.config/topgrade.systemd.toml"
+environment = { MISE_CONFIG_DIR = "{{ env.MISE_CONFIG_DIR | default(value=xdg_config_home ~ '/mise') }}" }
 wanted_by = []
 start = false
 
@@ -201,6 +201,7 @@ run = [
 ]
 
 [tasks."theme:select"]
+alias = "theme"
 description = "Interactively preview and apply Tinty themes"
 hide = false
 interactive = true

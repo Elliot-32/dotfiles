@@ -1,0 +1,33 @@
+# Opt-in laptop profile. Activate explicitly with `mise -E laptop ...`.
+
+[bootstrap.directories."/etc/keyd"]
+owner = "root"
+group = "root"
+mode = "0755"
+
+[bootstrap.files."/etc/keyd/laptop.conf"]
+source = "../assets/keyd/laptop.conf"
+owner = "root"
+group = "root"
+mode = "0644"
+notify = ["keyd"]
+
+[bootstrap.services.keyd]
+state = "running"
+enabled = true
+on_change = "reload_or_restart"
+
+[tasks."laptop:apply"]
+description = "Apply optional laptop keyboard remapping"
+hide = false
+run = '''
+set -eu
+
+if ! command -v keyd >/dev/null 2>&1; then
+  echo "keyd is required; install it with the system package manager first." >&2
+  exit 1
+fi
+
+keyd check "${MISE_CONFIG_DIR:-$HOME/.config/mise}/assets/keyd/laptop.conf"
+MISE_ENV=laptop mise bootstrap --only directories,files,services --yes
+'''

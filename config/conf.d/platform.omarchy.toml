@@ -4,13 +4,12 @@ disable_tools = [
   "github:tinted-theming/tinty",
 ]
 
-[shell_alias]
-update = "omarchy update"
-
 [dotfiles]
+"~/.config/topgrade.toml" = { source = "../assets/topgrade.omarchy.toml", mode = "copy" }
 "~/.config/hypr/input.lua" = { mode = "track" }
 "~/.config/omarchy/themed/gomi.yaml.tpl" = { mode = "track" }
 "~/.config/omarchy/themed-links.toml" = { mode = "track" }
+"~/.config/omarchy/hooks/post-update.d/90-remove-mise-wrappers" = { mode = "track" }
 "~/.config/omarchy/hooks/theme-set.d/50-themed-links" = { mode = "track" }
 
 [bootstrap.user]
@@ -22,6 +21,7 @@ bash = false
 [bootstrap.hooks.post-tools]
 run = '''
 bash "$HOME/.config/omarchy/hooks/theme-set.d/50-themed-links" --ensure-rendered
+bash "$HOME/.config/omarchy/hooks/post-update.d/90-remove-mise-wrappers"
 '''
 
 [tasks."bootstrap:theme"]
