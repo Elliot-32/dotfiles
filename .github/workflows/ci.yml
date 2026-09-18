@@ -82,6 +82,18 @@ jobs:
           jq -e '.profiles.defaults["compatibility.allowOSC777"] == true' config/windows-terminal/notification.json >/dev/null
           grep -Fxq 'delivery = "terminal"' home/.config/herdr/config.toml
 
+          grep -Fxq 'DefaultIM=mcbopomofo' home/.config/fcitx5/profile
+          grep -Fxq 'Name=mcbopomofo' home/.config/fcitx5/profile
+          ! grep -Fxq 'Name=chewing' home/.config/fcitx5/profile
+          grep -Fq '"pacman:fcitx5-chewing" = { state = "absent" }' config/conf.d/packages.pacman.toml
+          grep -Fq '[bootstrap.hooks.pre-packages]' config/conf.d/packages.pacman.toml
+          grep -Fq 'scripts/bootstrap-paru.sh' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:git" = "latest"' config/conf.d/packages.pacman.toml
+          ! grep -Fq '"aur:paru"' config/conf.d/packages.pacman.toml
+          grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
+          ! grep -Fq '"apt:fcitx5-chewing"' config/conf.d/packages.apt.toml
+          ! grep -Fq '"dnf:fcitx5-chewing"' config/conf.d/packages.dnf.toml
+
       - name: Validate config selection
         shell: bash
         run: |
