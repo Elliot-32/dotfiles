@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-if command -v paru >/dev/null 2>&1; then
+if command -v yay >/dev/null 2>&1 || command -v paru >/dev/null 2>&1; then
   exit 0
 fi
 
