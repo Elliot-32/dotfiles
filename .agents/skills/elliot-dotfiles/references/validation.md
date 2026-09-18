@@ -61,8 +61,9 @@ Use native setup paths when reviewing these files:
 - `home/.config/sheldon/plugins.toml` and `home/.zshrc` for shell/plugin ordering;
 - `home/.config/yazi/` for Yazi plugin declarations, bindings, and initialization;
 - `home/.local/share/mise-completions-sync/registry.toml` for local completion mappings;
-- `home/.config/topgrade.toml` and `home/.config/topgrade.systemd.toml` for shared update behavior;
-- `config/assets/topgrade.omarchy.toml` plus `config/conf.d/platform.omarchy.toml` for the Omarchy-specific Topgrade path.
+- `config/assets/topgrade.toml` plus `home/.config/topgrade.systemd.toml` for shared update behavior;
+- `config/assets/topgrade.omarchy.toml` plus `config/conf.d/platform.omarchy.toml` for the Omarchy-specific Topgrade path;
+- `.mise-history/manifest.json` to ensure the deployed `~/.config/topgrade.toml` target is not history-enrolled.
 
 Keep upstream-native package/plugin mechanisms where available and avoid a second updater or sync path that competes with mise.
 
