@@ -46,7 +46,7 @@ For direct-tracked files such as `~/.zshrc`, verify the restored path is a regul
 
 ## Environment selection
 
-When changing `config/miserc.toml`, `config/conf.d/`, or environment naming, verify expected config selection. Current relationships include Ubuntu/APT, Debian/APT, Fedora/DNF, RHEL/DNF, Arch/Pacman, Flatpak, WSL, and WSLg. CI should be updated whenever this architecture changes, including a check from outside `$HOME` so the global early-init selector is not accidentally made cwd-dependent.
+When changing `config/miserc.toml`, `config/conf.d/`, or environment naming, verify expected config selection. Current relationships include Ubuntu/APT, Debian/APT, Fedora/DNF, RHEL/DNF, Arch/Pacman, Flatpak, WSL, and WSLg. CI should be updated whenever this architecture changes, including a check from outside `$HOME` so the global early-init selector is not accidentally made cwd-dependent. Fresh setup adoption must also remain green because history preflight sees the raw, pre-Tera `miserc.toml` body.
 
 ## Tool or lockfile changes
 
