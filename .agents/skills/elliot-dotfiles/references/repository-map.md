@@ -42,7 +42,7 @@ These files are restored directly to their application paths and use `mode = "tr
 - `home/.zshrc`, `home/.zshenv`, `home/.zprofile`, `home/.p10k.zsh`;
 - `home/.config/sheldon/`;
 - `home/.config/yazi/`;
-- `home/.config/topgrade.toml` and `home/.config/topgrade.systemd.toml`;
+- `home/.config/topgrade.systemd.toml`;
 - `home/.config/ghostty/config`;
 - `home/.config/herdr/config.toml`;
 - `home/.config/omarchy/themed/gomi.yaml.tpl`, `home/.config/omarchy/themed-links.toml`, `home/.config/omarchy/hooks/theme-set.d/50-themed-links`, and `home/.config/omarchy/hooks/post-update.d/90-remove-mise-wrappers`;
@@ -55,7 +55,8 @@ Herdr's tracked config routes agent completion/input notifications through the o
 
 ## Bundled assets and scripts
 
-- `config/assets/topgrade.omarchy.toml`: Omarchy-specific Topgrade config; delegates the system update step to `omarchy update` while keeping the shared Topgrade workflow for everything else.
+- `config/assets/topgrade.toml`: shared Topgrade config deployed to `~/.config/topgrade.toml` on normal systems; the deployment target is intentionally not history-tracked.
+- `config/assets/topgrade.omarchy.toml`: Omarchy-specific Topgrade config deployed to the same target; delegates the system update step to `omarchy update` while keeping the rest of the Topgrade workflow.
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
