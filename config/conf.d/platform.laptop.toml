@@ -29,5 +29,5 @@ if ! command -v keyd >/dev/null 2>&1; then
 fi
 
 keyd check "${MISE_CONFIG_DIR:-$HOME/.config/mise}/assets/keyd/laptop.conf"
-MISE_ENV=laptop mise bootstrap --only files,services --yes
+MISE_ENV=laptop mise bootstrap --only directories,files,services --yes
 '''
