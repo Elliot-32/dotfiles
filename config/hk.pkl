@@ -60,6 +60,7 @@ local checks = new Mapping<String, Step> {
   ["omarchy-compat"] {
     glob = List(
       "conf.d/platform.omarchy.toml",
+      "assets/topgrade.omarchy.toml",
       "../home/.config/ghostty/config",
       "../home/.config/environment.d/90-fcitx5.conf",
       "../home/.gtkrc-2.0",
@@ -68,7 +69,13 @@ local checks = new Mapping<String, Step> {
     )
     check = """
       set -e
-      grep -Fxq 'update = "omarchy update"' conf.d/platform.omarchy.toml
+      if grep -Fq 'update = "omarchy update"' conf.d/platform.omarchy.toml; then
+        echo 'Omarchy must keep the shared Topgrade update alias' >&2
+        exit 1
+      fi
+      grep -Fxq '"~/.config/topgrade.toml" = { source = "../assets/topgrade.omarchy.toml", mode = "copy" }' conf.d/platform.omarchy.toml
+      grep -Fxq '  "system",' assets/topgrade.omarchy.toml
+      grep -Fxq '"Omarchy" = "omarchy update"' assets/topgrade.omarchy.toml
       grep -Fxq 'login_shell = "/usr/bin/bash"' conf.d/platform.omarchy.toml
       grep -Fxq 'command = /usr/bin/zsh' ../home/.config/ghostty/config
       grep -Fxq 'INPUT_METHOD=fcitx' ../home/.config/environment.d/90-fcitx5.conf
