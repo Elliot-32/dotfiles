@@ -84,14 +84,18 @@ jobs:
           grep -Fxq 'DefaultIM=mcbopomofo' home/.config/fcitx5/profile
           grep -Fxq 'Name=mcbopomofo' home/.config/fcitx5/profile
           ! grep -Fxq 'Name=chewing' home/.config/fcitx5/profile
+
+          grep -Fq '"flatpak-user:org.fcitx.Fcitx5" = "latest"' config/config.flatpak.toml
+          grep -Fq '"flatpak-user:org.fcitx.Fcitx5.Addon.McBopomofo" = "latest"' config/config.flatpak.toml
+          grep -Fq 'Exec=flatpak run --user org.fcitx.Fcitx5' config/config.flatpak.toml
+
           grep -Fq '"pacman:fcitx5-chewing" = { state = "absent" }' config/conf.d/packages.pacman.toml
-          grep -Fq '[bootstrap.hooks.pre-packages]' config/conf.d/packages.pacman.toml
-          grep -Fq 'scripts/bootstrap-paru.sh' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:git" = "latest"' config/conf.d/packages.pacman.toml
-          ! grep -Fq '"aur:paru"' config/conf.d/packages.pacman.toml
-          grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
-          ! grep -Fq '"apt:fcitx5-chewing"' config/conf.d/packages.apt.toml
-          ! grep -Fq '"dnf:fcitx5-chewing"' config/conf.d/packages.dnf.toml
+          ! grep -Fq '"aur:' config/conf.d/packages.pacman.toml
+          test ! -e config/scripts/bootstrap-paru.sh
+
+          ! grep -Fq 'mcbopomofo' config/conf.d/packages.apt.toml
+          ! grep -Fq 'mcbopomofo' config/conf.d/packages.dnf.toml
+          test ! -e config/scripts/install-mcbopomofo.sh
 
       - name: Validate config selection
         shell: bash
