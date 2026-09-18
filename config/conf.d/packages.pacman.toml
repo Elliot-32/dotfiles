@@ -10,7 +10,8 @@ disable_tools = ["github:ryanoasis/nerd-fonts"]
 "pacman:openssh" = "latest"
 "pacman:zsh" = "latest"
 "pacman:fcitx5" = "latest"
-"pacman:fcitx5-chewing" = "latest"
+"pacman:fcitx5-chewing" = { state = "absent" }
+"aur:fcitx5-mcbopomofo-git" = "latest"
 "pacman:fcitx5-gtk" = "latest"
 "pacman:fcitx5-qt" = "latest"
 "pacman:libnotify" = "latest"
