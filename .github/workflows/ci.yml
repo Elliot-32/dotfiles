@@ -111,6 +111,15 @@ jobs:
             any(.keybindings[]; .id == "User.ZshRedo" and .keys == "ctrl+shift+z")
           ' config/windows-terminal/keybind.json >/dev/null
 
+      - name: Validate laptop profile
+        shell: bash
+        run: |
+          task_json="$(MISE_ENV=laptop mise tasks info laptop:apply --json)"
+          printf '%s\n' "$task_json"
+          grep -Fq 'keyd is required' <<<"$task_json"
+          grep -Fxq 'sysrq = layer(meta)' config/assets/keyd/laptop.conf
+          grep -Fxq 'sysrq = sysrq' config/assets/keyd/laptop.conf
+
       - name: Validate theme backend selection
         shell: bash
         run: |
@@ -331,6 +340,9 @@ jobs:
 
           check_config "wsl" \
             "conf.d/platform.wsl.toml"
+
+          check_config "laptop" \
+            "conf.d/platform.laptop.toml"
 
           check_config "arch,pacman,omarchy" \
             "conf.d/packages.pacman.toml" \
