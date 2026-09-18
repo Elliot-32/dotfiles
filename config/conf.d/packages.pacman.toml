@@ -15,7 +15,7 @@ run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-paru.sh"'
 "pacman:zsh" = "latest"
 "pacman:fcitx5" = "latest"
 "pacman:fcitx5-chewing" = { state = "absent" }
-"aur:fcitx5-mcbopomofo-git" = "latest"
+"aur:paru" = "latest"
 "pacman:fcitx5-gtk" = "latest"
 "pacman:fcitx5-qt" = "latest"
 "pacman:libnotify" = "latest"
