@@ -28,4 +28,4 @@ dotfiles 會由 mise history/sync 自動同步。
 
 Omarchy 使用自己的主題系統，不需要另外執行 Tinty 主題切換。
 
-Laptop 鍵盤設定是 opt-in；套用後 `Print` 為 `Super`，`Ctrl+Print` 為 `PrintScreen`。
+Laptop 鍵盤設定是 opt-in；先透過系統套件管理器安裝 `keyd`。套用後 `Print` 為 `Super`，`Ctrl+Print` 為 `PrintScreen`。
