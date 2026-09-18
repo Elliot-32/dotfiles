@@ -1,4 +1,4 @@
-min_version = "2026.9.2"
+min_version = "2026.9.10"
 
 [settings]
 auto_update = true
@@ -155,7 +155,7 @@ builtin = "history-watch"
 description = "Prune gomi trash older than 30 days"
 type = "oneshot"
 exec_start = "~/.local/bin/mise exec -- gomi --force --prune=30d"
-environment = { MISE_CONFIG_DIR = "{{ config_root }}" }
+environment = { MISE_CONFIG_DIR = "{{ env.MISE_CONFIG_DIR | default(value=xdg_config_home ~ '/mise') }}" }
 wanted_by = []
 start = false
 
@@ -169,7 +169,7 @@ unit = "gomi-prune"
 description = "Run unattended user-session updates with Topgrade"
 type = "oneshot"
 exec_start = "%h/.local/bin/mise exec -- topgrade --config %h/.config/topgrade.systemd.toml"
-environment = { MISE_CONFIG_DIR = "{{ config_root }}" }
+environment = { MISE_CONFIG_DIR = "{{ env.MISE_CONFIG_DIR | default(value=xdg_config_home ~ '/mise') }}" }
 wanted_by = []
 start = false
 
