@@ -42,7 +42,7 @@ A real bootstrap can mutate packages, login-shell settings, systemd units, crede
 
 When tracking, setup layout, or sync behavior changes, verify `.mise-history/manifest.json` matches the portable roots and that a fresh user can onboard from the setup repository. Native tracked files should resolve under `$HOME`; portable `config/*` entries must resolve against the active `MISE_CONFIG_DIR`, including a non-default one. Do not accept a test that merely checks the default `~/.config/mise` path.
 
-For direct-tracked files such as `~/.zshrc`, verify the restored path is a regular native file rather than a symlink to `$MISE_CONFIG_DIR`. Declarative exceptions such as the APT/Fcitx5 files may still use deployment modes intentionally.
+For direct-tracked files such as `~/.zshrc`, verify the restored path is a regular native file rather than a symlink to `$MISE_CONFIG_DIR`. Declarative exceptions such as privileged APT files may still use deployment modes intentionally.
 
 ## Environment selection
 
