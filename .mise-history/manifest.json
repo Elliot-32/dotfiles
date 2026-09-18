@@ -146,12 +146,6 @@
       "variants": []
     },
     {
-      "path": "home/.config/topgrade.toml",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
-    },
-    {
       "path": "home/.config/xdg-terminals.list",
       "autosave": true,
       "encrypt": false,
