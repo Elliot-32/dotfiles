@@ -30,7 +30,7 @@ Environment selector restored to `~/.miserc.toml`. It detects Arch, Fedora, RHEL
 - `config/conf.d/packages.apt.toml`: APT-family packages/settings, including Fcitx5 packages.
 - `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including Fcitx5 packages.
 - `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including Fcitx5 packages.
-- `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked theme files and theme bootstrap behavior.
+- `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked hooks and theme/bootstrap compatibility behavior.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font/bootstrap integration override.
 - `config/conf.d/platform.wslg.toml`: WSLg-specific configuration.
 - `config/config.flatpak.toml`: Flatpak-specific bootstrap/update behavior.
@@ -45,7 +45,7 @@ These files are restored directly to their application paths and use `mode = "tr
 - `home/.config/topgrade.toml` and `home/.config/topgrade.systemd.toml`;
 - `home/.config/ghostty/config`;
 - `home/.config/herdr/config.toml`;
-- `home/.config/omarchy/themed/gomi.yaml.tpl`, `home/.config/omarchy/themed-links.toml`, and `home/.config/omarchy/hooks/theme-set.d/50-themed-links`;
+- `home/.config/omarchy/themed/gomi.yaml.tpl`, `home/.config/omarchy/themed-links.toml`, `home/.config/omarchy/hooks/theme-set.d/50-themed-links`, and `home/.config/omarchy/hooks/post-update.d/90-remove-mise-wrappers`;
 - `home/.config/xdg-terminals.list`;
 - `home/.config/fcitx5/profile`;
 - `home/.config/environment.d/90-fcitx5.conf`;

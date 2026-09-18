@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+
+for command in gh codex opencode; do
+  wrapper="$HOME/.local/bin/$command"
+  [[ -f "$wrapper" ]] || continue
+
+  if grep -Fxq 'export MISE_MINIMUM_RELEASE_AGE=0' "$wrapper" &&
+    grep -Fxq "mise use -g --quiet \"$command\" || exit 1" "$wrapper" &&
+    grep -Fxq "exec mise x \"$command\" -- \"$command\" \"\$@\"" "$wrapper"; then
+    rm -f -- "$wrapper"
+  fi
+done
