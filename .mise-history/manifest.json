@@ -26,12 +26,6 @@
       "variants": []
     },
     {
-      "path": "config/miserc.toml",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
-    },
-    {
       "path": "config/hk.pkl",
       "autosave": true,
       "encrypt": false,
@@ -39,6 +33,12 @@
     },
     {
       "path": "config/mise.lock",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "config/miserc.toml",
       "autosave": true,
       "encrypt": false,
       "variants": []
