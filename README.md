@@ -35,6 +35,16 @@ mise run theme:select
 
 Omarchy 環境則直接使用 Omarchy 的主題系統，不需要另外使用 Tinty。
 
+## Laptop
+
+Laptop 鍵盤 remap 是 opt-in，不會自動套用。先透過系統套件管理器安裝 `keyd`，需要時再執行：
+
+```bash
+mise -E laptop run laptop:apply
+```
+
+套用後 `Print` 會作為 `Super` 使用，`Ctrl+Print` 則送出真正的 `PrintScreen`；這是 system-wide remap，不依賴 Omarchy 或特定桌面環境。
+
 ## Windows / WSL
 
 在 WSL bootstrap 時會一併安裝 Windows 端的 JetBrainsMono Nerd Font，並套用 Windows Terminal 整合：`Ctrl+Shift+Z` 會送出 Zsh redo 所需的 escape sequence，也會啟用長時間 command 的原生桌面通知。需要再次執行 Windows 整合 bootstrap 時可使用：
@@ -54,6 +64,7 @@ Ghostty 與 Windows Terminal 會在長時間 command 完成後顯示通知，包
 | 套用主題（非 Omarchy） | `tinty apply <scheme>` |
 | 互動選擇 / 預覽 Tinty 主題 | `mise run theme:select` |
 | 重新執行 Windows 整合 bootstrap | `mise run bootstrap:windows` |
+| 套用 Laptop 鍵盤 remap | `mise -E laptop run laptop:apply` |
 | 查看同步狀態 | `mise bootstrap dotfiles status` |
 | 納管檔案 | `mise bootstrap dotfiles track <path>` |
 | 解除納管 | `mise bootstrap dotfiles untrack <path>` |
