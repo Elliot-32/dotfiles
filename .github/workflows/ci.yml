@@ -184,10 +184,21 @@ jobs:
               sh -c 'cd "$HOME" && exec "$@"' sh "$@"
           }
 
-          run_fresh "$mise_bin" bootstrap \
+          if ! run_fresh "$mise_bin" bootstrap \
             --adopt "file://$setup_bare" \
             --only dotfiles \
-            --yes
+            --yes; then
+            echo "fresh onboarding failed; inspecting miserc state" >&2
+            sudo find "$fresh_home" -maxdepth 4 -name 'miserc.toml' -ls >&2 || true
+            if sudo test -f "$fresh_config/miserc.toml"; then
+              sudo sha256sum "$fresh_config/miserc.toml" "$GITHUB_WORKSPACE/config/miserc.toml" >&2
+              echo "--- live miserc ---" >&2
+              sudo cat "$fresh_config/miserc.toml" >&2
+              echo "--- repository miserc ---" >&2
+              cat "$GITHUB_WORKSPACE/config/miserc.toml" >&2
+            fi
+            exit 1
+          fi
 
           sudo test -f "$fresh_config/miserc.toml"
           sudo test ! -e "$fresh_home/.miserc.toml"
