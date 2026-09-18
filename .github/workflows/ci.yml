@@ -190,6 +190,8 @@ jobs:
             --yes; then
             echo "fresh onboarding failed; inspecting miserc state" >&2
             sudo find "$fresh_home" -maxdepth 4 -name 'miserc.toml' -ls >&2 || true
+            echo "--- mise dot status ---" >&2
+            run_fresh "$mise_bin" dot status --json >&2 || true
             if sudo test -f "$fresh_config/miserc.toml"; then
               sudo sha256sum "$fresh_config/miserc.toml" "$GITHUB_WORKSPACE/config/miserc.toml" >&2
               echo "--- live miserc ---" >&2
