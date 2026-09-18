@@ -29,7 +29,7 @@ Environment selector restored to `~/.miserc.toml`. It detects Arch, Fedora, RHEL
 - `config/conf.d/distro.fedora.toml`: Fedora-specific Ghostty package/repository bootstrap.
 - `config/conf.d/packages.apt.toml`: APT-family packages/settings, including Fcitx5 and McBopomofo build dependencies.
 - `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including Fcitx5 and McBopomofo build dependencies.
-- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including Fcitx5, McBopomofo from AUR, and declarative Chewing removal.
+- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including the pre-packages Paru bootstrap, Fcitx5, McBopomofo from AUR, and declarative Chewing removal.
 - `config/conf.d/platform.laptop.toml`: opt-in laptop keyboard profile; manages the system-wide keyd mapping only when the `laptop` environment is explicitly selected.
 - `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked hooks, Topgrade config deployment, and theme/bootstrap compatibility behavior.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font/bootstrap integration override.
@@ -60,6 +60,7 @@ Herdr's tracked config routes agent completion/input notifications through the o
 - `config/assets/topgrade.toml`: shared Topgrade config deployed to `~/.config/topgrade.toml` on normal systems; the deployment target is intentionally not history-tracked.
 - `config/assets/topgrade.omarchy.toml`: Omarchy-specific Topgrade config deployed to the same target; delegates the system update step to `omarchy update` while keeping the rest of the Topgrade workflow.
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
+- `config/scripts/bootstrap-paru.sh`: idempotent Paru bootstrap that follows the upstream install flow before mise processes AUR packages.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side wrapper that installs the Windows JetBrainsMono Nerd Font only.
