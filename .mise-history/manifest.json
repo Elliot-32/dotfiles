@@ -204,5 +204,7 @@
     "~/.config/yazi/plugins/**"
   ],
   "recipients": [],
-  "permissions": {}
+  "permissions": {
+    "home/.config/fcitx5/profile": 384
+  }
 }
