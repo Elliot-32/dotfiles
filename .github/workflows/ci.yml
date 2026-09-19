@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
@@ -21,8 +21,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          ref: ${{ github.head_ref }}
 
       - name: Prepare mise
         run: |
@@ -32,26 +30,6 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           sudo apt-get update
           sudo apt-get install --yes zsh
-
-      - name: Refresh lockfile for current mise
-        run: mise lock --global
-
-      - name: Upload refreshed lockfile
-        uses: actions/upload-artifact@v4
-        with:
-          name: mise-lock
-          path: config/mise.lock
-
-      - name: Commit refreshed lockfile
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        run: |
-          if ! git diff --quiet -- config/mise.lock; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add config/mise.lock
-            git commit -m "chore(mise): refresh lockfile"
-            git push origin HEAD:${GITHUB_HEAD_REF}
-          fi
 
       - name: Install validation tools
         run: mise install --locked hk shellcheck
