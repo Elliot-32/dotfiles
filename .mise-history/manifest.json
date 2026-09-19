@@ -223,6 +223,7 @@
   ],
   "recipients": [],
   "permissions": {
+    "config/mise.lock": 384,
     "home/.config/fcitx5/conf/classicui.conf": 384,
     "home/.config/fcitx5/config": 384,
     "home/.config/fcitx5/profile": 384
