@@ -437,64 +437,14 @@ checksum = "sha256:78c221c2376f79731ccf4e4af0b3bb46d81fefa3296c5abee09ad8a1b21e6
 url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.2/bun-windows-x64-baseline.zip"
 
 [[tools.codex]]
-version = "0.152.0"
+version = "0.155.1"
 backend = "aqua:openai/codex"
 specifiers = ["latest"]
 
-[tools.codex."platforms.linux-arm64"]
-checksum = "sha256:af9777a8d62edeea31adfecbaa2a5b296bc57a4a0c3ed69c02e39c23744f5feb"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792584"
-
-[tools.codex."platforms.linux-arm64-musl"]
-checksum = "sha256:af9777a8d62edeea31adfecbaa2a5b296bc57a4a0c3ed69c02e39c23744f5feb"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792584"
-
 [tools.codex."platforms.linux-x64"]
-checksum = "sha256:352c24fbdc5aefaffde9c1df991b534b6bc72a06e49708794fc685fc3556c855"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792457"
-
-[tools.codex."platforms.linux-x64-baseline"]
-checksum = "sha256:352c24fbdc5aefaffde9c1df991b534b6bc72a06e49708794fc685fc3556c855"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792457"
-
-[tools.codex."platforms.linux-x64-musl"]
-checksum = "sha256:352c24fbdc5aefaffde9c1df991b534b6bc72a06e49708794fc685fc3556c855"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792457"
-
-[tools.codex."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:352c24fbdc5aefaffde9c1df991b534b6bc72a06e49708794fc685fc3556c855"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792457"
-
-[tools.codex."platforms.macos-arm64"]
-checksum = "sha256:5287a514213f8134210677cce51b23e2eaeaff1925362f18318e4268a5ab1d1b"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792593"
-
-[tools.codex."platforms.macos-x64"]
-checksum = "sha256:161d9da66a0f97a93294d006f8066e6d5fad71cc9fe00f7d4ae111daf692b308"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792508"
-
-[tools.codex."platforms.macos-x64-baseline"]
-checksum = "sha256:161d9da66a0f97a93294d006f8066e6d5fad71cc9fe00f7d4ae111daf692b308"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792508"
-
-[tools.codex."platforms.windows-x64"]
-checksum = "sha256:29aaa55bcc3573c9f5d6cc59c16a461c514179161af00c43c5b49857e3d31962"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-x86_64-pc-windows-msvc.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792472"
-
-[tools.codex."platforms.windows-x64-baseline"]
-checksum = "sha256:29aaa55bcc3573c9f5d6cc59c16a461c514179161af00c43c5b49857e3d31962"
-url = "https://github.com/openai/codex/releases/download/rust-v0.152.0/codex-package-x86_64-pc-windows-msvc.tar.gz"
-url_api = "https://api.github.com/repos/openai/codex/releases/assets/538792472"
+checksum = "sha256:a65b895c6ac1a73629bbe4b864640c86133e94a43b4d67b3103044e1a306d5a2"
+url = "https://github.com/openai/codex/releases/download/rust-v0.155.1/codex-package-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/openai/codex/releases/assets/573353456"
 
 [[tools.cowsay]]
 version = "1.6.0"
@@ -1747,9 +1697,15 @@ backend = "aqua:topgrade-rs/topgrade"
 specifiers = ["latest"]
 
 [[tools.uv]]
-version = "0.12.15"
+version = "0.12.17"
 backend = "aqua:astral-sh/uv"
 specifiers = ["latest"]
+
+[tools.uv."platforms.linux-x64"]
+checksum = "sha256:fa82fd8dde8e8eefdecada6aa0889666556cfceb690d06e0c3bca49eb3070a63"
+url = "https://github.com/astral-sh/uv/releases/download/0.12.17/uv-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/573253080"
+provenance = "github-attestations"
 
 [[tools.witr]]
 version = "0.3.3"
