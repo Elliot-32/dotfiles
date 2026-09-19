@@ -21,20 +21,21 @@ JetBrainsMono Nerd Font is declared as a mise-managed GitHub release tool. Its i
 `tasks.bootstrap` coordinates Atuin setup, completion installation/sync, Sheldon locking, Yazi plugin installation, Windows font bootstrap dispatch, Tinty/Omarchy theme bootstrap, and GitHub setup. It does not install a Git hook into `$MISE_CONFIG_DIR` because that directory is no longer a Git working tree.
 
 ### `config/miserc.toml`
-Global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml`. It enables environment-specific `conf.d` filenames, detects Arch, Fedora, RHEL-family, Ubuntu, Debian, graphical-session/Flatpak capability, WSL, and WSLg, then selects environments such as `ubuntu,apt,flatpak,wsl,wslg` regardless of the current working directory. The selector body is intentionally wrapped in an inert `_` multiline string that Tera removes before miserc parsing; this keeps mise 2026.9.11 setup-history preflight from interpreting the early-init `env = [...]` selector as an ordinary mise environment table.
+Global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml`. It enables environment-specific `conf.d` filenames, detects Arch, Fedora, RHEL-family, Ubuntu, Debian, graphical-session/Flatpak capability, WSL, and WSLg, then selects environments such as `ubuntu,apt,flatpak,fcitx-flatpak,wsl,wslg` regardless of the current working directory. `fcitx-flatpak` is selected only for non-Arch graphical systems; Arch uses the native Pacman/AUR Fcitx stack. The selector body is intentionally wrapped in an inert `_` multiline string that Tera removes before miserc parsing; this keeps mise 2026.9.11 setup-history preflight from interpreting the early-init `env = [...]` selector as an ordinary mise environment table.
 
 ## Conditional configuration
 
 - `config/conf.d/distro.ubuntu.toml`: Ubuntu-specific Ghostty package/repository bootstrap.
 - `config/conf.d/distro.fedora.toml`: Fedora-specific Ghostty package/repository bootstrap.
-- `config/conf.d/packages.apt.toml`: APT-family packages/settings, including native Fcitx5 host integration modules and Flatpak Fcitx5 user autostart.
-- `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including native Fcitx5 host integration modules and Flatpak Fcitx5 user autostart.
-- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including native Fcitx5 host integration and declarative Chewing removal; it intentionally does not manage Fcitx5 autostart.
+- `config/conf.d/packages.apt.toml`: APT-family packages/settings, including native Fcitx5 host integration modules.
+- `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including native Fcitx5 host integration modules.
+- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including the native Fcitx5 daemon, host IM modules, McBopomofo via AUR, bundled themes, declarative Chewing removal, and the pre-package AUR-helper bootstrap.
 - `config/conf.d/platform.laptop.toml`: opt-in laptop keyboard profile; manages the system-wide keyd mapping only when the `laptop` environment is explicitly selected.
 - `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked hooks, Topgrade config deployment, and theme/bootstrap compatibility behavior.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font/bootstrap integration override.
 - `config/conf.d/platform.wslg.toml`: WSLg-specific configuration.
-- `config/config.flatpak.toml`: Flatpak-specific bootstrap/update behavior, including the Fcitx 5 daemon and McBopomofo extension; distro package fragments own any user autostart integration.
+- `config/config.flatpak.toml`: general Flatpak bootstrap/update behavior and application package declarations.
+- `config/config.fcitx-flatpak.toml`: non-Arch graphical Fcitx profile; owns the Flatpak Fcitx 5 daemon, McBopomofo extension, and user XDG autostart entry.
 
 ## Native tracked dotfiles
 
@@ -52,7 +53,7 @@ These files are restored directly to their application paths and use `mode = "tr
 - `home/.config/environment.d/90-fcitx5.conf`;
 - `home/.local/share/mise-completions-sync/registry.toml`.
 
-Herdr's tracked config routes agent completion/input notifications through the outer terminal with `[ui.toast] delivery = "terminal"`. Fcitx5 user configuration is shared across Linux systems; the daemon and McBopomofo engine are Flatpak-managed while distro package fragments retain native host IM modules. `~/.gitconfig` is managed only through a block edit so machine-local identity is not synchronized.
+Herdr's tracked config routes agent completion/input notifications through the outer terminal with `[ui.toast] delivery = "terminal"`. Fcitx5 user configuration is shared across Linux systems; Arch owns the daemon, McBopomofo engine, and themes natively, while non-Arch graphical systems use the dedicated Flatpak Fcitx profile and distro packages retain host IM modules. `~/.gitconfig` is managed only through a block edit so machine-local identity is not synchronized.
 
 ## Bundled assets and scripts
 
@@ -60,6 +61,7 @@ Herdr's tracked config routes agent completion/input notifications through the o
 - `config/assets/topgrade.toml`: shared Topgrade config deployed to `~/.config/topgrade.toml` on normal systems; the deployment target is intentionally not history-tracked.
 - `config/assets/topgrade.omarchy.toml`: Omarchy-specific Topgrade config deployed to the same target; delegates the system update step to `omarchy update` while keeping the rest of the Topgrade workflow.
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
+- `config/scripts/bootstrap-paru.sh`: Arch pre-package helper that installs Paru only when neither Paru nor Yay is already available.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side wrapper that installs the Windows JetBrainsMono Nerd Font only.
@@ -78,7 +80,7 @@ Prefer native mise configuration first; keep scripts focused and idempotent wher
 Fast local/static validation only: shellcheck plus shell, PowerShell, Zsh, and extensionless Omarchy-hook syntax checks.
 
 ### `.github/workflows/ci.yml`
-CI runs hk, validates mise parsing and the locked bootstrap plan, checks the small set of platform/profile contracts that materially change behavior, verifies environment selection, and performs fresh-user onboarding with a non-default `MISE_CONFIG_DIR`.
+CI runs hk, validates mise parsing and the bootstrap plan, checks the small set of platform/profile contracts that materially change behavior, verifies environment selection, and performs fresh-user onboarding with a non-default `MISE_CONFIG_DIR`.
 
 ### `config/mise.lock`
 Generated mise lockfile. Do not hand edit.
