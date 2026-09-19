@@ -18,7 +18,7 @@ Primary global mise config. It owns global settings, tools, native tracking decl
 
 JetBrainsMono Nerd Font is declared as a mise-managed GitHub release tool. Its inline tool-level `postinstall` symlinks the extracted font directory into the user font directory and refreshes Linux fontconfig on Linux hosts, including WSL. Windows font installation is handled separately by the WSL Windows bootstrap task.
 
-`tasks.bootstrap` coordinates Atuin setup, completion installation/sync, Sheldon locking, Yazi plugin installation, Windows font bootstrap dispatch, Tinty/Omarchy theme bootstrap, and GitHub setup. The `pre-dotfiles` bootstrap hook installs Fcitx5 Catppuccin and Mellow themes after system packages and repositories are ready but before `classicui.conf` is restored. It does not install a Git hook into `$MISE_CONFIG_DIR` because that directory is no longer a Git working tree.
+`tasks.bootstrap` coordinates Atuin setup, completion installation/sync, Sheldon locking, Yazi plugin installation, Windows font bootstrap dispatch, Tinty/Omarchy theme bootstrap, and GitHub setup. The `pre-dotfiles` bootstrap hook installs Fcitx5 Catppuccin and Mellow themes after system packages and repositories are ready but before `classicui.conf` is restored. The `post-dotfiles` hook reloads a running native or Flatpak Fcitx5 instance after the configuration is restored. It does not install a Git hook into `$MISE_CONFIG_DIR` because that directory is no longer a Git working tree.
 
 ### `config/miserc.toml`
 Global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml`. It enables environment-specific `conf.d` filenames, detects Arch, Fedora, RHEL-family, Ubuntu, Debian, graphical-session/Flatpak capability, WSL, and WSLg, then selects environments such as `ubuntu,apt,flatpak,fcitx-flatpak,wsl,wslg` regardless of the current working directory. `fcitx-flatpak` is selected only for non-Arch graphical systems; Arch uses the native Pacman/AUR Fcitx stack. The selector body is intentionally wrapped in an inert `_` multiline string that Tera removes before miserc parsing; this keeps mise 2026.9.11 setup-history preflight from interpreting the early-init `env = [...]` selector as an ordinary mise environment table.
@@ -63,6 +63,7 @@ Herdr's tracked config routes agent completion/input notifications through the o
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
 - `config/scripts/bootstrap-paru.sh`: Arch pre-package helper that installs Paru only when neither Paru nor Yay is already available.
 - `config/scripts/sync-fcitx5-themes.sh`: syncs Catppuccin and Mellow from GitHub, enables Catppuccin rounded borders, and installs them for native and Flatpak Fcitx5. Topgrade calls the same helper for updates.
+- `config/scripts/reload-fcitx5.sh`: reloads a running native Fcitx5 instance on Arch or the Fcitx5 Flatpak on non-Arch systems; bootstrap and Topgrade call it after applying configuration or themes.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side wrapper that installs the Windows JetBrainsMono Nerd Font only.

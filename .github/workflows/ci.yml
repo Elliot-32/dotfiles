@@ -110,7 +110,9 @@ jobs:
           grep -Fq 'enable-rounded.sh' config/scripts/sync-fcitx5-themes.sh
           grep -Fq '.var/app/$flatpak_app/data/fcitx5/themes' config/scripts/sync-fcitx5-themes.sh
           grep -Fq '[bootstrap.hooks.pre-dotfiles]' config/config.toml
+          grep -Fq '[bootstrap.hooks.post-dotfiles]' config/config.toml
           grep -Fq 'scripts/sync-fcitx5-themes.sh' config/config.toml
+          grep -Fq 'scripts/reload-fcitx5.sh' config/config.toml
           ! grep -Fq '"~/.local/share/fcitx5/themes"' config/config.toml
           grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
           ! grep -Eq 'fcitx5-(material-color|nord|breeze|skin-fluentdark)' config/conf.d/packages.pacman.toml
@@ -124,6 +126,34 @@ jobs:
           grep -Fq '"Fcitx5 themes"' config/assets/topgrade.toml
           grep -Fq '"Fcitx5 themes"' config/assets/topgrade.omarchy.toml
           grep -Fq '"Fcitx5 themes"' home/.config/topgrade.systemd.toml
+          grep -Fq 'scripts/reload-fcitx5.sh' config/assets/topgrade.toml
+          grep -Fq 'scripts/reload-fcitx5.sh' config/assets/topgrade.omarchy.toml
+          grep -Fq 'scripts/reload-fcitx5.sh' home/.config/topgrade.systemd.toml
+
+          reload_log="$RUNNER_TEMP/fcitx5-reload.log"
+          fake_bin="$RUNNER_TEMP/fcitx5-native-bin"
+          mkdir -p "$fake_bin"
+          cat >"$fake_bin/fcitx5-remote" <<'EOF'
+          #!/bin/sh
+          printf 'native:%s\n' "$*" >>"$FCITX5_RELOAD_LOG"
+          EOF
+          chmod +x "$fake_bin/fcitx5-remote"
+          FCITX5_RELOAD_LOG="$reload_log" PATH="$fake_bin" /bin/sh config/scripts/reload-fcitx5.sh
+          grep -Fxq 'native:--check' "$reload_log"
+          grep -Fxq 'native:-r' "$reload_log"
+
+          reload_log="$RUNNER_TEMP/fcitx5-flatpak-reload.log"
+          fake_bin="$RUNNER_TEMP/fcitx5-flatpak-bin"
+          mkdir -p "$fake_bin"
+          cat >"$fake_bin/flatpak" <<'EOF'
+          #!/bin/sh
+          printf 'flatpak:%s\n' "$*" >>"$FCITX5_RELOAD_LOG"
+          EOF
+          chmod +x "$fake_bin/flatpak"
+          FCITX5_RELOAD_LOG="$reload_log" PATH="$fake_bin" /bin/sh config/scripts/reload-fcitx5.sh
+          grep -Fxq 'flatpak:info --user org.fcitx.Fcitx5' "$reload_log"
+          grep -Fxq 'flatpak:run --user --command=fcitx5-remote org.fcitx.Fcitx5 --check' "$reload_log"
+          grep -Fxq 'flatpak:run --user --command=fcitx5-remote org.fcitx.Fcitx5 -r' "$reload_log"
 
       - name: Validate config selection
         shell: bash
@@ -159,6 +189,12 @@ jobs:
 
           flatpak_theme_hook="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise config get --file config/config.toml bootstrap.hooks.pre-dotfiles.run)"
           grep -Fq 'scripts/sync-fcitx5-themes.sh' <<<"$flatpak_theme_hook"
+
+          arch_reload_hook="$(MISE_ENV=arch,pacman mise config get --file config/config.toml bootstrap.hooks.post-dotfiles.run)"
+          grep -Fq 'scripts/reload-fcitx5.sh' <<<"$arch_reload_hook"
+
+          flatpak_reload_hook="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise config get --file config/config.toml bootstrap.hooks.post-dotfiles.run)"
+          grep -Fq 'scripts/reload-fcitx5.sh' <<<"$flatpak_reload_hook"
 
           check_config "wsl" "conf.d/platform.wsl.toml"
           check_config "laptop" "conf.d/platform.laptop.toml"

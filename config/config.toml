@@ -145,6 +145,9 @@ fi
 [bootstrap.hooks.pre-dotfiles]
 run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/sync-fcitx5-themes.sh"'
 
+[bootstrap.hooks.post-dotfiles]
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/reload-fcitx5.sh"'
+
 [bootstrap.hooks.final]
 run = '''
 legacy="$HOME/.miserc.toml"
