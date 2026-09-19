@@ -15,3 +15,14 @@
 "dnf:libnotify" = "latest"
 "dnf:wl-clipboard" = "latest"
 "dnf:xdg-terminal-exec" = "latest"
+
+[bootstrap.files."~/.config/autostart/org.fcitx.Fcitx5.desktop"]
+content = """
+[Desktop Entry]
+Type=Application
+Name=Fcitx 5
+Exec=flatpak run --user org.fcitx.Fcitx5
+Icon=org.fcitx.Fcitx5
+Terminal=false
+X-GNOME-Autostart-enabled=true
+"""
