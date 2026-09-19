@@ -12,3 +12,7 @@ Icon=org.fcitx.Fcitx5
 Terminal=false
 X-GNOME-Autostart-enabled=true
 """
+
+[tasks."bootstrap:fcitx5-breeze"]
+hide = true
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/install-fcitx5-breeze.sh"'
