@@ -102,7 +102,6 @@ fc-cache -f "$font_dir"
 [dotfiles]
 "~/.config/environment.d/90-fcitx5.conf" = { mode = "track" }
 "~/.config/fcitx5/conf/classicui.conf" = { mode = "track" }
-"~/.config/fcitx5/conf/xcb.conf" = { mode = "track" }
 "~/.config/fcitx5/config" = { mode = "track" }
 "~/.config/fcitx5/profile" = { mode = "track" }
 "~/.config/ghostty/config" = { mode = "track" }

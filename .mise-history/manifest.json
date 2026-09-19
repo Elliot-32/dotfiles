@@ -74,12 +74,6 @@
       "variants": []
     },
     {
-      "path": "home/.config/fcitx5/conf/xcb.conf",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
-    },
-    {
       "path": "home/.config/fcitx5/config",
       "autosave": true,
       "encrypt": false,
