@@ -205,7 +205,7 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "ya pkg install",
-  { task = "bootstrap:fcitx5-breeze" },
+  { task = "bootstrap:fcitx5-themes" },
   { task = "bootstrap:windows" },
   { task = "bootstrap:theme" },
   { task = "bootstrap:github" },
@@ -232,9 +232,9 @@ hide = true
 interactive = true
 run = "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\""
 
-[tasks."bootstrap:fcitx5-breeze"]
+[tasks."bootstrap:fcitx5-themes"]
 hide = true
-run = ":"
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/sync-fcitx5-themes.sh"'
 
 [tasks."bootstrap:windows"]
 hide = true
