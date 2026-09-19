@@ -68,6 +68,18 @@
       "variants": []
     },
     {
+      "path": "home/.config/fcitx5/conf/classicui.conf",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/.config/fcitx5/conf/xcb.conf",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.config/fcitx5/config",
       "autosave": true,
       "encrypt": false,
@@ -176,6 +188,18 @@
       "variants": []
     },
     {
+      "path": "home/.local/share/fcitx5/themes/catppuccin-latte-blue",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/.local/share/fcitx5/themes/catppuccin-mocha-mauve",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.local/share/mise-completions-sync/registry.toml",
       "autosave": true,
       "encrypt": false,
@@ -211,6 +235,7 @@
   ],
   "recipients": [],
   "permissions": {
+    "home/.config/fcitx5/conf/classicui.conf": 384,
     "home/.config/fcitx5/config": 384,
     "home/.config/fcitx5/profile": 384
   }
