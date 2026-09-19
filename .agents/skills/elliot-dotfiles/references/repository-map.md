@@ -29,7 +29,7 @@ Global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml
 - `config/conf.d/distro.fedora.toml`: Fedora-specific Ghostty package/repository bootstrap.
 - `config/conf.d/packages.apt.toml`: APT-family packages/settings, including native Fcitx5 host integration modules.
 - `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including native Fcitx5 host integration modules.
-- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including the native Fcitx5 daemon, host IM modules, McBopomofo via AUR, declarative removal of legacy theme packages and Chewing, and the pre-package AUR-helper bootstrap.
+- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including the native Fcitx5 daemon, host IM modules, McBopomofo via AUR, declarative Chewing removal, and the pre-package AUR-helper bootstrap.
 - `config/conf.d/platform.laptop.toml`: opt-in laptop keyboard profile; manages the system-wide keyd mapping only when the `laptop` environment is explicitly selected.
 - `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked hooks, Topgrade config deployment, and theme/bootstrap compatibility behavior.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font/bootstrap integration override.
