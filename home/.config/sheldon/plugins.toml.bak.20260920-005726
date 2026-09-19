@@ -61,13 +61,6 @@ if [[ -r "$HOME/.local/share/deja/init.zsh" ]]; then
 else
   eval "$(deja init zsh)"
 fi
-
-# Keep history-search-end widgets unwrapped so repeated history searches work.
-# Deja resets this array during initialization, so append after loading it.
-DEJA_IGNORE_WIDGETS+=(
-  history-beginning-search-backward-end
-  history-beginning-search-forward-end
-)
 '''
 
 [plugins.powerlevel10k]
