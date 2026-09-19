@@ -60,6 +60,7 @@ Herdr's tracked config routes agent completion/input notifications through the o
 - `config/assets/topgrade.toml`: shared Topgrade config deployed to `~/.config/topgrade.toml` on normal systems; the deployment target is intentionally not history-tracked.
 - `config/assets/topgrade.omarchy.toml`: Omarchy-specific Topgrade config deployed to the same target; delegates the system update step to `omarchy update` while keeping the rest of the Topgrade workflow.
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
+- `config/scripts/install-fcitx5-breeze.sh`: installs Breeze user themes from the native Arch package when available, otherwise from Arch's prebuilt `any` package, and mirrors them into Flatpak Fcitx5 user data.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side wrapper that installs the Windows JetBrainsMono Nerd Font only.
