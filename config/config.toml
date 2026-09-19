@@ -100,6 +100,21 @@ fc-cache -f "$font_dir"
 '''
 
 [dotfiles]
+"~/.config/environment.d/90-fcitx5.conf" = { mode = "track" }
+"~/.config/fcitx5/conf/classicui.conf" = { mode = "track" }
+"~/.config/fcitx5/config" = { mode = "track" }
+"~/.config/fcitx5/profile" = { mode = "track" }
+"~/.config/ghostty/config" = { mode = "track" }
+"~/.config/gtk-3.0/settings.ini" = { mode = "track" }
+"~/.config/gtk-4.0/settings.ini" = { mode = "track" }
+"~/.config/herdr/config.toml" = { mode = "track" }
+"~/.config/sheldon" = { mode = "track" }
+"~/.config/tinted-theming/tinty/config.toml" = { mode = "track" }
+"~/.config/tinted-theming/tinty/templates" = { mode = "track" }
+"~/.config/topgrade.systemd.toml" = { mode = "track" }
+"~/.config/topgrade.toml" = { source = "assets/topgrade.toml", mode = "copy" }
+"~/.config/xdg-terminals.list" = { mode = "track" }
+"~/.config/yazi" = { mode = "track" }
 "~/.gitconfig/defaults" = { block = '''
 [push]
 	autoSetupRemote = true
@@ -107,26 +122,13 @@ fc-cache -f "$font_dir"
 [fetch]
 	prune = true
 ''' }
-"~/.zshrc" = { mode = "track" }
-"~/.zshenv" = { mode = "track" }
-"~/.zprofile" = { mode = "track" }
-"~/.p10k.zsh" = { mode = "track" }
-"~/.config/sheldon" = { mode = "track" }
-"~/.config/tinted-theming/tinty/config.toml" = { mode = "track" }
-"~/.config/tinted-theming/tinty/templates" = { mode = "track" }
-"~/.config/yazi" = { mode = "track" }
-"~/.config/topgrade.toml" = { source = "assets/topgrade.toml", mode = "copy" }
-"~/.config/topgrade.systemd.toml" = { mode = "track" }
-"~/.config/ghostty/config" = { mode = "track" }
-"~/.config/herdr/config.toml" = { mode = "track" }
-"~/.config/xdg-terminals.list" = { mode = "track" }
-"~/.config/fcitx5/config" = { mode = "track" }
-"~/.config/fcitx5/profile" = { mode = "track" }
-"~/.config/environment.d/90-fcitx5.conf" = { mode = "track" }
 "~/.gtkrc-2.0" = { mode = "track" }
-"~/.config/gtk-3.0/settings.ini" = { mode = "track" }
-"~/.config/gtk-4.0/settings.ini" = { mode = "track" }
+"~/.local/share/fcitx5/themes" = { mode = "track" }
 "~/.local/share/mise-completions-sync/registry.toml" = { mode = "track" }
+"~/.p10k.zsh" = { mode = "track" }
+"~/.zprofile" = { mode = "track" }
+"~/.zshenv" = { mode = "track" }
+"~/.zshrc" = { mode = "track" }
 
 [bootstrap.directories]
 "~/.local/share/zsh/site-functions" = {}
