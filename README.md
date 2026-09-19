@@ -11,7 +11,7 @@ curl https://mise.run | sh
 
 Bootstrap 會依目前平台安裝套件、工具並套用設定。
 
-中文輸入在 Arch-based 系統使用原生 Fcitx 5 + 小麥注音；其他有圖形桌面的 Linux 使用 Flathub Fcitx 5 + 小麥注音，並保留原生 IM module 供 host 應用使用。
+中文輸入在 Arch-based 系統使用原生 Fcitx 5 + 小麥注音；其他有圖形桌面的 Linux 使用 Flathub Fcitx 5 + 小麥注音，並保留原生 IM module 供 host 應用使用。Breeze 主題會在兩種路徑都由 bootstrap 安裝。
 
 ## 常用指令
 
