@@ -62,6 +62,7 @@ Herdr's tracked config routes agent completion/input notifications through the o
 - `config/assets/topgrade.omarchy.toml`: Omarchy-specific Topgrade config deployed to the same target; delegates the system update step to `omarchy update` while keeping the rest of the Topgrade workflow.
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
 - `config/scripts/bootstrap-paru.sh`: Arch pre-package helper that installs Paru only when neither Paru nor Yay is already available.
+- `config/scripts/install-fcitx5-breeze.sh`: installs Arch's prebuilt Fcitx5 Breeze theme into the non-Arch Flatpak Fcitx profile.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side wrapper that installs the Windows JetBrainsMono Nerd Font only.
