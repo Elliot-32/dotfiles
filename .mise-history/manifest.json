@@ -205,6 +205,7 @@
   ],
   "recipients": [],
   "permissions": {
+    "home/.config/fcitx5/config": 384,
     "home/.config/fcitx5/profile": 384
   }
 }
