@@ -138,6 +138,8 @@ if command -v ghostty >/dev/null 2>&1; then
   ln -sfn /usr/share/applications/com.mitchellh.ghostty.desktop "$HOME/.local/share/xdg-terminals/com.mitchellh.ghostty.desktop"
   systemctl enable --user app-com.mitchellh.ghostty.service
 fi
+
+sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/install-fcitx5-breeze.sh"
 '''
 
 [bootstrap.hooks.final]
