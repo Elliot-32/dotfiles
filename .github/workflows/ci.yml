@@ -32,7 +32,7 @@ jobs:
           sudo apt-get install --yes zsh
 
       - name: Refresh lockfile for current mise
-        run: mise lock
+        run: mise lock --global
 
       - name: Upload refreshed lockfile
         uses: actions/upload-artifact@v4
