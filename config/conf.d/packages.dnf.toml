@@ -8,6 +8,7 @@
 "dnf:zsh" = "latest"
 "dnf:dnf-automatic" = "latest"
 "dnf:fcitx5" = "latest"
+"dnf:fcitx5-autostart" = "latest"
 "dnf:fcitx5-gtk2" = "latest"
 "dnf:fcitx5-gtk3" = "latest"
 "dnf:fcitx5-gtk4" = "latest"

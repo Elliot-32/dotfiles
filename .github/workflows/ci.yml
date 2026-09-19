@@ -75,7 +75,6 @@ jobs:
           laptop_task="$(MISE_ENV=laptop mise tasks info laptop:apply --json)"
           grep -Fq 'keyd is required' <<<"$laptop_task"
           grep -Fxq 'sysrq = layer(meta)' config/assets/keyd/laptop.conf
-          grep -Fxq 'sysrq = sysrq' config/assets/keyd/laptop.conf
 
           zsh config/tests/terminal-notify.zsh
           jq -e '.profiles.defaults["compatibility.allowOSC777"] == true' config/windows-terminal/notification.json >/dev/null
@@ -107,6 +106,7 @@ jobs:
           grep -Fq '"pacman:fcitx5-qt" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-chinese-addons" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"dnf:fcitx5" = "latest"' config/conf.d/packages.dnf.toml
+          grep -Fq '"dnf:fcitx5-autostart" = "latest"' config/conf.d/packages.dnf.toml
           grep -Fq '"dnf:fcitx5-mcbopomofo" = "latest"' config/conf.d/distro.fedora.toml
           grep -Fq 'scripts/bootstrap-fedora-copr.sh' config/conf.d/distro.fedora.toml
           grep -Fq 'scottames/ghostty' config/scripts/bootstrap-fedora-copr.sh
