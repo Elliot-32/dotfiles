@@ -182,6 +182,12 @@
       "variants": []
     },
     {
+      "path": "home/.local/share/fcitx5/themes",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/.local/share/mise-completions-sync/registry.toml",
       "autosave": true,
       "encrypt": false,

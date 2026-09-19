@@ -123,6 +123,7 @@ fc-cache -f "$font_dir"
 	prune = true
 ''' }
 "~/.gtkrc-2.0" = { mode = "track" }
+"~/.local/share/fcitx5/themes" = { mode = "track" }
 "~/.local/share/mise-completions-sync/registry.toml" = { mode = "track" }
 "~/.p10k.zsh" = { mode = "track" }
 "~/.zprofile" = { mode = "track" }
