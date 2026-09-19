@@ -103,23 +103,27 @@ jobs:
           grep -Fq '"pacman:fcitx5-gtk" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-qt" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-chinese-addons" = "latest"' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:fcitx5-material-color" = "latest"' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:fcitx5-nord" = "latest"' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:fcitx5-breeze" = "latest"' config/conf.d/packages.pacman.toml
-          grep -Fq '"apt:curl" = "latest"' config/conf.d/packages.apt.toml
-          grep -Fq '"apt:zstd" = "latest"' config/conf.d/packages.apt.toml
-          grep -Fq '"dnf:curl" = "latest"' config/conf.d/packages.dnf.toml
-          grep -Fq '"dnf:zstd" = "latest"' config/conf.d/packages.dnf.toml
-          grep -Fq 'archlinux.org/packages/extra/any/fcitx5-breeze/download/' config/scripts/install-fcitx5-breeze.sh
-          grep -Fq '.var/app/$flatpak_app/data/fcitx5/themes' config/scripts/install-fcitx5-breeze.sh
+          grep -Fq '"pacman:fcitx5-material-color" = { state = "absent" }' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-nord" = { state = "absent" }' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-breeze" = { state = "absent" }' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-skin-fluentdark-git" = { state = "absent" }' config/conf.d/packages.pacman.toml
+          grep -Fq '"apt:git" = "latest"' config/conf.d/packages.apt.toml
+          grep -Fq '"dnf:git" = "latest"' config/conf.d/packages.dnf.toml
+          grep -Fq 'https://github.com/catppuccin/fcitx5.git' config/scripts/sync-fcitx5-themes.sh
+          grep -Fq 'https://github.com/sanweiya/fcitx5-mellow-themes.git' config/scripts/sync-fcitx5-themes.sh
+          grep -Fq 'enable-rounded.sh' config/scripts/sync-fcitx5-themes.sh
+          grep -Fq '.var/app/$flatpak_app/data/fcitx5/themes' config/scripts/sync-fcitx5-themes.sh
           grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
-          grep -Fq '"aur:fcitx5-skin-fluentdark-git" = "latest"' config/conf.d/packages.pacman.toml
           ! grep -Fq '"aur:paru"' config/conf.d/packages.pacman.toml
           test -e config/scripts/bootstrap-paru.sh
 
           ! grep -Fq 'mcbopomofo' config/conf.d/packages.apt.toml
           ! grep -Fq 'mcbopomofo' config/conf.d/packages.dnf.toml
           test ! -e config/scripts/install-mcbopomofo.sh
+
+          grep -Fq '"Fcitx5 themes"' config/assets/topgrade.toml
+          grep -Fq '"Fcitx5 themes"' config/assets/topgrade.omarchy.toml
+          grep -Fq '"Fcitx5 themes"' home/.config/topgrade.systemd.toml
 
       - name: Validate config selection
         shell: bash
@@ -150,11 +154,11 @@ jobs:
           non_arch_flatpak_output="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise config ls)"
           grep -Fq "config.fcitx-flatpak.toml" <<<"$non_arch_flatpak_output"
 
-          arch_breeze_task="$(MISE_ENV=arch,pacman mise tasks info bootstrap:fcitx5-breeze --json)"
-          jq -e '.run == [":"]' <<<"$arch_breeze_task" >/dev/null
+          arch_theme_task="$(MISE_ENV=arch,pacman mise tasks info bootstrap:fcitx5-themes --json)"
+          grep -Fq 'scripts/sync-fcitx5-themes.sh' <<<"$arch_theme_task"
 
-          flatpak_breeze_task="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise tasks info bootstrap:fcitx5-breeze --json)"
-          grep -Fq 'scripts/install-fcitx5-breeze.sh' <<<"$flatpak_breeze_task"
+          flatpak_theme_task="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise tasks info bootstrap:fcitx5-themes --json)"
+          grep -Fq 'scripts/sync-fcitx5-themes.sh' <<<"$flatpak_theme_task"
 
           check_config "wsl" "conf.d/platform.wsl.toml"
           check_config "laptop" "conf.d/platform.laptop.toml"
