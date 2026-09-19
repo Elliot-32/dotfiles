@@ -1,8 +1,12 @@
 [settings]
 disable_tools = ["github:ryanoasis/nerd-fonts"]
 
+[bootstrap.hooks.pre-packages]
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-paru.sh"'
+
 [bootstrap.packages]
 "pacman:base-devel" = "latest"
+"pacman:git" = "latest"
 "pacman:fontconfig" = "latest"
 "pacman:ttf-jetbrains-mono-nerd" = "latest"
 "pacman:xz" = "latest"
@@ -10,8 +14,16 @@ disable_tools = ["github:ryanoasis/nerd-fonts"]
 "pacman:openssh" = "latest"
 "pacman:zsh" = "latest"
 "pacman:fcitx5" = "latest"
+"pacman:fcitx5-configtool" = "latest"
 "pacman:fcitx5-chewing" = { state = "absent" }
 "pacman:fcitx5-gtk" = "latest"
 "pacman:fcitx5-qt" = "latest"
+"pacman:fcitx5-chinese-addons" = "latest"
+"pacman:fcitx5-material-color" = "latest"
+"pacman:fcitx5-nord" = "latest"
+"pacman:fcitx5-breeze" = "latest"
+"aur:paru" = "latest"
+"aur:fcitx5-skin-fluentdark-git" = "latest"
+"aur:fcitx5-mcbopomofo-git" = "latest"
 "pacman:libnotify" = "latest"
 "pacman:wl-clipboard" = "latest"
