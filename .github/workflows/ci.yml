@@ -103,10 +103,6 @@ jobs:
           grep -Fq '"pacman:fcitx5-gtk" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-qt" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-chinese-addons" = "latest"' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:fcitx5-material-color" = { state = "absent" }' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:fcitx5-nord" = { state = "absent" }' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:fcitx5-breeze" = { state = "absent" }' config/conf.d/packages.pacman.toml
-          grep -Fq '"pacman:fcitx5-skin-fluentdark-git" = { state = "absent" }' config/conf.d/packages.pacman.toml
           grep -Fq '"apt:git" = "latest"' config/conf.d/packages.apt.toml
           grep -Fq '"dnf:git" = "latest"' config/conf.d/packages.dnf.toml
           grep -Fq 'https://github.com/catppuccin/fcitx5.git' config/scripts/sync-fcitx5-themes.sh
@@ -114,6 +110,7 @@ jobs:
           grep -Fq 'enable-rounded.sh' config/scripts/sync-fcitx5-themes.sh
           grep -Fq '.var/app/$flatpak_app/data/fcitx5/themes' config/scripts/sync-fcitx5-themes.sh
           grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
+          ! grep -Eq 'fcitx5-(material-color|nord|breeze|skin-fluentdark)' config/conf.d/packages.pacman.toml
           ! grep -Fq '"aur:paru"' config/conf.d/packages.pacman.toml
           test -e config/scripts/bootstrap-paru.sh
 
