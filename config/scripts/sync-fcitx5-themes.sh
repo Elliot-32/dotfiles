@@ -43,6 +43,7 @@ sync_repo() {
 }
 
 sync_repo catppuccin https://github.com/catppuccin/fcitx5.git main
+bash "$source_root/catppuccin/enable-rounded.sh"
 sync_repo mellow https://github.com/sanweiya/fcitx5-mellow-themes.git main
 
 install_themes() {
