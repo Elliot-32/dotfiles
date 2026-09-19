@@ -41,7 +41,7 @@ jobs:
       - name: Validate mise
         run: |
           mise tasks validate --errors-only
-          mise --locked bootstrap --dry-run
+          mise bootstrap --dry-run
 
       - name: Validate profiles
         shell: bash
@@ -85,13 +85,31 @@ jobs:
           grep -Fxq 'Name=mcbopomofo' home/.config/fcitx5/profile
           ! grep -Fxq 'Name=chewing' home/.config/fcitx5/profile
 
-          grep -Fq '"flatpak-user:org.fcitx.Fcitx5" = "latest"' config/config.flatpak.toml
-          grep -Fq '"flatpak-user:org.fcitx.Fcitx5.Addon.McBopomofo" = "latest"' config/config.flatpak.toml
-          grep -Fq 'Exec=flatpak run --user org.fcitx.Fcitx5' config/config.flatpak.toml
+          ! grep -Fq 'org.fcitx.Fcitx5' config/config.flatpak.toml
 
+          grep -Fq '"flatpak-user:org.fcitx.Fcitx5" = "latest"' config/config.fcitx-flatpak.toml
+          grep -Fq '"flatpak-user:org.fcitx.Fcitx5.Addon.McBopomofo" = "latest"' config/config.fcitx-flatpak.toml
+
+          fcitx_autostart='[bootstrap.files."~/.config/autostart/org.fcitx.Fcitx5.desktop"]'
+          grep -Fq "$fcitx_autostart" config/config.fcitx-flatpak.toml
+          grep -Fq 'Exec=flatpak run --user org.fcitx.Fcitx5' config/config.fcitx-flatpak.toml
+          ! grep -Fq "$fcitx_autostart" config/conf.d/packages.apt.toml
+          ! grep -Fq "$fcitx_autostart" config/conf.d/packages.dnf.toml
+          ! grep -Fq "$fcitx_autostart" config/conf.d/packages.pacman.toml
+
+          grep -Fq '"pacman:fcitx5" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-configtool" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-chewing" = { state = "absent" }' config/conf.d/packages.pacman.toml
-          ! grep -Fq '"aur:' config/conf.d/packages.pacman.toml
-          test ! -e config/scripts/bootstrap-paru.sh
+          grep -Fq '"pacman:fcitx5-gtk" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-qt" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-chinese-addons" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-material-color" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-nord" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"pacman:fcitx5-breeze" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"aur:fcitx5-skin-fluentdark-git" = "latest"' config/conf.d/packages.pacman.toml
+          ! grep -Fq '"aur:paru"' config/conf.d/packages.pacman.toml
+          test -e config/scripts/bootstrap-paru.sh
 
           ! grep -Fq 'mcbopomofo' config/conf.d/packages.apt.toml
           ! grep -Fq 'mcbopomofo' config/conf.d/packages.dnf.toml
@@ -117,6 +135,15 @@ jobs:
           check_config "fedora,dnf" "conf.d/distro.fedora.toml" "conf.d/packages.dnf.toml"
           check_config "arch,pacman" "conf.d/packages.pacman.toml"
           check_config "flatpak" "config.flatpak.toml"
+          check_config "flatpak,fcitx-flatpak" "config.flatpak.toml" "config.fcitx-flatpak.toml"
+
+          arch_flatpak_output="$(MISE_ENV=arch,pacman,flatpak mise config ls)"
+          grep -Fq "config.flatpak.toml" <<<"$arch_flatpak_output"
+          ! grep -Fq "config.fcitx-flatpak.toml" <<<"$arch_flatpak_output"
+
+          non_arch_flatpak_output="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise config ls)"
+          grep -Fq "config.fcitx-flatpak.toml" <<<"$non_arch_flatpak_output"
+
           check_config "wsl" "conf.d/platform.wsl.toml"
           check_config "laptop" "conf.d/platform.laptop.toml"
           check_config "arch,pacman,omarchy" "conf.d/platform.omarchy.toml"
@@ -196,6 +223,7 @@ jobs:
           sudo test -f "$fresh_config/miserc.toml"
           sudo test ! -e "$fresh_home/.miserc.toml"
           sudo test -f "$fresh_config/config.toml"
+          sudo test -f "$fresh_config/config.fcitx-flatpak.toml"
           sudo test -f "$fresh_config/mise.lock"
           sudo test -f "$fresh_config/windows-terminal/keybind.json"
           sudo test ! -e "$fresh_home/.config/mise/config.toml"

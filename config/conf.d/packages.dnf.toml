@@ -15,3 +15,4 @@
 "dnf:libnotify" = "latest"
 "dnf:wl-clipboard" = "latest"
 "dnf:xdg-terminal-exec" = "latest"
+
