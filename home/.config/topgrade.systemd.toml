@@ -39,5 +39,8 @@ pull_predefined = false
 [flatpak]
 use_sudo = false
 
+[commands]
+"Fcitx5 themes" = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/sync-fcitx5-themes.sh"'
+
 [post_commands]
 "Refresh completions" = 'mise completion zsh --install && misecompsync --shell zsh'
