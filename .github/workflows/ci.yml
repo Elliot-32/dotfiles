@@ -109,6 +109,9 @@ jobs:
           grep -Fq 'https://github.com/sanweiya/fcitx5-mellow-themes.git' config/scripts/sync-fcitx5-themes.sh
           grep -Fq 'enable-rounded.sh' config/scripts/sync-fcitx5-themes.sh
           grep -Fq '.var/app/$flatpak_app/data/fcitx5/themes' config/scripts/sync-fcitx5-themes.sh
+          grep -Fq '[bootstrap.hooks.pre-dotfiles]' config/config.toml
+          grep -Fq 'scripts/sync-fcitx5-themes.sh' config/config.toml
+          ! grep -Fq '"~/.local/share/fcitx5/themes"' config/config.toml
           grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
           ! grep -Eq 'fcitx5-(material-color|nord|breeze|skin-fluentdark)' config/conf.d/packages.pacman.toml
           ! grep -Fq '"aur:paru"' config/conf.d/packages.pacman.toml
@@ -151,11 +154,11 @@ jobs:
           non_arch_flatpak_output="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise config ls)"
           grep -Fq "config.fcitx-flatpak.toml" <<<"$non_arch_flatpak_output"
 
-          arch_theme_task="$(MISE_ENV=arch,pacman mise tasks info bootstrap:fcitx5-themes --json)"
-          grep -Fq 'scripts/sync-fcitx5-themes.sh' <<<"$arch_theme_task"
+          arch_theme_hook="$(MISE_ENV=arch,pacman mise config get --file config/config.toml bootstrap.hooks.pre-dotfiles.run)"
+          grep -Fq 'scripts/sync-fcitx5-themes.sh' <<<"$arch_theme_hook"
 
-          flatpak_theme_task="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise tasks info bootstrap:fcitx5-themes --json)"
-          grep -Fq 'scripts/sync-fcitx5-themes.sh' <<<"$flatpak_theme_task"
+          flatpak_theme_hook="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise config get --file config/config.toml bootstrap.hooks.pre-dotfiles.run)"
+          grep -Fq 'scripts/sync-fcitx5-themes.sh' <<<"$flatpak_theme_hook"
 
           check_config "wsl" "conf.d/platform.wsl.toml"
           check_config "laptop" "conf.d/platform.laptop.toml"
