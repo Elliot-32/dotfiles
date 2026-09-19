@@ -182,18 +182,6 @@
       "variants": []
     },
     {
-      "path": "home/.local/share/fcitx5/themes/catppuccin-latte-blue",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
-    },
-    {
-      "path": "home/.local/share/fcitx5/themes/catppuccin-mocha-mauve",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
-    },
-    {
       "path": "home/.local/share/mise-completions-sync/registry.toml",
       "autosave": true,
       "encrypt": false,
