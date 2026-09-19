@@ -19,10 +19,10 @@ run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-paru.sh"'
 "pacman:fcitx5-gtk" = "latest"
 "pacman:fcitx5-qt" = "latest"
 "pacman:fcitx5-chinese-addons" = "latest"
-"pacman:fcitx5-material-color" = "latest"
-"pacman:fcitx5-nord" = "latest"
-"pacman:fcitx5-breeze" = "latest"
+"pacman:fcitx5-material-color" = { state = "absent" }
+"pacman:fcitx5-nord" = { state = "absent" }
+"pacman:fcitx5-breeze" = { state = "absent" }
 "aur:fcitx5-mcbopomofo-git" = "latest"
-"aur:fcitx5-skin-fluentdark-git" = "latest"
+"pacman:fcitx5-skin-fluentdark-git" = { state = "absent" }
 "pacman:libnotify" = "latest"
 "pacman:wl-clipboard" = "latest"
