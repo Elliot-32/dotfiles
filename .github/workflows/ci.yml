@@ -41,7 +41,7 @@ jobs:
       - name: Validate mise
         run: |
           mise tasks validate --errors-only
-          mise --locked bootstrap --dry-run
+          mise bootstrap --dry-run
 
       - name: Validate profiles
         shell: bash
