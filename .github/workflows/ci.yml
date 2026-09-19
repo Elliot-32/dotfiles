@@ -95,6 +95,13 @@ jobs:
           grep -Fq '"pacman:fcitx5-material-color" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-nord" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-breeze" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"apt:curl" = "latest"' config/conf.d/packages.apt.toml
+          grep -Fq '"apt:zstd" = "latest"' config/conf.d/packages.apt.toml
+          grep -Fq '"dnf:curl" = "latest"' config/conf.d/packages.dnf.toml
+          grep -Fq '"dnf:zstd" = "latest"' config/conf.d/packages.dnf.toml
+          grep -Fq 'scripts/install-fcitx5-breeze.sh' config/config.toml
+          grep -Fq 'archlinux.org/packages/extra/any/fcitx5-breeze/download/' config/scripts/install-fcitx5-breeze.sh
+          grep -Fq '.var/app/$flatpak_app/data/fcitx5/themes' config/scripts/install-fcitx5-breeze.sh
           grep -Fq '"aur:paru" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"aur:fcitx5-skin-fluentdark-git" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"aur:fcitx5-mcbopomofo-git" = "latest"' config/conf.d/packages.pacman.toml
