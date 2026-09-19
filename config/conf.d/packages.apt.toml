@@ -1,9 +1,8 @@
 [bootstrap.packages]
 "apt:build-essential" = "latest"
-"apt:curl" = "latest"
 "apt:fontconfig" = "latest"
+"apt:git" = "latest"
 "apt:xz-utils" = "latest"
-"apt:zstd" = "latest"
 "apt:pkg-config" = "latest"
 "apt:libdbus-1-dev" = "latest"
 "apt:nmap" = "latest"
