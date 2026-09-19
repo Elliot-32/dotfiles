@@ -379,7 +379,7 @@ url_api = "https://api.github.com/repos/openai/codex/releases/assets/571346655"
 
 [[tools.cowsay]]
 version = "1.6.0"
-aube = { path = "locks/cowsay/1.6.0", digest = "sha256:a3d33a4008430f4266bc233cbb7df31e3923ba59ed41aab062bf639c4e84b95e" }
+aube = { path = ".mise/locks/cowsay/1.6.0", digest = "sha256:a3d33a4008430f4266bc233cbb7df31e3923ba59ed41aab062bf639c4e84b95e" }
 backend = "npm:cowsay"
 specifiers = ["latest"]
 
@@ -1294,7 +1294,7 @@ url = "https://nodejs.org/dist/v26.9.0/node-v26.9.0-win-x64.zip"
 
 [[tools.nub]]
 version = "0.9.2"
-aube = { path = "locks/nub/0.9.2~f8dc702d", digest = "sha256:94a502a726cfab0c9587d735061a5c650af7bb9202b429fdf0e29259d4eaae9e" }
+aube = { path = ".mise/locks/nub/0.9.2~f8dc702d", digest = "sha256:94a502a726cfab0c9587d735061a5c650af7bb9202b429fdf0e29259d4eaae9e" }
 backend = "npm:@nubjs/nub"
 specifiers = ["latest"]
 
@@ -1345,19 +1345,19 @@ url_api = "https://api.github.com/repos/anomalyco/opencode/releases/assets/56387
 version = "0.6.1"
 backend = "pipx:isd-tui"
 specifiers = ["latest"]
-uv = { path = "locks/pipx-isd-tui/0.6.1", digest = "sha256:a259a78c91376b8bd9b386e42379aed65583c2eb52601f2f3e75741a82117059" }
+uv = { path = ".mise/locks/pipx-isd-tui/0.6.1", digest = "sha256:67909a90c229380b312b329d4d3ac4222942ad07b3c7850f12ff5423362bf86e" }
 
 [[tools."pipx:sqlmap"]]
 version = "1.10.9"
 backend = "pipx:sqlmap"
 specifiers = ["latest"]
-uv = { path = "locks/pipx-sqlmap/1.10.9", digest = "sha256:b6b115179c95197a6f1b4597ea5d14870dbc98ec9cc53755c08971bd20cc2640" }
+uv = { path = ".mise/locks/pipx-sqlmap/1.10.9", digest = "sha256:d64350308078db55a2ccdcd10616893cb12b4205f7f72e758ee2402c2a0a7566" }
 
 [[tools."pipx:wafw00f"]]
 version = "2.4.2"
 backend = "pipx:wafw00f"
 specifiers = ["latest"]
-uv = { path = "locks/pipx-wafw00f/2.4.2", digest = "sha256:6da85ab571735f2e1d45ee37c1662cb1b308b1bd39d6db9103ce84fef1cbe550" }
+uv = { path = ".mise/locks/pipx-wafw00f/2.4.2", digest = "sha256:6ed1ab7134b76a7c40f9b79c7e994aa0dfda6f5845f9ab4f57ef69b2ffa067f4" }
 
 [[tools.qdns]]
 version = "0.19.12"
