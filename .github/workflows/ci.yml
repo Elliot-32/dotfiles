@@ -108,7 +108,11 @@ jobs:
           grep -Fq '"pacman:fcitx5-chinese-addons" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"dnf:fcitx5" = "latest"' config/conf.d/packages.dnf.toml
           grep -Fq '"dnf:fcitx5-mcbopomofo" = "latest"' config/conf.d/distro.fedora.toml
-          grep -Fq 'apicalshark/fcitx5-mcbopomofo' config/scripts/bootstrap-mcbopomofo-fedora.sh
+          grep -Fq 'scripts/bootstrap-fedora-copr.sh' config/conf.d/distro.fedora.toml
+          grep -Fq 'scottames/ghostty' config/scripts/bootstrap-fedora-copr.sh
+          grep -Fq 'apicalshark/fcitx5-mcbopomofo' config/scripts/bootstrap-fedora-copr.sh
+          test ! -e config/scripts/bootstrap-ghostty-fedora.sh
+          test ! -e config/scripts/bootstrap-mcbopomofo-fedora.sh
           ! grep -Fq '"apt:fcitx5"' config/conf.d/packages.apt.toml
           ! grep -Fq '"apt:fcitx5-frontend-all"' config/conf.d/packages.apt.toml
           grep -Fq '"apt:git" = "latest"' config/conf.d/packages.apt.toml

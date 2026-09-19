@@ -1,8 +1,5 @@
 [bootstrap.hooks.pre-packages]
-run = '''
-sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-ghostty-fedora.sh"
-sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-mcbopomofo-fedora.sh"
-'''
+run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-fedora-copr.sh"'
 
 [bootstrap.packages]
 "dnf:ghostty" = "latest"

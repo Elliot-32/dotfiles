@@ -61,12 +61,11 @@ Herdr's tracked config routes agent completion/input notifications through the o
 - `config/assets/topgrade.toml`: shared Topgrade config deployed to `~/.config/topgrade.toml` on normal systems; the deployment target is intentionally not history-tracked.
 - `config/assets/topgrade.omarchy.toml`: Omarchy-specific Topgrade config deployed to the same target; delegates the system update step to `omarchy update` while keeping the rest of the Topgrade workflow.
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
-- `config/scripts/bootstrap-mcbopomofo-fedora.sh`: enables the Fedora COPR that provides the native McBopomofo package before DNF package installation.
+- `config/scripts/bootstrap-fedora-copr.sh`: installs the DNF COPR plugin once when needed and enables the Fedora COPRs that provide Ghostty and McBopomofo before package installation.
 - `config/scripts/bootstrap-paru.sh`: Arch pre-package helper that installs Paru only when neither Paru nor Yay is already available.
 - `config/scripts/sync-fcitx5-themes.sh`: syncs Catppuccin and Mellow from GitHub, enables Catppuccin rounded borders, and installs them for native and Flatpak Fcitx5. Topgrade calls the same helper for updates.
 - `config/scripts/reload-fcitx5.sh`: reloads a running native Fcitx5 instance on Pacman/DNF systems or the Fcitx5 Flatpak on APT systems; bootstrap and Topgrade call it after applying configuration or themes.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
-- `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side wrapper that installs the Windows JetBrainsMono Nerd Font only.
 - `config/scripts/bootstrap-windows.ps1`: Windows-native WinGet font installer.
 - `config/scripts/bootstrap-windows-terminal.sh`: WSL-side Windows Terminal integration for keybindings and terminal-native notifications.
