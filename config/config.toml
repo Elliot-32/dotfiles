@@ -205,6 +205,7 @@ run = [
   "misecompsync --shell zsh",
   "sheldon --non-interactive lock",
   "ya pkg install",
+  { task = "bootstrap:fcitx5-breeze" },
   { task = "bootstrap:windows" },
   { task = "bootstrap:theme" },
   { task = "bootstrap:github" },
@@ -230,6 +231,10 @@ run = "bash \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/tinty-theme-picker.
 hide = true
 interactive = true
 run = "mise exec -- sh \"${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/login-github.sh\""
+
+[tasks."bootstrap:fcitx5-breeze"]
+hide = true
+run = ":"
 
 [tasks."bootstrap:windows"]
 hide = true
