@@ -1,6 +1,7 @@
 [bootstrap.packages]
 "dnf:gcc" = "latest"
 "dnf:fontconfig" = "latest"
+"dnf:git" = "latest"
 "dnf:xz" = "latest"
 "dnf:nmap" = "latest"
 "dnf:openssh-clients" = "latest"
