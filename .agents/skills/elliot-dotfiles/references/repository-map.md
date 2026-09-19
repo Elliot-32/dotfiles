@@ -29,7 +29,7 @@ Global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml
 - `config/conf.d/distro.fedora.toml`: Fedora-specific Ghostty package/repository bootstrap.
 - `config/conf.d/packages.apt.toml`: APT-family packages/settings, including native Fcitx5 host integration modules.
 - `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including native Fcitx5 host integration modules.
-- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including the native Fcitx5 daemon, host IM modules, McBopomofo via AUR, bundled themes, declarative Chewing removal, and the pre-package AUR-helper bootstrap.
+- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including the native Fcitx5 daemon, host IM modules, McBopomofo via AUR, declarative removal of legacy theme packages and Chewing, and the pre-package AUR-helper bootstrap.
 - `config/conf.d/platform.laptop.toml`: opt-in laptop keyboard profile; manages the system-wide keyd mapping only when the `laptop` environment is explicitly selected.
 - `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked hooks, Topgrade config deployment, and theme/bootstrap compatibility behavior.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font/bootstrap integration override.
@@ -53,7 +53,7 @@ These files are restored directly to their application paths and use `mode = "tr
 - `home/.config/environment.d/90-fcitx5.conf`;
 - `home/.local/share/mise-completions-sync/registry.toml`.
 
-Herdr's tracked config routes agent completion/input notifications through the outer terminal with `[ui.toast] delivery = "terminal"`. Fcitx5 user configuration is shared across Linux systems; Arch owns the daemon, McBopomofo engine, and themes natively, while non-Arch graphical systems use the dedicated Flatpak Fcitx profile and distro packages retain host IM modules. `~/.gitconfig` is managed only through a block edit so machine-local identity is not synchronized.
+Herdr's tracked config routes agent completion/input notifications through the outer terminal with `[ui.toast] delivery = "terminal"`. Fcitx5 user configuration is shared across Linux systems; Arch owns the daemon and McBopomofo engine natively, while non-Arch graphical systems use the dedicated Flatpak Fcitx profile and distro packages retain host IM modules. Catppuccin and Mellow themes are user-managed consistently across both paths. `~/.gitconfig` is managed only through a block edit so machine-local identity is not synchronized.
 
 ## Bundled assets and scripts
 
@@ -62,7 +62,7 @@ Herdr's tracked config routes agent completion/input notifications through the o
 - `config/assets/topgrade.omarchy.toml`: Omarchy-specific Topgrade config deployed to the same target; delegates the system update step to `omarchy update` while keeping the rest of the Topgrade workflow.
 - `config/scripts/bootstrap-flatpak.sh`: Flatpak bootstrap helper.
 - `config/scripts/bootstrap-paru.sh`: Arch pre-package helper that installs Paru only when neither Paru nor Yay is already available.
-- `config/scripts/install-fcitx5-breeze.sh`: installs Arch's prebuilt Fcitx5 Breeze theme into the non-Arch Flatpak Fcitx profile.
+- `config/scripts/sync-fcitx5-themes.sh`: syncs Catppuccin and Mellow from GitHub, enables Catppuccin rounded borders, and installs them for native and Flatpak Fcitx5. Topgrade calls the same helper for updates.
 - `config/scripts/bootstrap-ghostty-ubuntu.sh`: Ubuntu Ghostty helper.
 - `config/scripts/bootstrap-ghostty-fedora.sh`: Fedora Ghostty helper.
 - `config/scripts/bootstrap-windows.sh`: WSL-side wrapper that installs the Windows JetBrainsMono Nerd Font only.
