@@ -87,7 +87,14 @@ jobs:
 
           grep -Fq '"flatpak-user:org.fcitx.Fcitx5" = "latest"' config/config.flatpak.toml
           grep -Fq '"flatpak-user:org.fcitx.Fcitx5.Addon.McBopomofo" = "latest"' config/config.flatpak.toml
-          grep -Fq 'Exec=flatpak run --user org.fcitx.Fcitx5' config/config.flatpak.toml
+
+          fcitx_autostart='[bootstrap.files."~/.config/autostart/org.fcitx.Fcitx5.desktop"]'
+          ! grep -Fq "$fcitx_autostart" config/config.flatpak.toml
+          grep -Fq "$fcitx_autostart" config/conf.d/packages.apt.toml
+          grep -Fq 'Exec=flatpak run --user org.fcitx.Fcitx5' config/conf.d/packages.apt.toml
+          grep -Fq "$fcitx_autostart" config/conf.d/packages.dnf.toml
+          grep -Fq 'Exec=flatpak run --user org.fcitx.Fcitx5' config/conf.d/packages.dnf.toml
+          ! grep -Fq "$fcitx_autostart" config/conf.d/packages.pacman.toml
 
           grep -Fq '"pacman:fcitx5-chewing" = { state = "absent" }' config/conf.d/packages.pacman.toml
           ! grep -Fq '"aur:' config/conf.d/packages.pacman.toml
