@@ -40,7 +40,7 @@ pull_predefined = false
 use_sudo = false
 
 [commands]
-"Fcitx5 themes" = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/sync-fcitx5-themes.sh"'
+"Fcitx5 themes" = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/sync-fcitx5-themes.sh" && sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/reload-fcitx5.sh"'
 
 [post_commands]
 "Refresh completions" = 'mise completion zsh --install && misecompsync --shell zsh'
