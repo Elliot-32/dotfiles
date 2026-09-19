@@ -2,8 +2,6 @@
 run = 'sh "${MISE_CONFIG_DIR:-$HOME/.config/mise}/scripts/bootstrap-flatpak.sh"'
 
 [bootstrap.packages]
-"flatpak-user:org.fcitx.Fcitx5" = "latest"
-"flatpak-user:org.fcitx.Fcitx5.Addon.McBopomofo" = "latest"
 "flatpak-user:com.bitwarden.desktop" = "latest"
 "flatpak-user:com.dec05eba.gpu_screen_recorder" = "latest"
 "flatpak-user:com.github.Matoking.protontricks" = "latest"
