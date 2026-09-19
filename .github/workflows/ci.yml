@@ -89,6 +89,9 @@ jobs:
 
           grep -Fq '"flatpak-user:org.fcitx.Fcitx5" = "latest"' config/config.fcitx-flatpak.toml
           grep -Fq '"flatpak-user:org.fcitx.Fcitx5.Addon.McBopomofo" = "latest"' config/config.fcitx-flatpak.toml
+          grep -Eq 'env = \["ubuntu", "apt", "flatpak", "fcitx-flatpak"' config/miserc.toml
+          grep -Eq 'env = \["debian", "apt", "flatpak", "fcitx-flatpak"' config/miserc.toml
+          ! grep -Eq 'env = \["(fedora|rhel)", "dnf", "flatpak", "fcitx-flatpak"' config/miserc.toml
 
           fcitx_autostart='[bootstrap.files."~/.config/autostart/org.fcitx.Fcitx5.desktop"]'
           grep -Fq "$fcitx_autostart" config/config.fcitx-flatpak.toml
@@ -103,6 +106,11 @@ jobs:
           grep -Fq '"pacman:fcitx5-gtk" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-qt" = "latest"' config/conf.d/packages.pacman.toml
           grep -Fq '"pacman:fcitx5-chinese-addons" = "latest"' config/conf.d/packages.pacman.toml
+          grep -Fq '"dnf:fcitx5" = "latest"' config/conf.d/packages.dnf.toml
+          grep -Fq '"dnf:fcitx5-mcbopomofo" = "latest"' config/conf.d/distro.fedora.toml
+          grep -Fq 'apicalshark/fcitx5-mcbopomofo' config/scripts/bootstrap-mcbopomofo-fedora.sh
+          ! grep -Fq '"apt:fcitx5"' config/conf.d/packages.apt.toml
+          ! grep -Fq '"apt:fcitx5-frontend-all"' config/conf.d/packages.apt.toml
           grep -Fq '"apt:git" = "latest"' config/conf.d/packages.apt.toml
           grep -Fq '"dnf:git" = "latest"' config/conf.d/packages.dnf.toml
           grep -Fq 'https://github.com/catppuccin/fcitx5.git' config/scripts/sync-fcitx5-themes.sh
@@ -120,7 +128,6 @@ jobs:
           test -e config/scripts/bootstrap-paru.sh
 
           ! grep -Fq 'mcbopomofo' config/conf.d/packages.apt.toml
-          ! grep -Fq 'mcbopomofo' config/conf.d/packages.dnf.toml
           test ! -e config/scripts/install-mcbopomofo.sh
 
           grep -Fq '"Fcitx5 themes"' config/assets/topgrade.toml
@@ -181,8 +188,12 @@ jobs:
           grep -Fq "config.flatpak.toml" <<<"$arch_flatpak_output"
           ! grep -Fq "config.fcitx-flatpak.toml" <<<"$arch_flatpak_output"
 
-          non_arch_flatpak_output="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise config ls)"
-          grep -Fq "config.fcitx-flatpak.toml" <<<"$non_arch_flatpak_output"
+          dnf_flatpak_output="$(MISE_ENV=fedora,dnf,flatpak mise config ls)"
+          grep -Fq "config.flatpak.toml" <<<"$dnf_flatpak_output"
+          ! grep -Fq "config.fcitx-flatpak.toml" <<<"$dnf_flatpak_output"
+
+          apt_flatpak_output="$(MISE_ENV=ubuntu,apt,flatpak,fcitx-flatpak mise config ls)"
+          grep -Fq "config.fcitx-flatpak.toml" <<<"$apt_flatpak_output"
 
           arch_theme_hook="$(MISE_ENV=arch,pacman mise config get --file config/config.toml bootstrap.hooks.pre-dotfiles.run)"
           grep -Fq 'scripts/sync-fcitx5-themes.sh' <<<"$arch_theme_hook"
