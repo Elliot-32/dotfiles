@@ -27,14 +27,14 @@ Global early-init environment selector restored to `$MISE_CONFIG_DIR/miserc.toml
 
 - `config/conf.d/distro.ubuntu.toml`: Ubuntu-specific Ghostty package/repository bootstrap.
 - `config/conf.d/distro.fedora.toml`: Fedora-specific Ghostty package/repository bootstrap.
-- `config/conf.d/packages.apt.toml`: APT-family packages/settings, including native Fcitx5 host integration modules.
-- `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including native Fcitx5 host integration modules.
-- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including native Fcitx5 host integration and declarative Chewing removal.
+- `config/conf.d/packages.apt.toml`: APT-family packages/settings, including native Fcitx5 host integration modules and Flatpak Fcitx5 user autostart.
+- `config/conf.d/packages.dnf.toml`: DNF-family packages/settings, including native Fcitx5 host integration modules and Flatpak Fcitx5 user autostart.
+- `config/conf.d/packages.pacman.toml`: Pacman/Arch packages/settings, including native Fcitx5 host integration and declarative Chewing removal; it intentionally does not manage Fcitx5 autostart.
 - `config/conf.d/platform.laptop.toml`: opt-in laptop keyboard profile; manages the system-wide keyd mapping only when the `laptop` environment is explicitly selected.
 - `config/conf.d/platform.omarchy.toml`: Omarchy-specific tracked hooks, Topgrade config deployment, and theme/bootstrap compatibility behavior.
 - `config/conf.d/platform.wsl.toml`: WSL behavior and Windows font/bootstrap integration override.
 - `config/conf.d/platform.wslg.toml`: WSLg-specific configuration.
-- `config/config.flatpak.toml`: Flatpak-specific bootstrap/update behavior, including the Fcitx 5 daemon, McBopomofo extension, and user autostart entry.
+- `config/config.flatpak.toml`: Flatpak-specific bootstrap/update behavior, including the Fcitx 5 daemon and McBopomofo extension; distro package fragments own any user autostart integration.
 
 ## Native tracked dotfiles
 
