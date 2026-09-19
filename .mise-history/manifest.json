@@ -14,13 +14,13 @@
       "variants": []
     },
     {
-      "path": "config/config.flatpak.toml",
+      "path": "config/config.fcitx-flatpak.toml",
       "autosave": true,
       "encrypt": false,
       "variants": []
     },
     {
-      "path": "config/config.fcitx-flatpak.toml",
+      "path": "config/config.flatpak.toml",
       "autosave": true,
       "encrypt": false,
       "variants": []
