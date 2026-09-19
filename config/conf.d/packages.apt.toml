@@ -25,6 +25,7 @@ owner = "root"
 group = "root"
 mode = "0644"
 
+
 [bootstrap.services."apt-daily.timer"]
 enabled = true
 state = "running"
