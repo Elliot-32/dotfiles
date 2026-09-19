@@ -602,9 +602,39 @@ specifiers = ["latest"]
 [tools.cursor-agent.options]
 strip_components = "0"
 
+[tools.cursor-agent."platforms.linux-arm64"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/linux/arm64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.linux-arm64-musl"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/linux/arm64/agent-cli-package.tar.gz"
+
 [tools.cursor-agent."platforms.linux-x64"]
 checksum = "blake3:c9e03f7bf8700f77533d8fabd7af802b31beed1f089229debd40283dc2909a99"
 url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/linux/x64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.linux-x64-baseline"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/linux/x64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.linux-x64-musl"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/linux/x64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.linux-x64-musl-baseline"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/linux/x64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.macos-arm64"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/darwin/arm64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.macos-x64"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/darwin/x64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.macos-x64-baseline"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/darwin/x64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.windows-x64"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/windows/x64/agent-cli-package.tar.gz"
+
+[tools.cursor-agent."platforms.windows-x64-baseline"]
+url = "https://downloads.cursor.com/lab/2026.09.18-9a7762b/windows/x64/agent-cli-package.tar.gz"
 
 [[tools.dasel]]
 version = "3.11.2"
