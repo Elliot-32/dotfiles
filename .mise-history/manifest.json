@@ -20,6 +20,12 @@
       "variants": []
     },
     {
+      "path": "config/config.fcitx-flatpak.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "config/config.toml",
       "autosave": true,
       "encrypt": false,
